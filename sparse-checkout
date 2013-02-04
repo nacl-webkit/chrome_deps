@@ -1,0 +1,8 @@
+/.gitignore
+/ChromeList.txt
+/base
+/build/build_config.h
+/ipc
+/sparse-checkout
+/third_party/libevent
+/ppapi

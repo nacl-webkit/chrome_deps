@@ -35,7 +35,7 @@ class BASE_EXPORT MessagePumpWebKit : public MessagePump {
   virtual void RunWithDispatcher(Delegate* delegate,
                                  MessagePumpDispatcher* dispatcher);
   void setDelegate(Delegate* delegate) {delegate_ = delegate; }
-  void ScheduleWorkCallback(TimeTicks delayed_work_time);
+  void ScheduleWorkCallback(TimeTicks& delayed_work_time);
 
  protected:
   virtual ~MessagePumpWebKit();

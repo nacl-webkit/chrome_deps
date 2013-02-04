@@ -48,7 +48,7 @@ void MessagePumpWebKit::RunWithDispatcher(Delegate* delegate, MessagePumpDispatc
     helper_->RunWithDispatcher(delegate, dispatcher);
 }
 
-void MessagePumpWebKit::ScheduleWorkCallback(TimeTicks delayed_work_time)
+void MessagePumpWebKit::ScheduleWorkCallback(TimeTicks& delayed_work_time)
 {
     bool didWork = false;
     if (delegate_->DoWork())

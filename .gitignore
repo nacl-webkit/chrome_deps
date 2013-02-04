@@ -284,3 +284,9 @@ v8.log
 /webpagereplay_logs/
 /x86-generic_out/
 /xcodebuild
+#ignore cmake files
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+libppapi*.so*

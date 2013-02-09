@@ -16,7 +16,7 @@
 #include "native_client/src/include/nacl_macros.h"
 #include "native_client/src/include/nacl_string.h"
 #include "native_client/src/trusted/plugin/manifest.h"
-#include "third_party/jsoncpp/source/include/json/value.h"
+#include "json/value.h"
 
 namespace pp {
 class URLUtil_Dev;

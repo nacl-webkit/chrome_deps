@@ -176,6 +176,7 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/base/threading/thread_local_posix.cc
     ${CHROME_DEPS_DIR}/base/threading/thread_local_storage_posix.cc
     ${CHROME_DEPS_DIR}/base/threading/thread_restrictions.cc
+    ${CHROME_DEPS_DIR}/base/threading/thread_id_name_manager.cc
 #    ${CHROME_DEPS_DIR}/base/threading/watchdog.cc
     ${CHROME_DEPS_DIR}/base/threading/worker_pool.cc
     ${CHROME_DEPS_DIR}/base/threading/worker_pool_posix.cc
@@ -240,6 +241,11 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/ipc/ipc_sync_channel.cc
     ${CHROME_DEPS_DIR}/ipc/ipc_sync_message.cc
     ${CHROME_DEPS_DIR}/ipc/ipc_sync_message_filter.cc
+
+    ${CHROME_DEPS_DIR}/ppapi/proxy/file_io_resource.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/file_io_state_manager.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_url_util_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_url_util_thunk.cc
 
     ${CHROME_DEPS_DIR}/media/audio/audio_device_name.cc
     ${CHROME_DEPS_DIR}/media/audio/audio_device_thread.cc

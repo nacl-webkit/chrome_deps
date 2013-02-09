@@ -5,12 +5,12 @@
  */
 /*
 FIXME:
+*/
 #include "native_client/src/shared/imc/nacl_imc_c.h"
 #include "native_client/src/shared/platform/nacl_time.h"
 #include "native_client/src/trusted/desc/nrd_all_modules.h"
 #include "native_client/src/trusted/plugin/nacl_entry_points.h"
 #include "native_client/src/trusted/plugin/plugin.h"
-*/
 
 #include "ppapi/c/private/ppb_nacl_private.h"
 #include "ppapi/cpp/module.h"
@@ -77,10 +77,10 @@ class ModulePpapi : public pp::Module {
     // This must be called from here rather than Init, as it relies on
     // chrome state that is not set at the time Init runs.
 //FIXME:    private_interface_->EnableBackgroundSelLdrLaunch();
-//FIXME:    Plugin* plugin = Plugin::New(pp_instance);
+    Plugin* plugin = Plugin::New(pp_instance);
 //FIXME:    MODULE_PRINTF(("ModulePpapi::CreateInstance (return %p)\n",
 //FIXME:                   static_cast<void* >(plugin)));
-//FIXME:    return plugin;
+    return plugin;
   }
 
  private:

@@ -2,10 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
+#if ENABLE(PEPPER_PLUGIN_API)
 #include "webkit/plugins/ppapi/ppb_url_loader_impl.h"
 
 #include "base/logging.h"
-#include "net/base/net_errors.h"
+//FIXME#include "net/base/net_errors.h"
 #include "ppapi/c/pp_completion_callback.h"
 #include "ppapi/c/pp_errors.h"
 #include "ppapi/c/ppb_url_loader.h"
@@ -14,18 +16,22 @@
 #include "ppapi/shared_impl/url_response_info_data.h"
 #include "ppapi/thunk/enter.h"
 #include "ppapi/thunk/ppb_url_request_info_api.h"
-#include "third_party/WebKit/Source/Platform/chromium/public/WebURLError.h"
-#include "third_party/WebKit/Source/Platform/chromium/public/WebURLLoader.h"
-#include "third_party/WebKit/Source/Platform/chromium/public/WebURLRequest.h"
-#include "third_party/WebKit/Source/Platform/chromium/public/WebURLResponse.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebDocument.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebElement.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebFrame.h"
+#include <WebCore/Document.h>
+#include <WebCore/Element.h>
+#include <WebCore/Frame.h>
+#include <WebCore/ResourceLoadScheduler.h>
+/* FIXME
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebKit.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebPluginContainer.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebSecurityOrigin.h"
+#include "third_party/WebKit/Source/WebKit/chromium/public/platform/WebKitPlatformSupport.h"
+*/
+#include "PepperPluginContainer.h"
+#include <WebCore/SecurityOrigin.h>
+/* FIXME
+#include "third_party/WebKit/Source/WebKit/chromium/public/platform/WebURLError.h"
+#include "third_party/WebKit/Source/WebKit/chromium/public/platform/WebURLLoader.h"
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebURLLoaderOptions.h"
 #include "webkit/appcache/web_application_cache_host_impl.h"
+*/
 #include "webkit/plugins/ppapi/common.h"
 #include "webkit/plugins/ppapi/plugin_module.h"
 #include "webkit/plugins/ppapi/ppapi_plugin_instance.h"
@@ -33,20 +39,14 @@
 #include "webkit/plugins/ppapi/url_request_info_util.h"
 #include "webkit/plugins/ppapi/url_response_info_util.h"
 
-using appcache::WebApplicationCacheHostImpl;
+//using appcache::WebApplicationCacheHostImpl;
 using ppapi::Resource;
 using ppapi::thunk::EnterResourceNoLock;
 using ppapi::thunk::PPB_URLLoader_API;
 using ppapi::thunk::PPB_URLRequestInfo_API;
 using ppapi::TrackedCallback;
-using WebKit::WebFrame;
-using WebKit::WebString;
-using WebKit::WebURL;
-using WebKit::WebURLError;
-using WebKit::WebURLLoader;
-using WebKit::WebURLLoaderOptions;
-using WebKit::WebURLRequest;
-using WebKit::WebURLResponse;
+
+using namespace WebCore;
 
 #ifdef _MSC_VER
 // Do not warn about use of std::copy with raw pointers.
@@ -58,11 +58,11 @@ namespace ppapi {
 
 namespace {
 
-WebFrame* GetFrameForResource(const Resource* resource) {
+Frame* GetFrameForResource(const Resource* resource) {
   PluginInstance* plugin_instance = ResourceHelper::GetPluginInstance(resource);
   if (!plugin_instance)
     return NULL;
-  return plugin_instance->container()->element().document().frame();
+  return plugin_instance->container()->element()->document()->frame();
 }
 
 }  // namespace
@@ -91,7 +91,7 @@ PPB_URLLoader_Impl::~PPB_URLLoader_Impl() {
   // re-entering the scoped_ptr destructor with the same scoped_ptr object
   // via loader_.reset(). Be sure that loader_ is first NULL then destroy
   // the scoped_ptr. See http://crbug.com/159429.
-  scoped_ptr<WebKit::WebURLLoader> for_destruction_only(loader_.release());
+  RefPtr<NetscapePlugInStreamLoader> for_destruction_only(loader_.release());
 }
 
 PPB_URLLoader_API* PPB_URLLoader_Impl::AsPPB_URLLoader_API() {
@@ -99,7 +99,7 @@ PPB_URLLoader_API* PPB_URLLoader_Impl::AsPPB_URLLoader_API() {
 }
 
 void PPB_URLLoader_Impl::InstanceWasDeleted() {
-  loader_.reset();
+  loader_ = 0;
 }
 
 int32_t PPB_URLLoader_Impl::Open(PP_Resource request_id,
@@ -144,20 +144,20 @@ int32_t PPB_URLLoader_Impl::Open(
   if (loader_.get())
     return PP_ERROR_INPROGRESS;
 
-  WebFrame* frame = GetFrameForResource(this);
+  Frame* frame = GetFrameForResource(this);
   if (!frame)
     return PP_ERROR_FAILED;
-  WebURLRequest web_request;
+  ResourceRequest web_request;
   if (!CreateWebURLRequest(&filled_in_request_data, frame, &web_request))
     return PP_ERROR_FAILED;
-  web_request.setRequestorProcessID(requestor_pid);
+  //FIXME: needed for multi process web_request.setRequestorProcessID(requestor_pid);
 
   // Save a copy of the request info so the plugin can continue to use and
   // change it while we're doing the request without affecting us. We must do
   // this after CreateWebURLRequest since that fills out the file refs.
   request_data_ = filled_in_request_data;
-
-  WebURLLoaderOptions options;
+/*FIXME Check if the defaut ResourceLoaderOptions good enough ?
+  ResourceLoaderOptions options;
   if (has_universal_access_) {
     options.allowCredentials = true;
     options.crossOriginRequestPolicy =
@@ -176,13 +176,11 @@ int32_t PPB_URLLoader_Impl::Open(
       options.allowCredentials = true;
     }
   }
-
+*/
   is_asynchronous_load_suspended_ = false;
-  loader_.reset(frame->createAssociatedURLLoader(options));
+  loader_ = resourceLoadScheduler()->schedulePluginStreamLoad(frame, this, web_request);
   if (!loader_.get())
     return PP_ERROR_FAILED;
-
-  loader_->loadAsynchronously(web_request, this);
 
   // Notify completion when we receive a redirect or response headers.
   RegisterCallback(callback);
@@ -297,8 +295,10 @@ int32_t PPB_URLLoader_Impl::FinishStreamingToFile(
 void PPB_URLLoader_Impl::Close() {
   if (loader_.get())
     loader_->cancel();
-  else if (main_document_loader_)
-    GetFrameForResource(this)->stopLoading();
+  else if (main_document_loader_) {
+    GetFrameForResource(this)->loader()->stopAllLoaders();
+    GetFrameForResource(this)->loader()->stopLoading(UnloadEventPolicyNone);
+  }
 
   // We must not access the buffer provided by the caller from this point on.
   user_buffer_ = NULL;
@@ -332,9 +332,9 @@ bool PPB_URLLoader_Impl::GetResponseInfoData(
 }
 
 void PPB_URLLoader_Impl::willSendRequest(
-    WebURLLoader* loader,
-    WebURLRequest& new_request,
-    const WebURLResponse& redirect_response) {
+  NetscapePlugInStreamLoader* loader,
+  ResourceRequest& new_request,
+  const ResourceResponse& redirect_response) {
   if (!request_data_.follow_redirects) {
     SaveResponse(redirect_response);
     SetDefersLoading(true);
@@ -343,17 +343,17 @@ void PPB_URLLoader_Impl::willSendRequest(
 }
 
 void PPB_URLLoader_Impl::didSendData(
-    WebURLLoader* loader,
-    unsigned long long bytes_sent,
-    unsigned long long total_bytes_to_be_sent) {
+  NetscapePlugInStreamLoader* loader,
+  unsigned long long bytes_sent,
+  unsigned long long total_bytes_to_be_sent) {
   // TODO(darin): Bounds check input?
   bytes_sent_ = static_cast<int64_t>(bytes_sent);
   total_bytes_to_be_sent_ = static_cast<int64_t>(total_bytes_to_be_sent);
   UpdateStatus();
 }
 
-void PPB_URLLoader_Impl::didReceiveResponse(WebURLLoader* loader,
-                                            const WebURLResponse& response) {
+void PPB_URLLoader_Impl::didReceiveResponse(NetscapePlugInStreamLoader* loader,
+                                            const ResourceResponse& response) {
   SaveResponse(response);
 
   // Sets -1 if the content length is unknown.
@@ -363,16 +363,15 @@ void PPB_URLLoader_Impl::didReceiveResponse(WebURLLoader* loader,
   RunCallback(PP_OK);
 }
 
-void PPB_URLLoader_Impl::didDownloadData(WebURLLoader* loader,
+void PPB_URLLoader_Impl::didDownloadData(NetscapePlugInStreamLoader* loader,
                                          int data_length) {
   bytes_received_ += data_length;
   UpdateStatus();
 }
 
-void PPB_URLLoader_Impl::didReceiveData(WebURLLoader* loader,
+void PPB_URLLoader_Impl::didReceiveData(NetscapePlugInStreamLoader* loader,
                                         const char* data,
-                                        int data_length,
-                                        int encoded_data_length) {
+                                        int data_length) {
   // Note that |loader| will be NULL for document loads.
   bytes_received_ += data_length;
   UpdateStatus();
@@ -400,30 +399,16 @@ void PPB_URLLoader_Impl::didReceiveData(WebURLLoader* loader,
   }
 }
 
-void PPB_URLLoader_Impl::didFinishLoading(WebURLLoader* loader,
+void PPB_URLLoader_Impl::didFinishLoading(NetscapePlugInStreamLoader* loader,
                                           double finish_time) {
   FinishLoading(PP_OK);
 }
 
-void PPB_URLLoader_Impl::didFail(WebURLLoader* loader,
-                                 const WebURLError& error) {
+void PPB_URLLoader_Impl::didFail(NetscapePlugInStreamLoader* loader,
+                                 const ResourceError& error) {
   int32_t pp_error = PP_ERROR_FAILED;
-  if (error.domain.equals(WebString::fromUTF8(net::kErrorDomain))) {
-    // TODO(bbudge): Extend pp_errors.h to cover interesting network errors
-    // from the net error domain.
-    switch (error.reason) {
-      case net::ERR_ABORTED:
-        pp_error = PP_ERROR_ABORTED;
-        break;
-      case net::ERR_ACCESS_DENIED:
-      case net::ERR_NETWORK_ACCESS_DENIED:
-        pp_error = PP_ERROR_NOACCESS;
-        break;
-    }
-  } else {
-    // It's a WebKit error.
-    pp_error = PP_ERROR_NOACCESS;
-  }
+  if (error.isTimeout())
+    pp_error = PP_ERROR_ABORTED;
 
   FinishLoading(pp_error);
 }
@@ -511,7 +496,7 @@ size_t PPB_URLLoader_Impl::FillUserBuffer() {
   return bytes_to_copy;
 }
 
-void PPB_URLLoader_Impl::SaveResponse(const WebURLResponse& response) {
+void PPB_URLLoader_Impl::SaveResponse(const ResourceResponse& response) {
   // DataFromWebURLResponse returns a file ref with one reference to it, which
   // we take over via our ScopedPPResource.
   response_info_.reset(new ::ppapi::URLResponseInfoData(

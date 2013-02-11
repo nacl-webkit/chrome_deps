@@ -1,47 +1,45 @@
 // Copyright (c) 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-
+#include "config.h"
 #include "webkit/plugins/ppapi/url_request_info_util.h"
 
 #include "base/logging.h"
 #include "base/string_util.h"
-#include "googleurl/src/gurl.h"
-#include "googleurl/src/url_util.h"
-#include "net/http/http_util.h"
+#include "gurl.h"
+//FIXME #include "net/http/http_util.h"
 #include "ppapi/shared_impl/url_request_info_data.h"
 #include "ppapi/shared_impl/var.h"
 #include "ppapi/thunk/enter.h"
-#include "third_party/WebKit/Source/Platform/chromium/public/WebData.h"
-#include "third_party/WebKit/Source/Platform/chromium/public/WebHTTPBody.h"
-#include "third_party/WebKit/Source/Platform/chromium/public/WebURL.h"
-#include "third_party/WebKit/Source/Platform/chromium/public/WebURLRequest.h"
+/* FIXME
+#include "third_party/WebKit/Source/WebKit/chromium/public/platform/WebData.h"
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebDocument.h"
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebFrame.h"
+#include "third_party/WebKit/Source/WebKit/chromium/public/platform/WebHTTPBody.h"
+#include "third_party/WebKit/Source/WebKit/chromium/public/platform/WebURL.h"
+#include "third_party/WebKit/Source/WebKit/chromium/public/platform/WebURLRequest.h"
 #include "webkit/base/file_path_string_conversions.h"
 #include "webkit/glue/weburlrequest_extradata_impl.h"
+*/
 #include "webkit/plugins/ppapi/common.h"
 #include "webkit/plugins/ppapi/plugin_module.h"
 #include "webkit/plugins/ppapi/ppb_file_ref_impl.h"
 #include "webkit/plugins/ppapi/ppb_file_system_impl.h"
 #include "webkit/plugins/ppapi/resource_helper.h"
+#include <WebCore/ResourceRequest.h>
 
 using ppapi::URLRequestInfoData;
 using ppapi::Resource;
 using ppapi::thunk::EnterResourceNoLock;
 using ppapi::thunk::PPB_FileRef_API;
-using WebKit::WebData;
-using WebKit::WebHTTPBody;
-using WebKit::WebString;
-using WebKit::WebFrame;
-using WebKit::WebURL;
-using WebKit::WebURLRequest;
+
+using namespace WebCore;
 
 namespace webkit {
 namespace ppapi {
 
 namespace {
-
+/* FIXME
 // Appends the file ref given the Resource pointer associated with it to the
 // given HTTP body, returning true on success.
 bool AppendFileRefToBody(
@@ -86,6 +84,7 @@ bool AppendFileRefToBody(
       expected_last_modified_time);
   return true;
 }
+*/
 
 // Checks that the request data is valid. Returns false on failure. Note that
 // method and header validation is done by the URL loader when the request is
@@ -121,38 +120,33 @@ bool EnsureFileRefObjectsPopulated(::ppapi::URLRequestInfoData* data) {
 }  // namespace
 
 bool CreateWebURLRequest(::ppapi::URLRequestInfoData* data,
-                         WebFrame* frame,
-                         WebURLRequest* dest) {
+                         Frame* frame,
+                         ResourceRequest* dest) {
   // In the out-of-process case, we've received the URLRequestInfoData
   // from the untrusted plugin and done no validation on it. We need to be
   // sure it's not being malicious by checking everything for consistency.
   if (!ValidateURLRequestData(*data) || !EnsureFileRefObjectsPopulated(data))
     return false;
 
-  dest->initialize();
-  dest->setTargetType(WebURLRequest::TargetIsObject);
-  dest->setURL(frame->document().completeURL(WebString::fromUTF8(
-      data->url)));
+//FIXME  dest->initialize();
+//FIXME  dest->setTargetType(WebURLRequest::TargetIsObject);
+  dest->setURL(KURL(frame->document()->baseURL(), data->url.c_str()));
   dest->setDownloadToFile(data->stream_to_file);
   dest->setReportUploadProgress(data->record_upload_progress);
 
   if (!data->method.empty())
-    dest->setHTTPMethod(WebString::fromUTF8(data->method));
+      dest->setHTTPMethod(data->method.c_str());
 
-  dest->setFirstPartyForCookies(frame->document().firstPartyForCookies());
+  dest->setFirstPartyForCookies(frame->document()->firstPartyForCookies());
 
   const std::string& headers = data->headers;
   if (!headers.empty()) {
-    net::HttpUtil::HeadersIterator it(headers.begin(), headers.end(), "\n\r");
-    while (it.GetNext()) {
-      dest->addHTTPHeaderField(
-          WebString::fromUTF8(it.name()),
-          WebString::fromUTF8(it.values()));
-    }
+      dest->addHTTPHeaderFields(headers.c_str(), headers.size());
   }
 
   // Append the upload data.
   if (!data->body.empty()) {
+    /* FIXME support file upload
     WebHTTPBody http_body;
     http_body.initialize();
     for (size_t i = 0; i < data->body.size(); ++i) {
@@ -170,25 +164,23 @@ bool CreateWebURLRequest(::ppapi::URLRequestInfoData* data,
       }
     }
     dest->setHTTPBody(http_body);
+    */
   }
 
   // Add the "Referer" header if there is a custom referrer. Such requests
   // require universal access. For all other requests, "Referer" will be set
   // after header security checks are done in AssociatedURLLoader.
   if (data->has_custom_referrer_url && !data->custom_referrer_url.empty())
-    frame->setReferrerForRequest(*dest, GURL(data->custom_referrer_url));
+      dest->setHTTPReferrer(data->custom_referrer_url.c_str());
 
   if (data->has_custom_content_transfer_encoding &&
       !data->custom_content_transfer_encoding.empty()) {
-    dest->addHTTPHeaderField(
-        WebString::fromUTF8("Content-Transfer-Encoding"),
-        WebString::fromUTF8(data->custom_content_transfer_encoding));
+    dest->addHTTPHeaderField("Content-Transfer-Encoding",
+        data->custom_content_transfer_encoding.c_str());
   }
 
   if (data->has_custom_user_agent) {
-    dest->setExtraData(new webkit_glue::WebURLRequestExtraDataImpl(
-        WebKit::WebReferrerPolicyDefault,  // Ignored.
-        WebString::fromUTF8(data->custom_user_agent)));
+      dest->setHTTPUserAgent(data->custom_user_agent.c_str());
   }
 
   return true;
@@ -200,7 +192,7 @@ bool URLRequestRequiresUniversalAccess(
       data.has_custom_referrer_url ||
       data.has_custom_content_transfer_encoding ||
       data.has_custom_user_agent ||
-      url_util::FindAndCompareScheme(data.url, "javascript", NULL);
+      WebCore::protocolIs(data.url.c_str(), "javascript");
 }
 
 }  // namespace ppapi

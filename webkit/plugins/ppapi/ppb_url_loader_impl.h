@@ -5,6 +5,7 @@
 #ifndef WEBKIT_PLUGINS_PPAPI_PPB_URL_LOADER_IMPL_H_
 #define WEBKIT_PLUGINS_PPAPI_PPB_URL_LOADER_IMPL_H_
 
+#include "config.h"
 #include <deque>
 
 #include "base/memory/ref_counted.h"
@@ -16,19 +17,16 @@
 #include "ppapi/shared_impl/tracked_callback.h"
 #include "ppapi/shared_impl/url_request_info_data.h"
 #include "ppapi/thunk/ppb_url_loader_api.h"
-#include "third_party/WebKit/Source/Platform/chromium/public/WebURLLoaderClient.h"
-#include "webkit/plugins/ppapi/ppapi_plugin_instance.h"
-
-namespace WebKit {
-class WebURL;
-}
+#include "NetscapePlugInStreamLoader.h"
+#include "PluginInstance.h"
+#include <wtf/RefPtr.h>
 
 namespace webkit {
 namespace ppapi {
 
 class PPB_URLLoader_Impl : public ::ppapi::Resource,
                            public ::ppapi::thunk::PPB_URLLoader_API,
-                           public WebKit::WebURLLoaderClient {
+                           public WebCore::NetscapePlugInStreamLoaderClient {
  public:
   PPB_URLLoader_Impl(PP_Instance instance, bool main_document_loader);
   virtual ~PPB_URLLoader_Impl();
@@ -66,26 +64,14 @@ class PPB_URLLoader_Impl : public ::ppapi::Resource,
   virtual bool GetResponseInfoData(
       ::ppapi::URLResponseInfoData* data) OVERRIDE;
 
-  // WebKit::WebURLLoaderClient implementation.
-  virtual void willSendRequest(WebKit::WebURLLoader* loader,
-                               WebKit::WebURLRequest& new_request,
-                               const WebKit::WebURLResponse& redir_response);
-  virtual void didSendData(WebKit::WebURLLoader* loader,
-                           unsigned long long bytes_sent,
-                           unsigned long long total_bytes_to_be_sent);
-  virtual void didReceiveResponse(WebKit::WebURLLoader* loader,
-                                  const WebKit::WebURLResponse& response);
-  virtual void didDownloadData(WebKit::WebURLLoader* loader,
-                               int data_length);
-
-  virtual void didReceiveData(WebKit::WebURLLoader* loader,
-                               const char* data,
-                               int data_length,
-                               int encoded_data_length);
-  virtual void didFinishLoading(WebKit::WebURLLoader* loader,
-                                double finish_time);
-  virtual void didFail(WebKit::WebURLLoader* loader,
-                       const WebKit::WebURLError& error);
+  // NetscapePluginStreamLoaderClient
+  virtual void willSendRequest(WebCore::NetscapePlugInStreamLoader*, WebCore::ResourceRequest&, const WebCore::ResourceResponse& redirectResponse);
+  virtual void didSendData(WebCore::NetscapePlugInStreamLoader*, unsigned long long bytesSent, unsigned long long totalBytesToBeSent);
+  virtual void didReceiveResponse(WebCore::NetscapePlugInStreamLoader*, const WebCore::ResourceResponse&);
+  virtual void didDownloadData(WebCore::NetscapePlugInStreamLoader* loader, int data_length);
+  virtual void didReceiveData(WebCore::NetscapePlugInStreamLoader*, const char*, int);
+  virtual void didFail(WebCore::NetscapePlugInStreamLoader*, const WebCore::ResourceError&);
+  virtual void didFinishLoading(WebCore::NetscapePlugInStreamLoader*);
 
   // Returns the number of bytes currently available for synchronous reading
   // in the loader.
@@ -106,7 +92,7 @@ class PPB_URLLoader_Impl : public ::ppapi::Resource,
   size_t FillUserBuffer();
 
   // Converts a WebURLResponse to a URLResponseInfo and saves it.
-  void SaveResponse(const WebKit::WebURLResponse& response);
+  void SaveResponse(const WebCore::ResourceResponse& response);
 
   // Calls the status_callback_ (if any) with the current upload and download
   // progress. Call this function if you update any of these values to
@@ -143,7 +129,7 @@ class PPB_URLLoader_Impl : public ::ppapi::Resource,
   // always NULL check this value before using it. In the case of a main
   // document load, you would call the functions on the document to cancel the
   // load, etc. since there is no loader.
-  scoped_ptr<WebKit::WebURLLoader> loader_;
+  WTF::RefPtr<WebCore::NetscapePlugInStreamLoader> loader_;
 
   scoped_refptr< ::ppapi::TrackedCallback> pending_callback_;
   std::deque<char> buffer_;

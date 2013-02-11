@@ -8,20 +8,18 @@
 #include "ppapi/c/pp_instance.h"
 #include "ppapi/shared_impl/url_response_info_data.h"
 
-namespace WebKit {
-class WebURLResponse;
+namespace WebCore {
+class ResourceResponse;
 }
 
 namespace webkit {
 namespace ppapi {
-
 // The returned object will have one plugin reference to the "body_as_file_ref"
 // if it's non-null. It's expected that the result of this function will be
 // passed to the plugin.
 ::ppapi::URLResponseInfoData DataFromWebURLResponse(
     PP_Instance pp_instance,
-    const WebKit::WebURLResponse& response);
-
+    const WebCore::ResourceResponse& response);
 }  // namespace ppapi
 }  // namespace webkit
 

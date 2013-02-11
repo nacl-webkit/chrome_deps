@@ -2,16 +2,19 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "content/renderer/pepper/content_renderer_pepper_host_factory.h"
 
 #include "base/logging.h"
-#include "content/renderer/pepper/pepper_audio_input_host.h"
+// FIXME #include "content/renderer/pepper/pepper_audio_input_host.h"
 #include "content/renderer/pepper/pepper_file_chooser_host.h"
-#include "content/renderer/pepper/pepper_file_io_host.h"
-#include "content/renderer/pepper/pepper_flash_clipboard_host.h"
+// FIXME #include "content/renderer/pepper/pepper_flash_clipboard_host.h"
+
 #include "content/renderer/pepper/pepper_graphics_2d_host.h"
+/* FIXME
 #include "content/renderer/pepper/pepper_video_capture_host.h"
 #include "content/renderer/pepper/pepper_websocket_host.h"
+*/
 #include "content/renderer/pepper/renderer_ppapi_host_impl.h"
 #include "ppapi/host/resource_host.h"
 #include "ppapi/proxy/ppapi_messages.h"
@@ -52,14 +55,14 @@ scoped_ptr<ResourceHost> ContentRendererPepperHostFactory::CreateResourceHost(
                                        msg_params.a /* PP_Size */,
                                        msg_params.b /* PP_Bool */));
     }
+      /* FIXME
     case PpapiHostMsg_WebSocket_Create::ID:
       return scoped_ptr<ResourceHost>(new PepperWebSocketHost(
           host_, instance, params.pp_resource()));
-    case PpapiHostMsg_FileIO_Create::ID:
-      return scoped_ptr<ResourceHost>(new PepperFileIOHost(
-          host_, instance, params.pp_resource()));
+      */
   }
 
+/* FIXME
   // Dev interfaces.
   if (GetPermissions().HasPermission(ppapi::PERMISSION_DEV)) {
     switch (message.type()) {
@@ -69,6 +72,7 @@ scoped_ptr<ResourceHost> ContentRendererPepperHostFactory::CreateResourceHost(
       case PpapiHostMsg_FileChooser_Create::ID:
         return scoped_ptr<ResourceHost>(new PepperFileChooserHost(
             host_, instance, params.pp_resource()));
+    /* FIXME
       case PpapiHostMsg_VideoCapture_Create::ID: {
         PepperVideoCaptureHost* host = new PepperVideoCaptureHost(
             host_, instance, params.pp_resource());
@@ -78,9 +82,11 @@ scoped_ptr<ResourceHost> ContentRendererPepperHostFactory::CreateResourceHost(
         }
         return scoped_ptr<ResourceHost>(host);
       }
+    */
     }
   }
 
+  /* FIXME
   // Flash interfaces.
   if (GetPermissions().HasPermission(ppapi::PERMISSION_FLASH)) {
     switch (message.type()) {
@@ -89,7 +95,7 @@ scoped_ptr<ResourceHost> ContentRendererPepperHostFactory::CreateResourceHost(
             host_, instance, params.pp_resource()));
     }
   }
-
+*/
   return scoped_ptr<ResourceHost>();
 }
 

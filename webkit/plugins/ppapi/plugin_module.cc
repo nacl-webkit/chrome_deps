@@ -117,8 +117,14 @@
 #include "webkit/plugins/ppapi/ppb_proxy_impl.h"
 #include "webkit/plugins/ppapi/ppb_scrollbar_impl.h"
 #include "webkit/plugins/ppapi/ppb_uma_private_impl.h"
+<<<<<<< HEAD
 #include "webkit/plugins/ppapi/ppb_var_deprecated_impl.h"
 #include "webkit/plugins/ppapi/ppb_video_decoder_impl.h"
+=======
+*/
+#include "webkit/plugins/ppapi/ppb_var_deprecated_impl.h"
+//FIXME #include "webkit/plugins/ppapi/ppb_video_decoder_impl.h"
+>>>>>>> 85c62b5... File chooser API implementation.
 
 using ppapi::InputEventData;
 using ppapi::PpapiGlobals;
@@ -281,6 +287,7 @@ const void* InternalGetInterface(const char* name) {
 
   #include "ppapi/thunk/interfaces_ppb_public_stable.h"
   #include "ppapi/thunk/interfaces_ppb_public_dev.h"
+/* FIXME
   #include "ppapi/thunk/interfaces_ppb_private.h"
   #include "ppapi/thunk/interfaces_ppb_private_no_permissions.h"
   #include "ppapi/thunk/interfaces_ppb_private_flash.h"
@@ -304,8 +311,10 @@ const void* InternalGetInterface(const char* name) {
     return ::ppapi::thunk::GetPPB_ImageDataTrusted_0_4_Thunk();
   if (strcmp(name, PPB_INPUT_EVENT_INTERFACE_1_0) == 0)
     return ::ppapi::thunk::GetPPB_InputEvent_1_0_Thunk();
+  */
   if (strcmp(name, PPB_INSTANCE_PRIVATE_INTERFACE_0_1) == 0)
     return ::ppapi::thunk::GetPPB_Instance_Private_0_1_Thunk();
+  /* FIXME
   if (strcmp(name, PPB_OPENGLES2_INTERFACE) == 0)
     return ::ppapi::PPB_OpenGLES2_Shared::GetInterface();
   if (strcmp(name, PPB_OPENGLES2_INSTANCEDARRAYS_INTERFACE) == 0)

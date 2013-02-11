@@ -2,49 +2,67 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "content/renderer/pepper/pepper_file_chooser_host.h"
 
 #include "base/file_path.h"
 #include "base/utf_string_conversions.h"
 #include "content/public/renderer/renderer_ppapi_host.h"
-#include "content/renderer/render_view_impl.h"
+#include "WebPage.h"
 #include "ppapi/c/pp_errors.h"
 #include "ppapi/host/dispatch_host_message.h"
 #include "ppapi/host/ppapi_host.h"
 #include "ppapi/proxy/ppapi_messages.h"
 #include "ppapi/proxy/ppb_file_ref_proxy.h"
-#include "third_party/WebKit/Source/Platform/chromium/public/WebCString.h"
-#include "third_party/WebKit/Source/Platform/chromium/public/WebString.h"
-#include "third_party/WebKit/Source/Platform/chromium/public/WebVector.h"
+#include <wtf/text/WTFString.h>
+#include "FileChooser.h"
+/* FIXME
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebFileChooserCompletion.h"
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebFileChooserParams.h"
+#include "third_party/WebKit/Source/WebKit/chromium/public/platform/WebString.h"
+#include "third_party/WebKit/Source/WebKit/chromium/public/platform/WebVector.h"
+*/
+#include "WebOpenPanelResultListener.h"
 #include "webkit/plugins/ppapi/ppb_file_ref_impl.h"
+
+using namespace WTF;
+using namespace WebCore;
+using namespace WebKit;
 
 namespace content {
 
 class PepperFileChooserHost::CompletionHandler
-    : public WebKit::WebFileChooserCompletion {
+    : public WebKit::WebOpenPanelResultListener {
  public:
-  CompletionHandler(const base::WeakPtr<PepperFileChooserHost>& host)
-      : host_(host) {
+  CompletionHandler(WebKit::WebPage* page, const base::WeakPtr<PepperFileChooserHost>& host)
+      : WebOpenPanelResultListener(page, 0)
+      , host_(host) {
   }
 
   virtual ~CompletionHandler() {}
 
-  virtual void didChooseFile(
-      const WebKit::WebVector<WebKit::WebString>& file_names) {
+  virtual void didChooseFiles(
+      const WTF::Vector<WTF::String>& file_names) OVERRIDE {
     if (host_) {
       std::vector<PepperFileChooserHost::ChosenFileInfo> files;
       for (size_t i = 0; i < file_names.size(); i++) {
         files.push_back(PepperFileChooserHost::ChosenFileInfo(
-            file_names[i].utf8(), std::string()));
+                            file_names[i].utf8().data(), std::string()));
       }
       host_->StoreChosenFiles(files);
     }
 
     // It is the responsibility of this method to delete the instance.
-    delete this;
   }
+
+  virtual void cancel() {
+    if (host_) {
+      std::vector<PepperFileChooserHost::ChosenFileInfo> files;
+      host_->StoreChosenFiles(files);
+    }
+  }
+
+  /*
   virtual void didChooseFile(
       const WebKit::WebVector<SelectedFileInfo>& file_names) {
     if (host_) {
@@ -60,7 +78,7 @@ class PepperFileChooserHost::CompletionHandler
     // It is the responsibility of this method to delete the instance.
     delete this;
   }
-
+*/
  private:
   base::WeakPtr<PepperFileChooserHost> host_;
 
@@ -121,7 +139,7 @@ void PepperFileChooserHost::StoreChosenFiles(
                     PpapiPluginMsg_FileChooser_ShowReply(chosen_files));
 
   reply_context_ = ppapi::host::ReplyMessageContext();
-  handler_ = NULL;  // Handler deletes itself.
+  handler_ = NULL;  // Handler deleted by WebPage.
 }
 
 int32_t PepperFileChooserHost::OnShow(
@@ -138,7 +156,7 @@ int32_t PepperFileChooserHost::OnShow(
        !renderer_ppapi_host_->HasUserGesture(pp_instance())) {
     return PP_ERROR_NO_USER_GESTURE;
   }
-
+  /*
   WebKit::WebFileChooserParams params;
   if (save_as) {
     params.saveAs = true;
@@ -154,12 +172,25 @@ int32_t PepperFileChooserHost::OnShow(
   }
   params.acceptTypes = mine_types;
   params.directory = false;
+  */
+  FileChooserSettings settings;
+  if (save_as) {
+      // FIXME - send save_as
+      settings.allowsMultipleFiles = false;
+      settings.selectedFiles.append(suggested_file_name.c_str());
+  } else
+      settings.allowsMultipleFiles = open_multiple;
+  WTF::Vector<WTF::String> mime_types;
+  for (size_t i = 0; i < accept_mime_types.size(); i++) {
+    mime_types.append(WTF::String(accept_mime_types[i].c_str()));
+  }
+  settings.acceptMIMETypes = mime_types;
 
-  handler_ = new CompletionHandler(AsWeakPtr());
-  RenderViewImpl* render_view = static_cast<RenderViewImpl*>(
+  RefPtr<FileChooser> fileChooser = FileChooser::create(0, settings);
+  WebPage* render_view = static_cast<WebPage*>(
       renderer_ppapi_host_->GetRenderViewForInstance(pp_instance()));
-  if (!render_view || !render_view->runFileChooser(params, handler_)) {
-    delete handler_;
+  handler_ = new CompletionHandler(render_view, AsWeakPtr());
+  if (!render_view || !render_view->runFileChooser(fileChooser.release(), adoptRef(handler_))) {
     handler_ = NULL;
     return PP_ERROR_NOACCESS;
   }

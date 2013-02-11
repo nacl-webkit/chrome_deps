@@ -14,7 +14,9 @@
 #include "base/logging.h"
 #include "base/memory/scoped_ptr.h"
 #include "base/message_loop_proxy_impl.h"
+#if !defined(BUILDING_WITH_WEBKIT)
 #include "base/message_pump_default.h"
+#endif
 #include "base/metrics/histogram.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/run_loop.h"
@@ -27,7 +29,7 @@
 #if defined(OS_MACOSX)
 #include "base/message_pump_mac.h"
 #endif
-#if defined(OS_POSIX) && !defined(OS_IOS)
+#if defined(OS_POSIX) && !defined(OS_IOS) && !defined(BUILDING_WITH_WEBKIT)
 #include "base/message_pump_libevent.h"
 #endif
 #if defined(OS_ANDROID)
@@ -136,7 +138,7 @@ MessageLoop::DestructionObserver::~DestructionObserver() {
 
 //------------------------------------------------------------------------------
 
-MessageLoop::MessageLoop(Type type)
+MessageLoop::MessageLoop(Type type, base::MessagePump* pump)
     : type_(type),
       nestable_tasks_allowed_(true),
       exception_restoration_(false),
@@ -170,13 +172,23 @@ MessageLoop::MessageLoop(Type type)
 // ipc_channel_nacl.cc uses a worker thread to do socket reads currently, and
 // doesn't require extra support for watching file descriptors.
 #define MESSAGE_PUMP_IO new base::MessagePumpDefault();
+#elif !defined(BUILDING_WITH_WEBKIT)
+#define MESSAGE_PUMP_UI NULL
+#define MESSAGE_PUMP_IO NULL
 #elif defined(OS_POSIX)  // POSIX but not MACOSX.
 #define MESSAGE_PUMP_UI new base::MessagePumpForUI()
+#if defined(BUILDING_WITH_WEBKIT)
+#define MESSAGE_PUMP_IO new base::MessagePumpForUI()
+#else
 #define MESSAGE_PUMP_IO new base::MessagePumpLibevent()
+#endif // defined(BUILDING_WITH_WEBKIT
 #else
 #error Not implemented
 #endif
-
+  if (pump) {
+      pump_ = pump;
+      return;
+  }
   if (type_ == TYPE_UI) {
     if (message_pump_for_ui_factory_)
       pump_ = message_pump_for_ui_factory_();
@@ -185,8 +197,12 @@ MessageLoop::MessageLoop(Type type)
   } else if (type_ == TYPE_IO) {
     pump_ = MESSAGE_PUMP_IO;
   } else {
+#if defined(BUILDING_WITH_WEBKIT)
+    NOTREACHED();
+#else
     DCHECK_EQ(TYPE_DEFAULT, type_);
     pump_ = new base::MessagePumpDefault();
+#endif
   }
 }
 
@@ -364,7 +380,7 @@ bool MessageLoop::NestableTasksAllowed() const {
 }
 
 bool MessageLoop::IsNested() {
-  return run_loop_->run_depth_ > 1;
+  return run_loop_ && run_loop_->run_depth_ > 1;
 }
 
 void MessageLoop::AddTaskObserver(TaskObserver* task_observer) {
@@ -434,7 +450,7 @@ void MessageLoop::RunInternal() {
 }
 
 bool MessageLoop::ProcessNextDelayedNonNestableTask() {
-  if (run_loop_->run_depth_ != 1)
+  if (run_loop_ && run_loop_->run_depth_ != 1)
     return false;
 
   if (deferred_non_nestable_work_queue_.empty())
@@ -484,7 +500,7 @@ void MessageLoop::RunTask(const PendingTask& pending_task) {
 }
 
 bool MessageLoop::DeferOrRunPendingTask(const PendingTask& pending_task) {
-  if (pending_task.nestable || run_loop_->run_depth_ == 1) {
+  if (pending_task.nestable || run_loop_ && run_loop_->run_depth_ == 1) {
     RunTask(pending_task);
     // Show that we ran a task (Note: a new one might arrive as a
     // consequence!).
@@ -713,7 +729,7 @@ bool MessageLoop::DoIdleWork() {
   if (ProcessNextDelayedNonNestableTask())
     return true;
 
-  if (run_loop_->quit_when_idle_received_)
+  if (run_loop_ && run_loop_->quit_when_idle_received_)
     pump_->Quit();
 
   return false;
@@ -754,7 +770,7 @@ void MessageLoopForUI::Attach() {
 }
 #endif
 
-#if !defined(OS_MACOSX) && !defined(OS_NACL) && !defined(OS_ANDROID)
+#if !defined(OS_MACOSX) && !defined(OS_NACL) && !defined(OS_ANDROID) && !defined(BUILDING_WITH_WEBKIT)
 void MessageLoopForUI::AddObserver(Observer* observer) {
   pump_ui()->AddObserver(observer);
 }
@@ -763,7 +779,7 @@ void MessageLoopForUI::RemoveObserver(Observer* observer) {
   pump_ui()->RemoveObserver(observer);
 }
 
-#endif  //  !defined(OS_MACOSX) && !defined(OS_NACL) && !defined(OS_ANDROID)
+#endif  //  !defined(OS_MACOSX) && !defined(OS_NACL) && !defined(OS_ANDROID) && !defined(BUILDING_WITH_WEBKIT)
 
 //------------------------------------------------------------------------------
 // MessageLoopForIO

@@ -22,6 +22,10 @@
 #include "base/tracking_info.h"
 #include "base/time.h"
 
+#if defined(BUILDING_WITH_WEBKIT)
+#include "base/message_pump_webkit.h"
+#include "base/message_pump_libevent.h"
+#else
 #if defined(OS_WIN)
 // We need this to declare base::MessagePumpWin::Dispatcher, which we should
 // really just eliminate.
@@ -39,6 +43,8 @@
 #endif
 
 #endif
+#endif // defined(BUILDING_WITH_WEBKIT)
+
 #endif
 
 namespace base {
@@ -111,7 +117,7 @@ class BASE_EXPORT MessageLoop : public base::MessagePump::Delegate {
 
   // Normally, it is not necessary to instantiate a MessageLoop.  Instead, it
   // is typical to make use of the current thread's MessageLoop instance.
-  explicit MessageLoop(Type type = TYPE_DEFAULT);
+  explicit MessageLoop(Type type = TYPE_DEFAULT, base::MessagePump* = 0);
   virtual ~MessageLoop();
 
   // Returns the MessageLoop object for the current thread, or null if none.
@@ -545,7 +551,7 @@ class BASE_EXPORT MessageLoopForUI : public MessageLoop {
   typedef base::MessagePumpForUI::MessageFilter MessageFilter;
 #endif
 
-  MessageLoopForUI() : MessageLoop(TYPE_UI) {
+  MessageLoopForUI(base::MessagePump* pump = 0) : MessageLoop(TYPE_UI, pump) {
   }
 
   // Returns the MessageLoopForUI of the current thread.

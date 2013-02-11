@@ -10,9 +10,10 @@
 
 #include "content/common/content_export.h"
 #include "ipc/ipc_message_macros.h"
+/*FIXME
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebInputEvent.h"
 #include "webkit/glue/resource_type.h"
-
+*/
 #undef IPC_MESSAGE_EXPORT
 #define IPC_MESSAGE_EXPORT CONTENT_EXPORT
 

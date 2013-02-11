@@ -16,9 +16,10 @@
 
 #include "base/memory/ref_counted.h"
 #include "content/common/content_export.h"
-#include "content/public/common/common_param_traits_macros.h"
-#include "googleurl/src/gurl.h"
+//FIXME #include "content/public/common/common_param_traits_macros.h"
+#include "gurl.h"
 #include "ipc/ipc_message_utils.h"
+/*FIXME
 #include "ui/gfx/native_widget_types.h"
 #include "ui/surface/transport_dib.h"
 
@@ -39,7 +40,7 @@ class Vector2d;
 namespace net {
 class HostPortPair;
 }
-
+*/
 namespace IPC {
 
 template <>
@@ -49,7 +50,7 @@ struct CONTENT_EXPORT ParamTraits<GURL> {
   static bool Read(const Message* m, PickleIterator* iter, param_type* p);
   static void Log(const param_type& p, std::string* l);
 };
-
+/*FIXME
 template<>
 struct CONTENT_EXPORT ParamTraits<net::HostPortPair> {
   typedef net::HostPortPair param_type;
@@ -213,7 +214,7 @@ struct CONTENT_EXPORT ParamTraits<SkBitmap> {
 
   static void Log(const param_type& p, std::string* l);
 };
-
+*/
 }  // namespace IPC
 
 #endif  // CONTENT_PUBLIC_COMMON_COMMON_PARAM_TRAITS_H_

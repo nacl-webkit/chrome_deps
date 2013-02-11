@@ -9,14 +9,15 @@
 #include <string>
 #include <vector>
 
+#include "PepperPlugin.h"
+#include "webkit/plugins/ppapi/plugin_delegate.h"
 #include "base/basictypes.h"
 #include "base/compiler_specific.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/string16.h"
-#include "cc/texture_layer_client.h"
-#include "googleurl/src/gurl.h"
+//FIXME: #include "cc/texture_layer_client.h"
 #include "ppapi/c/dev/pp_cursor_type_dev.h"
 #include "ppapi/c/dev/ppp_printing_dev.h"
 #include "ppapi/c/dev/ppp_find_dev.h"
@@ -44,6 +45,7 @@
 #include "ppapi/shared_impl/tracked_callback.h"
 #include "ppapi/thunk/ppb_gamepad_api.h"
 #include "ppapi/thunk/resource_creation_api.h"
+/* FIXME
 #include "third_party/WebKit/Source/Platform/chromium/public/WebCanvas.h"
 #include "third_party/WebKit/Source/Platform/chromium/public/WebString.h"
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebPlugin.h"
@@ -53,6 +55,10 @@
 #include "webkit/plugins/ppapi/plugin_delegate.h"
 #include "webkit/plugins/ppapi/ppp_pdf.h"
 #include "webkit/plugins/webkit_plugins_export.h"
+*/
+
+#include <WebCore/IntRect.h>
+#include <WebCore/KURL.h>
 
 struct PP_Point;
 
@@ -63,7 +69,7 @@ namespace WebKit {
 class WebInputEvent;
 class WebLayer;
 class WebMouseEvent;
-class WebPluginContainer;
+class PepperPluginContainer;
 struct WebCompositionUnderline;
 struct WebCursorInfo;
 struct WebPrintParams;
@@ -113,8 +119,8 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   // returns NULL.
   static PluginInstance* Create(PluginDelegate* delegate,
                                 PluginModule* module,
-                                WebKit::WebPluginContainer* container,
-                                const GURL& plugin_url);
+                                WebKit::PepperPluginContainer* container,
+                                const WebCore::KURL& plugin_url);
   // Delete should be called by the WebPlugin before this destructor.
   virtual ~PluginInstance();
 
@@ -122,7 +128,7 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   PluginModule* module() const { return module_.get(); }
   MessageChannel& message_channel() { return *message_channel_; }
 
-  WebKit::WebPluginContainer* container() const { return container_; }
+  WebKit::PepperPluginContainer* container() const { return container_; }
 
   void set_always_on_top(bool on_top) { always_on_top_ = on_top; }
 
@@ -142,19 +148,18 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
 
   // Paints the current backing store to the web page.
   void Paint(WebKit::WebCanvas* canvas,
-             const gfx::Rect& plugin_rect,
-             const gfx::Rect& paint_rect);
-
+             const WebCore::IntRect& plugin_rect,
+             const WebCore::IntRect& paint_rect);
   // Schedules a paint of the page for the given region. The coordinates are
   // relative to the top-left of the plugin. This does nothing if the plugin
-  // has not yet been positioned. You can supply an empty gfx::Rect() to
+  // has not yet been positioned. You can supply an empty WebCore::IntRect() to
   // invalidate the entire plugin.
-  void InvalidateRect(const gfx::Rect& rect);
+  void InvalidateRect(const WebCore::IntRect& rect);
 
   // Schedules a scroll of the plugin.  This uses optimized scrolling only for
   // full-frame plugins, as otherwise there could be other elements on top.  The
   // slow path can also be triggered if there is an overlapping frame.
-  void ScrollRect(int dx, int dy, const gfx::Rect& rect);
+  void ScrollRect(int dx, int dy, const WebCore::IntRect& rect);
 
   // If the plugin instance is backed by a texture, return its texture ID in the
   // compositor's namespace. Otherwise return 0. Returns 0 by default.
@@ -168,7 +173,7 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   void InstanceCrashed();
 
   // PPB_Instance and PPB_Instance_Private implementation.
-  const GURL& plugin_url() const { return plugin_url_; }
+  const WebCore::KURL& plugin_url() const { return plugin_url_; }
   bool full_frame() const { return full_frame_; }
   const ::ppapi::ViewData& view_data() const { return view_data_; }
 
@@ -180,8 +185,8 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   bool HandleInputEvent(const WebKit::WebInputEvent& event,
                         WebKit::WebCursorInfo* cursor_info);
   PP_Var GetInstanceObject();
-  void ViewChanged(const gfx::Rect& position, const gfx::Rect& clip,
-                   const std::vector<gfx::Rect>& cut_outs_rects);
+  void ViewChanged(const WebCore::IntRect& position, const WebCore::IntRect& clip,
+                   const std::vector<WebCore::IntRect>& cut_outs_rects);
 
   // Handlers for composition events.
   bool HandleCompositionStart(const string16& text);
@@ -194,8 +199,8 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   bool HandleTextInput(const string16& text);
 
   // Gets the current text input status.
-  ui::TextInputType text_input_type() const { return text_input_type_; }
-  gfx::Rect GetCaretBounds() const;
+//FIXME:   ui::TextInputType text_input_type() const { return text_input_type_; }
+  WebCore::IntRect GetCaretBounds() const;
   bool IsPluginAcceptingCompositionEvents() const;
   void GetSurroundingText(string16* text, ui::Range* range) const;
 
@@ -218,10 +223,10 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   // true. In this case, the location, clipping, and ID of the backing store
   // will be filled into the given output parameters.
   bool GetBitmapForOptimizedPluginPaint(
-      const gfx::Rect& paint_bounds,
+      const WebCore::IntRect& paint_bounds,
       TransportDIB** dib,
-      gfx::Rect* dib_bounds,
-      gfx::Rect* clip,
+      WebCore::IntRect* dib_bounds,
+      WebCore::IntRect* clip,
       float* scale_factor);
 
   // Tracks all live PluginObjects.
@@ -229,7 +234,7 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   void RemovePluginObject(PluginObject* plugin_object);
 
   string16 GetSelectedText(bool html);
-  string16 GetLinkAtPosition(const gfx::Point& point);
+  string16 GetLinkAtPosition(const WebCore::IntPoint& point);
   void RequestSurroundingText(size_t desired_number_of_characters);
   void Zoom(double factor, bool text_only);
   bool StartFind(const string16& search_text,
@@ -241,11 +246,11 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   bool SupportsPrintInterface();
   bool IsPrintScalingDisabled();
   int PrintBegin(const WebKit::WebPrintParams& print_params);
-  bool PrintPage(int page_number, WebKit::WebCanvas* canvas);
+//FIXME:  bool PrintPage(int page_number, WebKit::WebCanvas* canvas);
   void PrintEnd();
 
   bool CanRotateView();
-  void RotateView(WebKit::WebPlugin::RotationType type);
+  void RotateView(WebKit::PepperPlugin::RotationType type);
 
   void Graphics3DContextLost();
 
@@ -313,12 +318,12 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   int32_t Navigate(const ::ppapi::URLRequestInfoData& request,
                    const char* target,
                    bool from_user_action);
-  bool IsRectTopmost(const gfx::Rect& rect);
+  bool IsRectTopmost(const WebCore::IntRect& rect);
 
   // Implementation of PPP_Messaging.
   void HandleMessage(PP_Var message);
 
-  PluginDelegate::PlatformContext3D* CreateContext3D();
+//FIXME:  PluginDelegate::PlatformContext3D* CreateContext3D();
 
   // Returns true iff the plugin is a full-page plugin (i.e. not in an iframe
   // or embedded in a page).
@@ -455,8 +460,8 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
                               const PP_DecryptedBlockInfo* block_info) OVERRIDE;
 
   // TextureLayerClient implementation.
-  virtual unsigned prepareTexture(cc::ResourceUpdateQueue&) OVERRIDE;
-  virtual WebKit::WebGraphicsContext3D* context() OVERRIDE;
+//FIXME:  virtual unsigned prepareTexture(cc::ResourceUpdateQueue&) OVERRIDE;
+//FIXME:  virtual WebKit::WebGraphicsContext3D* context() OVERRIDE;
 
   // Reset this instance as proxied. Assigns the instance a new module, resets
   // cached interfaces to point to the out-of-process proxy and re-sends
@@ -482,8 +487,8 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
    public:
     explicit GamepadImpl(PluginDelegate* delegate);
     // Resource implementation.
-    virtual ::ppapi::thunk::PPB_Gamepad_API* AsPPB_Gamepad_API() OVERRIDE;
-    virtual void Sample(PP_GamepadsSampleData* data) OVERRIDE;
+//FIXME:    virtual ::ppapi::thunk::PPB_Gamepad_API* AsPPB_Gamepad_API() OVERRIDE;
+//FIXME:    virtual void Sample(PP_GamepadsSampleData* data) OVERRIDE;
    private:
     PluginDelegate* delegate_;
   };
@@ -495,8 +500,8 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   PluginInstance(PluginDelegate* delegate,
                  PluginModule* module,
                  ::ppapi::PPP_Instance_Combined* instance_interface,
-                 WebKit::WebPluginContainer* container,
-                 const GURL& plugin_url);
+                 WebKit::PepperPluginContainer* container,
+                 const WebCore::KURL& plugin_url);
 
   bool LoadFindInterface();
   bool LoadInputEventInterface();
@@ -531,7 +536,7 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   // best format to use. Returns false if the plugin does not support any
   // print format that we can handle (we can handle only PDF).
   bool GetPreferredPrintOutputFormat(PP_PrintOutputFormat_Dev* format);
-  bool PrintPDFOutput(PP_Resource print_output, WebKit::WebCanvas* canvas);
+//FIXME:  bool PrintPDFOutput(PP_Resource print_output, WebKit::WebCanvas* canvas);
 
   // Get the bound graphics context as a concrete 2D graphics context or returns
   // null if the context is not 2D.
@@ -546,6 +551,8 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   // It does either operation lazily.
   void UpdateLayer();
 
+/*
+//FIXME:
   // Internal helper function for PrintPage().
   bool PrintPageHelper(PP_PrintPageNumberRange_Dev* page_ranges,
                        int num_ranges,
@@ -563,7 +570,7 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
       const std::vector<WebKit::WebCompositionUnderline>& underlines,
       int selection_start,
       int selection_end);
-
+*/
   // Internal helper function for XXXInputEvents().
   void RequestInputEventsHelper(uint32_t event_classes);
 
@@ -593,12 +600,14 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   PP_Instance pp_instance_;
 
   // NULL until we have been initialized.
-  WebKit::WebPluginContainer* container_;
+  WebKit::PepperPluginContainer* container_;
+  /* FIXME
   scoped_refptr<cc::TextureLayer> texture_layer_;
   scoped_ptr<WebKit::WebLayer> web_layer_;
+  */
 
   // Plugin URL.
-  GURL plugin_url_;
+  WebCore::KURL plugin_url_;
 
   // Indicates whether this is a full frame instance, which means it represents
   // an entire document rather than an embed tag.
@@ -724,11 +733,11 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   // WebKit does not resize the plugin when going into fullscreen mode, so we do
   // this here by modifying the various plugin attributes and then restoring
   // them on exit.
-  WebKit::WebString width_before_fullscreen_;
-  WebKit::WebString height_before_fullscreen_;
-  WebKit::WebString border_before_fullscreen_;
-  WebKit::WebString style_before_fullscreen_;
-  gfx::Size screen_size_for_fullscreen_;
+  std::string width_before_fullscreen_;
+  std::string height_before_fullscreen_;
+  std::string border_before_fullscreen_;
+  std::string style_before_fullscreen_;
+  WebCore::IntSize screen_size_for_fullscreen_;
 
   // The MessageChannel used to implement bidirectional postMessage for the
   // instance.
@@ -746,9 +755,9 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   uint32_t filtered_input_event_mask_;
 
   // Text composition status.
-  ui::TextInputType text_input_type_;
-  gfx::Rect text_input_caret_;
-  gfx::Rect text_input_caret_bounds_;
+//FIXME:  ui::TextInputType text_input_type_;
+  WebCore::IntRect text_input_caret_;
+  WebCore::IntRect text_input_caret_bounds_;
   bool text_input_caret_set_;
 
   // Text selection status.
@@ -773,7 +782,7 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
 
   // The ContentDecryptorDelegate forwards PPP_ContentDecryptor_Private
   // calls and handles PPB_ContentDecryptor_Private calls.
-  scoped_ptr<ContentDecryptorDelegate> content_decryptor_delegate_;
+//FIXME:  scoped_ptr<ContentDecryptorDelegate> content_decryptor_delegate_;
 
   DISALLOW_COPY_AND_ASSIGN(PluginInstance);
 };

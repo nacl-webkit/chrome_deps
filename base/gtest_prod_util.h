@@ -5,7 +5,9 @@
 #ifndef BASE_GTEST_PROD_UTIL_H_
 #define BASE_GTEST_PROD_UTIL_H_
 
-#include "testing/gtest/include/gtest/gtest_prod.h"
+//#include "testing/gtest/include/gtest/gtest_prod.h"
+#define FRIEND_TEST(test_case_name, test_name)\
+friend class test_case_name##_##test_name##_Test
 
 // This is a wrapper for gtest's FRIEND_TEST macro that friends
 // test with all possible prefixes. This is very helpful when changing the test

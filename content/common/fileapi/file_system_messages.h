@@ -5,11 +5,12 @@
 // IPC messages for the file system.
 // Multiply-included message file, hence no include guard.
 
+#include "config.h"
 #include "base/files/file_util_proxy.h"
-#include "googleurl/src/gurl.h"
+#include "gurl.h"
 #include "ipc/ipc_message_macros.h"
 #include "ipc/ipc_platform_file.h"
-#include "webkit/fileapi/file_system_types.h"
+#include "FileSystemType.h"
 
 #define IPC_MESSAGE_START FileSystemMsgStart
 
@@ -18,8 +19,7 @@ IPC_STRUCT_TRAITS_BEGIN(base::FileUtilProxy::Entry)
   IPC_STRUCT_TRAITS_MEMBER(is_directory)
 IPC_STRUCT_TRAITS_END()
 
-IPC_ENUM_TRAITS(fileapi::FileSystemType)
-
+IPC_ENUM_TRAITS(WebCore::FileSystemType)
 // File system messages sent from the browser to the child process.
 
 // WebFrameClient::openFileSystem response messages.
@@ -56,7 +56,7 @@ IPC_MESSAGE_CONTROL2(FileSystemMsg_DidFail,
 IPC_MESSAGE_CONTROL5(FileSystemHostMsg_Open,
                      int /* request_id */,
                      GURL /* origin_url */,
-                     fileapi::FileSystemType /* type */,
+                     WebCore::FileSystemType /* type */,
                      int64 /* requested_size */,
                      bool /* create */)
 
@@ -64,7 +64,7 @@ IPC_MESSAGE_CONTROL5(FileSystemHostMsg_Open,
 IPC_MESSAGE_CONTROL3(FileSystemHostMsg_DeleteFileSystem,
                      int /* request_id */,
                      GURL /* origin_url */,
-                     fileapi::FileSystemType /* type */)
+                     WebCore::FileSystemType /* type */)
 
 // WebFileSystem::move() message.
 IPC_MESSAGE_CONTROL3(FileSystemHostMsg_Move,

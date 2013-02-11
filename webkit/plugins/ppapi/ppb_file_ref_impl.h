@@ -8,7 +8,7 @@
 #include <string>
 
 #include "base/file_path.h"
-#include "googleurl/src/gurl.h"
+#include "gurl.h"
 #include "ppapi/c/ppb_file_ref.h"
 #include "ppapi/shared_impl/ppb_file_ref_shared.h"
 #include "ppapi/shared_impl/var.h"

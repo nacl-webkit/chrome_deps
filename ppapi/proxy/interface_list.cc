@@ -54,6 +54,8 @@
 #include "ppapi/c/ppp_instance.h"
 #include "ppapi/c/private/ppb_content_decryptor_private.h"
 #include "ppapi/c/private/ppb_file_ref_private.h"
+/*
+//FIXME:
 #include "ppapi/c/private/ppb_flash_clipboard.h"
 #include "ppapi/c/private/ppb_flash_file.h"
 #include "ppapi/c/private/ppb_flash_font_file.h"
@@ -63,10 +65,11 @@
 #include "ppapi/c/private/ppb_flash_menu.h"
 #include "ppapi/c/private/ppb_flash_message_loop.h"
 #include "ppapi/c/private/ppb_flash_print.h"
+*/
 #include "ppapi/c/private/ppb_net_address_private.h"
 #include "ppapi/c/private/ppb_network_list_private.h"
 #include "ppapi/c/private/ppb_network_monitor_private.h"
-#include "ppapi/c/private/ppb_pdf.h"
+//FIXME: #include "ppapi/c/private/ppb_pdf.h"
 #include "ppapi/c/private/ppb_talk_private.h"
 #include "ppapi/c/private/ppb_tcp_socket_private.h"
 #include "ppapi/c/private/ppb_udp_socket_private.h"
@@ -85,7 +88,7 @@
 #include "ppapi/proxy/ppb_file_ref_proxy.h"
 #include "ppapi/proxy/ppb_file_system_proxy.h"
 #include "ppapi/proxy/ppb_flash_message_loop_proxy.h"
-#include "ppapi/proxy/ppb_graphics_3d_proxy.h"
+//FIXME: #include "ppapi/proxy/ppb_graphics_3d_proxy.h"
 #include "ppapi/proxy/ppb_host_resolver_private_proxy.h"
 #include "ppapi/proxy/ppb_image_data_proxy.h"
 #include "ppapi/proxy/ppb_instance_proxy.h"
@@ -101,7 +104,7 @@
 #include "ppapi/proxy/ppb_x509_certificate_private_proxy.h"
 #include "ppapi/proxy/ppp_class_proxy.h"
 #include "ppapi/proxy/ppp_content_decryptor_private_proxy.h"
-#include "ppapi/proxy/ppp_graphics_3d_proxy.h"
+//FIXME: #include "ppapi/proxy/ppp_graphics_3d_proxy.h"
 #include "ppapi/proxy/ppp_input_event_proxy.h"
 #include "ppapi/proxy/ppp_instance_private_proxy.h"
 #include "ppapi/proxy/ppp_instance_proxy.h"
@@ -157,6 +160,8 @@ base::LazyInstance<PpapiPermissions> g_process_global_permissions;
 InterfaceList::InterfaceList() {
   memset(id_to_factory_, 0, sizeof(id_to_factory_));
 
+  /*
+  FIXME:
   // Register the API factories for each of the API types. This calls AddProxy
   // for each InterfaceProxy type we support.
   #define PROXIED_API(api_name) \
@@ -274,6 +279,7 @@ InterfaceList::InterfaceList() {
   AddPPP(PPP_Instance_Private_Proxy::GetInfo());
   AddPPP(PPP_VideoDecoder_Proxy::GetInfo());
 #endif
+*/
 }
 
 InterfaceList::~InterfaceList() {

@@ -6,7 +6,7 @@
 
 #include "base/compiler_specific.h"
 #include "base/threading/simple_thread.h"
-#include "media/audio/shared_memory_util.h"
+// FIXME #include "media/audio/shared_memory_util.h"
 #include "ppapi/c/pp_errors.h"
 #include "ppapi/c/ppb_audio.h"
 #include "ppapi/c/ppb_audio_config.h"
@@ -245,6 +245,7 @@ void PPB_Audio_Proxy::OnMsgStartOrStop(const HostResource& audio_id,
 void PPB_Audio_Proxy::AudioChannelConnected(
     int32_t result,
     const HostResource& resource) {
+/* FIXME
   IPC::PlatformFileForTransit socket_handle =
       IPC::InvalidPlatformFileForTransit();
   base::SharedMemoryHandle shared_memory = IPC::InvalidPlatformFileForTransit();
@@ -274,6 +275,7 @@ void PPB_Audio_Proxy::AudioChannelConnected(
       media::TotalSharedMemorySizeInBytes(audio_buffer_length));
   dispatcher()->Send(new PpapiMsg_PPBAudio_NotifyAudioStreamCreated(
       API_ID_PPB_AUDIO, resource, result_code, fd_wrapper, handle_wrapper));
+*/
 }
 
 int32_t PPB_Audio_Proxy::GetAudioConnectedHandles(
@@ -321,6 +323,7 @@ void PPB_Audio_Proxy::OnMsgNotifyAudioStreamCreated(
     int32_t result_code,
     SerializedHandle socket_handle,
     SerializedHandle handle) {
+/* FIXME
   CHECK(socket_handle.is_socket());
   CHECK(handle.is_shmem());
   EnterPluginFromHostResource<PPB_Audio_API> enter(audio_id);
@@ -344,6 +347,7 @@ void PPB_Audio_Proxy::OnMsgNotifyAudioStreamCreated(
         IPC::PlatformFileForTransitToPlatformFile(socket_handle.descriptor()),
         config.object()->GetSampleFrameCount());
   }
+*/
 }
 
 }  // namespace proxy

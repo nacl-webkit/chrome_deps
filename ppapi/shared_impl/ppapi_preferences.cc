@@ -13,7 +13,8 @@ Preferences::Preferences()
       is_3d_supported(true),
       is_stage3d_supported(false) {
 }
-
+/*
+FIXME:
 Preferences::Preferences(const webkit_glue::WebPreferences& prefs)
     : standard_font_family_map(prefs.standard_font_family_map),
       fixed_font_family_map(prefs.fixed_font_family_map),
@@ -30,7 +31,7 @@ Preferences::Preferences(const webkit_glue::WebPreferences& prefs)
       is_webgl_supported(prefs.experimental_webgl_enabled &&
                          prefs.accelerated_compositing_for_plugins_enabled) {
 }
-
+*/
 Preferences::~Preferences() {
 }
 

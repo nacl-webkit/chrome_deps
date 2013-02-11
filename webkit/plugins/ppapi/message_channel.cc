@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "webkit/plugins/ppapi/message_channel.h"
 
 #include <cstdlib>
@@ -13,29 +14,27 @@
 #include "ppapi/shared_impl/ppapi_globals.h"
 #include "ppapi/shared_impl/var.h"
 #include "ppapi/shared_impl/var_tracker.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebBindings.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebDocument.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebDOMMessageEvent.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebElement.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebFrame.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebNode.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebPluginContainer.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebSerializedScriptValue.h"
-#include "v8/include/v8.h"
+#include "npruntime_impl.h"
+#include <WebCore/Document.h>
+#include <WebCore/Element.h>
+#include "Event.h"
+#include <WebCore/Frame.h>
+#include "MessageEvent.h"
+#include <WebCore/Node.h>
+
 #include "webkit/plugins/ppapi/host_array_buffer_var.h"
 #include "webkit/plugins/ppapi/npapi_glue.h"
 #include "webkit/plugins/ppapi/plugin_module.h"
 #include "webkit/plugins/ppapi/ppapi_plugin_instance.h"
+#include "PepperPluginContainerImpl.h"
+#include <JavaScriptCore/APICast.h>
 
 using ppapi::ArrayBufferVar;
 using ppapi::PpapiGlobals;
 using ppapi::StringVar;
-using WebKit::WebBindings;
-using WebKit::WebElement;
-using WebKit::WebDOMEvent;
-using WebKit::WebDOMMessageEvent;
-using WebKit::WebPluginContainer;
-using WebKit::WebSerializedScriptValue;
+using namespace WebCore;
+using namespace WebKit;
+using namespace JSC;
 
 namespace webkit {
 
@@ -59,9 +58,10 @@ NPObject* ToPassThroughObject(NPObject* object) {
 
 // Helper function to determine if a given identifier is equal to kPostMessage.
 bool IdentifierIsPostMessage(NPIdentifier identifier) {
-  return WebBindings::getStringIdentifier(kPostMessage) == identifier;
+  return _NPN_GetStringIdentifier(kPostMessage) == identifier;
 }
 
+/*
 // Converts the given PP_Var to a v8::Value, returning true on success.
 // False means that the given variant is invalid. In this case, |result| will
 // be set to an empty handle.
@@ -113,6 +113,62 @@ bool PPVarToV8Value(PP_Var var, v8::Handle<v8::Value>* result) {
       // These are not currently supported.
       NOTIMPLEMENTED();
       result->Clear();
+      return false;
+  }
+  return true;
+}
+*/
+bool PPVarToJSValue(PP_Var var, JSValue* result, ExecState* exec ) {
+  switch (var.type) {
+    case PP_VARTYPE_UNDEFINED:
+      *result = jsUndefined();
+      break;
+    case PP_VARTYPE_NULL:
+      *result = jsNull();
+      break;
+    case PP_VARTYPE_BOOL:
+      *result = jsBoolean(var.value.as_bool == PP_TRUE);
+      break;
+    case PP_VARTYPE_INT32:
+      *result = jsNumber(var.value.as_int);
+      break;
+    case PP_VARTYPE_DOUBLE:
+      *result = jsNumber(var.value.as_double);
+      break;
+    case PP_VARTYPE_STRING: {
+      StringVar* string = StringVar::FromPPVar(var);
+      if (!string) {
+        *result = jsUndefined();
+        return false;
+      }
+      const std::string& value = string->value();
+      // TODO(dmichael): We should consider caching the V8 string in the host-
+      // side StringVar, so that we only have to convert/copy once if a
+      // string is sent more than once.
+      *result = jsString(exec, String::fromUTF8WithLatin1Fallback(value.c_str(), value.size()));
+      break;
+    }
+    case PP_VARTYPE_ARRAY_BUFFER: {
+      ASSERT(0); // we do not support this yet
+      /* FIXME
+      ArrayBufferVar* buffer = ArrayBufferVar::FromPPVar(var);
+      if (!buffer) {
+        result->Clear();
+        return false;
+      }
+      HostArrayBufferVar* host_buffer =
+          static_cast<HostArrayBufferVar*>(buffer);
+      *result =
+          v8::Local<v8::Value>::New(host_buffer->webkit_buffer().toV8Value());
+          */
+      break;
+    }
+    case PP_VARTYPE_OBJECT:
+    case PP_VARTYPE_ARRAY:
+    case PP_VARTYPE_DICTIONARY:
+      // These are not currently supported.
+      NOTIMPLEMENTED();
+      *result = jsUndefined();
       return false;
   }
   return true;
@@ -181,7 +237,7 @@ bool MessageChannelHasMethod(NPObject* np_obj, NPIdentifier name) {
   // Other method names we will pass to the passthrough object, if we have one.
   NPObject* passthrough = ToPassThroughObject(np_obj);
   if (passthrough)
-    return WebBindings::hasMethod(NULL, passthrough, name);
+    return _NPN_HasMethod(NULL, passthrough, name);
   return false;
 }
 
@@ -206,7 +262,7 @@ bool MessageChannelInvoke(NPObject* np_obj, NPIdentifier name,
   // Other method calls we will pass to the passthrough object, if we have one.
   NPObject* passthrough = ToPassThroughObject(np_obj);
   if (passthrough) {
-    return WebBindings::invoke(NULL, passthrough, name, args, arg_count,
+    return _NPN_Invoke(NULL, passthrough, name, args, arg_count,
                                result);
   }
   return false;
@@ -222,7 +278,7 @@ bool MessageChannelInvokeDefault(NPObject* np_obj,
   // Invoke on the passthrough object, if we have one.
   NPObject* passthrough = ToPassThroughObject(np_obj);
   if (passthrough) {
-    return WebBindings::invokeDefault(NULL, passthrough, args, arg_count,
+    return _NPN_InvokeDefault(NULL, passthrough, args, arg_count,
                                       result);
   }
   return false;
@@ -235,7 +291,7 @@ bool MessageChannelHasProperty(NPObject* np_obj, NPIdentifier name) {
   // Invoke on the passthrough object, if we have one.
   NPObject* passthrough = ToPassThroughObject(np_obj);
   if (passthrough)
-    return WebBindings::hasProperty(NULL, passthrough, name);
+    return _NPN_HasProperty(NULL, passthrough, name);
   return false;
 }
 
@@ -251,7 +307,7 @@ bool MessageChannelGetProperty(NPObject* np_obj, NPIdentifier name,
   // Invoke on the passthrough object, if we have one.
   NPObject* passthrough = ToPassThroughObject(np_obj);
   if (passthrough)
-    return WebBindings::getProperty(NULL, passthrough, name, result);
+    return _NPN_GetProperty(NULL, passthrough, name, result);
   return false;
 }
 
@@ -267,7 +323,7 @@ bool MessageChannelSetProperty(NPObject* np_obj, NPIdentifier name,
   // Invoke on the passthrough object, if we have one.
   NPObject* passthrough = ToPassThroughObject(np_obj);
   if (passthrough)
-    return WebBindings::setProperty(NULL, passthrough, name, variant);
+    return _NPN_SetProperty(NULL, passthrough, name, variant);
   return false;
 }
 
@@ -280,7 +336,7 @@ bool MessageChannelEnumerate(NPObject *np_obj, NPIdentifier **value,
   // properties.
   NPObject* passthrough = ToPassThroughObject(np_obj);
   if (passthrough) {
-    bool success = WebBindings::enumerate(NULL, passthrough, value, count);
+    bool success = _NPN_Enumerate(NULL, passthrough, value, count);
     if (success) {
       // Add postMessage to the list and return it.
       if (std::numeric_limits<size_t>::max() / sizeof(NPIdentifier) <=
@@ -289,7 +345,7 @@ bool MessageChannelEnumerate(NPObject *np_obj, NPIdentifier **value,
       NPIdentifier* new_array = static_cast<NPIdentifier*>(
           std::malloc(sizeof(NPIdentifier) * (*count + 1)));
       std::memcpy(new_array, *value, sizeof(NPIdentifier)*(*count));
-      new_array[*count] = WebBindings::getStringIdentifier(kPostMessage);
+      new_array[*count] = _NPN_GetStringIdentifier(kPostMessage);
       std::free(*value);
       *value = new_array;
       ++(*count);
@@ -299,7 +355,7 @@ bool MessageChannelEnumerate(NPObject *np_obj, NPIdentifier **value,
 
   // Otherwise, build an array that includes only postMessage.
   *value = static_cast<NPIdentifier*>(malloc(sizeof(NPIdentifier)));
-  (*value)[0] = WebBindings::getStringIdentifier(kPostMessage);
+  (*value)[0] = _NPN_GetStringIdentifier(kPostMessage);
   *count = 1;
   return true;
 }
@@ -335,13 +391,14 @@ MessageChannel::MessageChannel(PluginInstance* instance)
       early_message_queue_state_(QUEUE_MESSAGES) {
   // Now create an NPObject for receiving calls to postMessage. This sets the
   // reference count to 1.  We release it in the destructor.
-  NPObject* obj = WebBindings::createObject(NULL, &message_channel_class);
+  NPObject* obj = _NPN_CreateObject(NULL, &message_channel_class);
   DCHECK(obj);
   np_object_ = static_cast<MessageChannel::MessageChannelNPObject*>(obj);
   np_object_->message_channel = weak_ptr_factory_.GetWeakPtr();
 }
 
 void MessageChannel::PostMessageToJavaScript(PP_Var message_data) {
+/*
   // Serialize the message data.
   v8::HandleScope scope;
   // Because V8 is probably not on the stack for Native->JS calls, we need to
@@ -359,6 +416,15 @@ void MessageChannel::PostMessageToJavaScript(PP_Var message_data) {
 
   WebSerializedScriptValue serialized_val =
       WebSerializedScriptValue::serialize(v8_val);
+*/
+    JSValue val;
+    JSC::ExecState* exec = static_cast<PepperPluginContainerImpl*>(instance_->container())->execState();
+    if (!PPVarToJSValue(message_data, &val, exec)) {
+        NOTREACHED();
+        return;
+    }
+    RefPtr<SerializedScriptValue> serialized_val =
+        SerializedScriptValue::create(exec, val, 0, 0);
 
   if (instance_->module()->IsProxied()) {
     if (early_message_queue_state_ != SEND_DIRECTLY) {
@@ -414,25 +480,31 @@ void MessageChannel::DrainEarlyMessageQueue() {
 }
 
 void MessageChannel::PostMessageToJavaScriptImpl(
-    const WebSerializedScriptValue& message_data) {
+    RefPtr<SerializedScriptValue> message_data) {
   DCHECK(instance_);
 
-  WebPluginContainer* container = instance_->container();
+  PepperPluginContainer* container = instance_->container();
   // It's possible that container() is NULL if the plugin has been removed from
   // the DOM (but the PluginInstance is not destroyed yet).
   if (!container)
     return;
 
-  WebDOMEvent event =
-      container->element().document().createEvent("MessageEvent");
-  WebDOMMessageEvent msg_event = event.to<WebDOMMessageEvent>();
-  msg_event.initMessageEvent("message",  // type
+  ExceptionCode ec;
+  RefPtr<Event> event =
+      container->element()->document()->createEvent("MessageEvent", ec);
+  MessageEvent* msg_event = static_cast<MessageEvent*>(event.get());
+
+  AtomicString messageStr("message");
+  WTF::String emptyStr;
+  OwnPtr<MessagePortArray> ports;
+  msg_event->initMessageEvent(messageStr,  // type
                              false,  // canBubble
                              false,  // cancelable
                              message_data,  // data
-                             "",  // origin [*]
-                             NULL,  // source [*]
-                             "");  // lastEventId
+                             emptyStr,  // origin [*]
+                             emptyStr,  // lastEventId
+                             static_cast<DOMWindow*>(0),  // source [*]
+                             ports.release());
   // [*] Note that the |origin| is only specified for cross-document and server-
   //     sent messages, while |source| is only specified for cross-document
   //     messages:
@@ -442,7 +514,7 @@ void MessageChannel::PostMessageToJavaScriptImpl(
   //     TODO(dmichael):  Add origin if we change to a more iframe-like origin
   //                      policy (see crbug.com/81537)
 
-  container->element().dispatchEvent(msg_event);
+  container->element()->dispatchEvent(msg_event);
 }
 
 void MessageChannel::PostMessageToNative(PP_Var message_data) {
@@ -467,23 +539,23 @@ void MessageChannel::PostMessageToNativeImpl(PP_Var message_data) {
 }
 
 MessageChannel::~MessageChannel() {
-  WebBindings::releaseObject(np_object_);
+  _NPN_ReleaseObject(np_object_);
   if (passthrough_object_)
-    WebBindings::releaseObject(passthrough_object_);
+    _NPN_ReleaseObject(passthrough_object_);
 }
 
 void MessageChannel::SetPassthroughObject(NPObject* passthrough) {
   // Retain the passthrough object; We need to ensure it lives as long as this
   // MessageChannel.
   if (passthrough)
-    WebBindings::retainObject(passthrough);
+    _NPN_RetainObject(passthrough);
 
   // If we had a passthrough set already, release it. Note that we retain the
   // incoming passthrough object first, so that we behave correctly if anyone
   // invokes:
   //   SetPassthroughObject(passthrough_object());
   if (passthrough_object_)
-    WebBindings::releaseObject(passthrough_object_);
+    _NPN_ReleaseObject(passthrough_object_);
 
   passthrough_object_ = passthrough;
 }

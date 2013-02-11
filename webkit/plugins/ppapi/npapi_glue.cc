@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "webkit/plugins/ppapi/npapi_glue.h"
 
 #include "base/logging.h"
@@ -14,16 +15,18 @@
 #include "webkit/plugins/ppapi/plugin_module.h"
 #include "webkit/plugins/ppapi/plugin_object.h"
 #include "webkit/plugins/ppapi/ppapi_plugin_instance.h"
+#include "npruntime_impl.h"
+/*
+FIXME
 #include "third_party/npapi/bindings/npapi.h"
 #include "third_party/npapi/bindings/npruntime.h"
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebBindings.h"
-
+*/
 using ppapi::NPObjectVar;
 using ppapi::PpapiGlobals;
 using ppapi::StringVar;
 using ppapi::Var;
-using WebKit::WebArrayBuffer;
-using WebKit::WebBindings;
+using webkit::WebArrayBuffer;
 
 namespace webkit {
 namespace ppapi {
@@ -71,7 +74,7 @@ bool PPVarToNPVariant(PP_Var var, NPVariant* result) {
         VOID_TO_NPVARIANT(*result);
         return false;
       }
-      OBJECT_TO_NPVARIANT(WebBindings::retainObject(object->np_object()),
+      OBJECT_TO_NPVARIANT(_NPN_RetainObject(object->np_object()),
                           *result);
       break;
     }
@@ -117,10 +120,10 @@ NPIdentifier PPVarToNPIdentifier(PP_Var var) {
       StringVar* string = StringVar::FromPPVar(var);
       if (!string)
         return NULL;
-      return WebBindings::getStringIdentifier(string->value().c_str());
+      return _NPN_GetStringIdentifier(string->value().c_str());
     }
     case PP_VARTYPE_INT32:
-      return WebBindings::getIntIdentifier(var.value.as_int);
+      return _NPN_GetIntIdentifier(var.value.as_int);
     default:
       return NULL;
   }
@@ -130,7 +133,7 @@ PP_Var NPIdentifierToPPVar(NPIdentifier id) {
   const NPUTF8* string_value = NULL;
   int32_t int_value = 0;
   bool is_string = false;
-  WebBindings::extractIdentifierData(id, string_value, int_value, is_string);
+  //FIXME: WebBindings::extractIdentifierData(id, string_value, int_value, is_string);
   if (is_string)
     return StringVar::StringToPPVar(string_value);
 
@@ -143,11 +146,14 @@ PP_Var NPObjectToPPVar(PluginInstance* instance, NPObject* object) {
   // TODO(dmichael): Should I protect against duplicate Vars representing the
   // same array buffer? It's probably not worth the trouble, since it will only
   // affect in-process plugins.
+  /*
+  FIXME:
   if (WebBindings::getArrayBuffer(object, &buffer)) {
     scoped_refptr<HostArrayBufferVar> buffer_var(
         new HostArrayBufferVar(buffer));
     return buffer_var->GetPPVar();
   }
+  */
   scoped_refptr<NPObjectVar> object_var(
       HostGlobals::Get()->host_var_tracker()->NPObjectVarForNPObject(
           instance->pp_instance(), object));
@@ -191,7 +197,7 @@ bool PPResultAndExceptionToNPResult::SetResult(PP_Var result) {
     ThrowException();
     success_ = false;
   } else if (!PPVarToNPVariant(result, np_result_)) {
-    WebBindings::setException(object_var_, kInvalidPluginValue);
+    _NPN_SetException(object_var_, kInvalidPluginValue);
     success_ = false;
   } else {
     success_ = true;
@@ -234,7 +240,7 @@ void PPResultAndExceptionToNPResult::IgnoreException() {
 void PPResultAndExceptionToNPResult::ThrowException() {
   StringVar* string = StringVar::FromPPVar(exception_);
   if (string)
-    WebBindings::setException(object_var_, string->value().c_str());
+    _NPN_SetException(object_var_, string->value().c_str());
 }
 
 // PPVarArrayFromNPVariantArray ------------------------------------------------
@@ -291,11 +297,11 @@ NPObjectAccessorWithIdentifier::~NPObjectAccessorWithIdentifier() {
 TryCatch::TryCatch(PP_Var* exception)
     : has_exception_(exception && exception->type != PP_VARTYPE_UNDEFINED),
       exception_(exception) {
-  WebBindings::pushExceptionHandler(&TryCatch::Catch, this);
+  //FIXME: WebBindings::pushExceptionHandler(&TryCatch::Catch, this);
 }
 
 TryCatch::~TryCatch() {
-  WebBindings::popExceptionHandler();
+ //FIXME: WebBindings::popExceptionHandler();
 }
 
 void TryCatch::SetException(const char* message) {

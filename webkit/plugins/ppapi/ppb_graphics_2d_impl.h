@@ -14,12 +14,11 @@
 #include "ppapi/shared_impl/resource.h"
 #include "ppapi/shared_impl/tracked_callback.h"
 #include "ppapi/thunk/ppb_graphics_2d_api.h"
-#include "third_party/WebKit/Source/Platform/chromium/public/WebCanvas.h"
-#include "webkit/plugins/webkit_plugins_export.h"
+#include "WebCanvas.h"
 
-namespace gfx {
-class Point;
-class Rect;
+namespace WebCore {
+class IntPoint;
+class IntRect;
 }
 
 namespace content {
@@ -72,8 +71,8 @@ class WEBKIT_PLUGINS_EXPORT PPB_Graphics2D_Impl :
 
   // Paints the current backing store to the web page.
   void Paint(WebKit::WebCanvas* canvas,
-             const gfx::Rect& plugin_rect,
-             const gfx::Rect& paint_rect);
+             const WebCore::IntRect& plugin_rect,
+             const WebCore::IntRect& paint_rect);
 
   // Notifications about the view's progress painting.  See PluginInstance.
   // These messages are used to send Flush callbacks to the plugin.
@@ -90,8 +89,8 @@ class WEBKIT_PLUGINS_EXPORT PPB_Graphics2D_Impl :
   // scaling either |op_rect| or |delta| would require scrolling to fall back to
   // invalidation due to rounding errors, true otherwise.
   static bool ConvertToLogicalPixels(float scale,
-                                     gfx::Rect* op_rect,
-                                     gfx::Point* delta);
+                                     WebCore::IntRect* op_rect,
+                                     WebCore::IntPoint* delta);
 
  private:
   explicit PPB_Graphics2D_Impl(PP_Instance instance);
@@ -144,12 +143,12 @@ class WEBKIT_PLUGINS_EXPORT PPB_Graphics2D_Impl :
   // this rect can be untouched.
   void ExecutePaintImageData(PPB_ImageData_Impl* image,
                              int x, int y,
-                             const gfx::Rect& src_rect,
-                             gfx::Rect* invalidated_rect);
-  void ExecuteScroll(const gfx::Rect& clip, int dx, int dy,
-                     gfx::Rect* invalidated_rect);
+                             const WebCore::IntRect& src_rect,
+                             WebCore::IntRect* invalidated_rect);
+  void ExecuteScroll(const WebCore::IntRect& clip, int dx, int dy,
+                     WebCore::IntRect* invalidated_rect);
   void ExecuteReplaceContents(PPB_ImageData_Impl* image,
-                              gfx::Rect* invalidated_rect,
+                              WebCore::IntRect* invalidated_rect,
                               PP_Resource* old_image_data);
 
   // Schedules the offscreen callback to be fired at a future time. This

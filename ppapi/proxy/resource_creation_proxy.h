@@ -105,6 +105,7 @@ class ResourceCreationProxy : public InterfaceProxy,
   virtual PP_Resource CreateGraphics2D(PP_Instance pp_instance,
                                        const PP_Size& size,
                                        PP_Bool is_always_opaque) OVERRIDE;
+  /* FIXME
   virtual PP_Resource CreateGraphics3D(PP_Instance instance,
                                        PP_Resource share_context,
                                        const int32_t* attrib_list) OVERRIDE;
@@ -112,6 +113,7 @@ class ResourceCreationProxy : public InterfaceProxy,
       PP_Instance instance,
       PP_Resource share_context,
       const int32_t* attrib_list) OVERRIDE;
+  */
   virtual PP_Resource CreateHostResolverPrivate(PP_Instance instance) OVERRIDE;
   virtual PP_Resource CreateImageData(PP_Instance instance,
                                       PP_ImageDataFormat format,
@@ -121,6 +123,7 @@ class ResourceCreationProxy : public InterfaceProxy,
                                           PP_ImageDataFormat format,
                                           const PP_Size& size,
                                           PP_Bool init_to_zero) OVERRIDE;
+  /* FIXME
   virtual PP_Resource CreateNetworkMonitor(
       PP_Instance instance,
       PPB_NetworkMonitor_Callback callback,
@@ -130,12 +133,16 @@ class ResourceCreationProxy : public InterfaceProxy,
       PP_Instance instance) OVERRIDE;
   virtual PP_Resource CreateTCPSocketPrivate(PP_Instance instance) OVERRIDE;
   virtual PP_Resource CreateUDPSocketPrivate(PP_Instance instance) OVERRIDE;
+  */
   virtual PP_Resource CreateWebSocket(PP_Instance instance) OVERRIDE;
+  /* FIXME
   virtual PP_Resource CreateX509CertificatePrivate(
       PP_Instance instance) OVERRIDE;
 #if !defined(OS_NACL)
+*/
   virtual PP_Resource CreateAudioInput(PP_Instance instance) OVERRIDE;
   virtual PP_Resource CreateBroker(PP_Instance instance) OVERRIDE;
+/* FIXME
   virtual PP_Resource CreateBrowserFont(
       PP_Instance instance,
       const PP_BrowserFont_Trusted_Description* description) OVERRIDE;
@@ -159,7 +166,7 @@ class ResourceCreationProxy : public InterfaceProxy,
       PP_Resource context3d_id,
       PP_VideoDecoder_Profile profile) OVERRIDE;
 #endif  // !defined(OS_NACL)
-
+*/
   virtual bool Send(IPC::Message* msg) OVERRIDE;
   virtual bool OnMessageReceived(const IPC::Message& msg) OVERRIDE;
 

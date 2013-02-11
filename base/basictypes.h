@@ -323,7 +323,8 @@ inline Dest bit_cast(const Source& source) {
 template<typename T>
 inline void ignore_result(const T&) {
 }
-
+/*
+FIXME:
 // The following enum should be used only as a constructor argument to indicate
 // that the variable has static storage class, and that the constructor should
 // do nothing to its state.  It indicates to the reader that it is legal to
@@ -347,5 +348,5 @@ enum LinkerInitialized { LINKER_INITIALIZED };
   static type& name = *new type arguments
 
 }  // base
-
+*/
 #endif  // BASE_BASICTYPES_H_

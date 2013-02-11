@@ -26,6 +26,7 @@
 #include "webkit/plugins/ppapi/ppb_file_ref_impl.h"
 #include "webkit/plugins/ppapi/ppb_file_system_impl.h"
 #include "webkit/plugins/ppapi/resource_helper.h"
+#include <WebCore/Frame.h>
 #include <WebCore/ResourceRequest.h>
 
 using ppapi::URLRequestInfoData;

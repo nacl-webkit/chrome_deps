@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "webkit/plugins/ppapi/ppb_image_data_impl.h"
 
 #include <algorithm>
@@ -9,16 +10,17 @@
 
 #include "base/logging.h"
 #include "base/memory/scoped_ptr.h"
-#include "skia/ext/platform_canvas.h"
+//FIXME: #include "skia/ext/platform_canvas.h"
 #include "ppapi/c/pp_instance.h"
 #include "ppapi/c/pp_resource.h"
 #include "ppapi/c/ppb_image_data.h"
 #include "ppapi/c/trusted/ppb_image_data_trusted.h"
 #include "ppapi/thunk/thunk.h"
-#include "third_party/skia/include/core/SkColorPriv.h"
+//FIXME: #include "third_party/skia/include/core/SkColorPriv.h"
 #include "webkit/plugins/ppapi/common.h"
 #include "webkit/plugins/ppapi/ppapi_plugin_instance.h"
 #include "webkit/plugins/ppapi/resource_helper.h"
+#include "WebCanvas.h"
 
 using ::ppapi::thunk::PPB_ImageData_API;
 
@@ -120,7 +122,7 @@ int32_t PPB_ImageData_Impl::GetSharedMemory(int* handle, uint32_t* byte_count) {
   return backend_->GetSharedMemory(handle, byte_count);
 }
 
-skia::PlatformCanvas* PPB_ImageData_Impl::GetPlatformCanvas() {
+SkCanvas* PPB_ImageData_Impl::GetPlatformCanvas() {
   return backend_->GetPlatformCanvas();
 }
 
@@ -195,7 +197,7 @@ int32_t ImageDataPlatformBackend::GetSharedMemory(int* handle,
   return PP_OK;
 }
 
-skia::PlatformCanvas* ImageDataPlatformBackend::GetPlatformCanvas() {
+SkCanvas* ImageDataPlatformBackend::GetPlatformCanvas() {
   return mapped_canvas_.get();
 }
 
@@ -271,7 +273,7 @@ int32_t ImageDataNaClBackend::GetSharedMemory(int* handle,
   return PP_OK;
 }
 
-skia::PlatformCanvas* ImageDataNaClBackend::GetPlatformCanvas() {
+SkCanvas* ImageDataNaClBackend::GetPlatformCanvas() {
   return NULL;
 }
 

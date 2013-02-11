@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "webkit/plugins/ppapi/ppb_graphics_2d_impl.h"
 
 #include <iterator>
@@ -11,27 +12,32 @@
 #include "base/logging.h"
 #include "base/message_loop.h"
 #include "base/time.h"
-#include "skia/ext/platform_canvas.h"
+//FIXME #include "skia/ext/platform_canvas.h"
 #include "ppapi/c/pp_errors.h"
 #include "ppapi/c/pp_rect.h"
 #include "ppapi/c/pp_resource.h"
 #include "ppapi/c/ppb_graphics_2d.h"
 #include "ppapi/thunk/enter.h"
 #include "ppapi/thunk/thunk.h"
+/* FIXME:
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/gfx/blit.h"
 #include "ui/gfx/point.h"
 #include "ui/gfx/point_conversions.h"
 #include "ui/gfx/rect.h"
 #include "ui/gfx/rect_conversions.h"
-#include "ui/gfx/size_conversions.h"
-#include "ui/gfx/scoped_ns_graphics_context_save_gstate_mac.h"
-#include "ui/gfx/skia_util.h"
-#include "webkit/plugins/ppapi/common.h"
-#include "webkit/plugins/ppapi/gfx_conversion.h"
+*/
+#include "FloatRect.h"
+#include "IntRect.h"
+#include "gfx_conversion.h"
 #include "webkit/plugins/ppapi/ppapi_plugin_instance.h"
 #include "webkit/plugins/ppapi/ppb_image_data_impl.h"
 #include "webkit/plugins/ppapi/resource_helper.h"
+#include "WebCanvas.h"
+#include "skia_util.h"
+#include "point_conversions.h"
+#include "rect_conversions.h"
+#include "size_conversions.h"
 
 #if defined(OS_MACOSX)
 #include "base/mac/mac_util.h"
@@ -54,10 +60,10 @@ const int64 kOffscreenCallbackDelayMs = 1000 / 30;  // 30 fps
 // the image, this will do nothing and return false.
 bool ValidateAndConvertRect(const PP_Rect* rect,
                             int image_width, int image_height,
-                            gfx::Rect* dest) {
+                            WebCore::IntRect* dest) {
   if (!rect) {
     // Use the entire image area.
-    *dest = gfx::Rect(0, 0, image_width, image_height);
+    *dest = WebCore::IntRect(0, 0, image_width, image_height);
   } else {
     // Validate the passed-in area.
     if (rect->point.x < 0 || rect->point.y < 0 ||
@@ -74,7 +80,7 @@ bool ValidateAndConvertRect(const PP_Rect* rect,
         static_cast<int64>(image_height))
       return false;
 
-    *dest = gfx::Rect(rect->point.x, rect->point.y,
+    *dest = WebCore::IntRect(rect->point.x, rect->point.y,
                       rect->size.width, rect->size.height);
   }
   return true;
@@ -152,10 +158,10 @@ struct PPB_Graphics2D_Impl::QueuedOperation {
   // Valid when type == PAINT.
   scoped_refptr<PPB_ImageData_Impl> paint_image;
   int paint_x, paint_y;
-  gfx::Rect paint_src_rect;
+  WebCore::IntRect paint_src_rect;
 
   // Valid when type == SCROLL.
-  gfx::Rect scroll_clip_rect;
+  WebCore::IntRect scroll_clip_rect;
   int scroll_dx, scroll_dy;
 
   // Valid when type == REPLACE.
@@ -251,11 +257,11 @@ void PPB_Graphics2D_Impl::PaintImageData(PP_Resource image_data,
   int64 x64 = static_cast<int64>(top_left->x);
   int64 y64 = static_cast<int64>(top_left->y);
   if (x64 + static_cast<int64>(operation.paint_src_rect.x()) < 0 ||
-      x64 + static_cast<int64>(operation.paint_src_rect.right()) >
+      x64 + static_cast<int64>(operation.paint_src_rect.x() + operation.paint_src_rect.width()) >
       image_data_->width())
     return;
   if (y64 + static_cast<int64>(operation.paint_src_rect.y()) < 0 ||
-      y64 + static_cast<int64>(operation.paint_src_rect.bottom()) >
+      y64 + static_cast<int64>(operation.paint_src_rect.y() + operation.paint_src_rect.height()) >
       image_data_->height())
     return;
   operation.paint_x = top_left->x;
@@ -329,7 +335,7 @@ int32_t PPB_Graphics2D_Impl::Flush(scoped_refptr<TrackedCallback> callback,
   bool is_plugin_visible = true;
   for (size_t i = 0; i < queued_operations_.size(); i++) {
     QueuedOperation& operation = queued_operations_[i];
-    gfx::Rect op_rect;
+    WebCore::IntRect op_rect;
     switch (operation.type) {
       case QueuedOperation::PAINT:
         ExecutePaintImageData(operation.paint_image,
@@ -359,8 +365,8 @@ int32_t PPB_Graphics2D_Impl::Flush(scoped_refptr<TrackedCallback> callback,
     // do nothing and we won't get any ViewWillInitiatePaint/ViewFlushedPaint
     // calls, leaving our callback stranded. So we still need to check whether
     // the repainted area is visible to determine how to deal with the callback.
-    if (bound_instance_ && !op_rect.IsEmpty()) {
-      gfx::Point scroll_delta(operation.scroll_dx, operation.scroll_dy);
+    if (bound_instance_ && !op_rect.isEmpty()) {
+      WebCore::IntPoint scroll_delta(operation.scroll_dx, operation.scroll_dy);
       if (!ConvertToLogicalPixels(scale_,
                                   &op_rect,
                                   operation.type == QueuedOperation::SCROLL ?
@@ -369,13 +375,13 @@ int32_t PPB_Graphics2D_Impl::Flush(scoped_refptr<TrackedCallback> callback,
         operation.type = QueuedOperation::PAINT;
       }
 
-      gfx::Rect clip = PP_ToGfxRect(bound_instance_->view_data().clip_rect);
-      is_plugin_visible = !clip.IsEmpty();
+      WebCore::IntRect clip = PP_ToGfxRect(bound_instance_->view_data().clip_rect);
+      is_plugin_visible = !clip.isEmpty();
 
       // Set |no_update_visible| to false if the change overlaps the visible
       // area.
-      gfx::Rect visible_changed_rect = gfx::IntersectRects(clip, op_rect);
-      if (!visible_changed_rect.IsEmpty())
+      WebCore::IntRect visible_changed_rect = WebCore::intersection(clip, op_rect);
+      if (!visible_changed_rect.isEmpty())
         no_update_visible = false;
 
       // Notify the plugin of the entire change (op_rect), even if it is
@@ -491,7 +497,7 @@ bool PPB_Graphics2D_Impl::BindToInstance(PluginInstance* new_instance) {
     }
   } else {
     // Devices being replaced, redraw the plugin.
-    new_instance->InvalidateRect(gfx::Rect());
+    new_instance->InvalidateRect(WebCore::IntRect());
   }
 
   bound_instance_ = new_instance;
@@ -502,8 +508,8 @@ bool PPB_Graphics2D_Impl::BindToInstance(PluginInstance* new_instance) {
 // outside the plugin area. This can happen if the plugin has been resized since
 // PaintImageData verified the image is within the plugin size.
 void PPB_Graphics2D_Impl::Paint(WebKit::WebCanvas* canvas,
-                                const gfx::Rect& plugin_rect,
-                                const gfx::Rect& paint_rect) {
+                                const WebCore::IntRect& plugin_rect,
+                                const WebCore::IntRect& paint_rect) {
   TRACE_EVENT0("pepper", "PPB_Graphics2D_Impl::Paint");
   ImageDataAutoMapper auto_mapper(image_data_);
   const SkBitmap& backing_bitmap = *image_data_->GetMappedBitmap();
@@ -558,12 +564,12 @@ void PPB_Graphics2D_Impl::Paint(WebKit::WebCanvas* canvas,
 
   CGContextDrawImage(canvas, bitmap_rect, image);
 #else
-  gfx::Rect invalidate_rect = gfx::IntersectRects(plugin_rect, paint_rect);
+  WebCore::IntRect invalidate_rect = WebCore::intersection(plugin_rect, paint_rect);
   SkRect sk_invalidate_rect = gfx::RectToSkRect(invalidate_rect);
   SkAutoCanvasRestore auto_restore(canvas, true);
   canvas->clipRect(sk_invalidate_rect);
-  gfx::Size pixel_image_size(image_data_->width(), image_data_->height());
-  gfx::Size image_size = gfx::ToFlooredSize(
+  WebCore::IntSize pixel_image_size(image_data_->width(), image_data_->height());
+  WebCore::IntSize image_size = gfx::ToFlooredSize(
       gfx::ScaleSize(pixel_image_size, scale_));
 
   PluginInstance* plugin_instance = ResourceHelper::GetPluginInstance(this);
@@ -578,7 +584,7 @@ void PPB_Graphics2D_Impl::Paint(WebKit::WebCanvas* canvas,
     // the page background to show through.
     SkAutoCanvasRestore auto_restore(canvas, true);
     SkRect image_data_rect =
-        gfx::RectToSkRect(gfx::Rect(plugin_rect.origin(), image_size));
+        gfx::RectToSkRect(WebCore::IntRect(plugin_rect.location(), image_size));
     canvas->clipRect(image_data_rect, SkRegion::kDifference_Op);
 
     SkPaint paint;
@@ -637,26 +643,26 @@ void PPB_Graphics2D_Impl::ViewFlushedPaint() {
 
 // static
 bool PPB_Graphics2D_Impl::ConvertToLogicalPixels(float scale,
-                                                 gfx::Rect* op_rect,
-                                                 gfx::Point* delta) {
+                                                 WebCore::IntRect* op_rect,
+                                                 WebCore::IntPoint* delta) {
   if (scale == 1.0f || scale <= 0.0f)
     return true;
 
-  gfx::Rect original_rect = *op_rect;
+  WebCore::IntRect original_rect = *op_rect;
   // Take the enclosing rectangle after scaling so a rectangle scaled down then
   // scaled back up by the inverse scale would fully contain the entire area
   // affected by the original rectangle.
   *op_rect = gfx::ToEnclosingRect(gfx::ScaleRect(*op_rect, scale));
   if (delta) {
-    gfx::Point original_delta = *delta;
+    WebCore::IntPoint original_delta = *delta;
     float inverse_scale = 1.0f / scale;
     *delta = gfx::ToFlooredPoint(gfx::ScalePoint(*delta, scale));
 
-    gfx::Rect inverse_scaled_rect =
+    WebCore::IntRect inverse_scaled_rect =
         gfx::ToEnclosingRect(gfx::ScaleRect(*op_rect, inverse_scale));
     if (original_rect != inverse_scaled_rect)
       return false;
-    gfx::Point inverse_scaled_point =
+    WebCore::IntPoint inverse_scaled_point =
         gfx::ToFlooredPoint(gfx::ScalePoint(*delta, inverse_scale));
     if (original_delta != inverse_scaled_point)
       return false;
@@ -667,8 +673,8 @@ bool PPB_Graphics2D_Impl::ConvertToLogicalPixels(float scale,
 
 void PPB_Graphics2D_Impl::ExecutePaintImageData(PPB_ImageData_Impl* image,
                                                 int x, int y,
-                                                const gfx::Rect& src_rect,
-                                                gfx::Rect* invalidated_rect) {
+                                                const WebCore::IntRect& src_rect,
+                                                WebCore::IntRect* invalidated_rect) {
   // Ensure the source image is mapped to read from it.
   ImageDataAutoMapper auto_mapper(image);
   if (!auto_mapper.is_valid())
@@ -676,15 +682,15 @@ void PPB_Graphics2D_Impl::ExecutePaintImageData(PPB_ImageData_Impl* image,
 
   // Portion within the source image to cut out.
   SkIRect src_irect = { src_rect.x(), src_rect.y(),
-                        src_rect.right(), src_rect.bottom() };
+                        src_rect.x() + src_rect.width(), src_rect.y() + src_rect.height() };
 
   // Location within the backing store to copy to.
   *invalidated_rect = src_rect;
-  invalidated_rect->Offset(x, y);
+  invalidated_rect->move(x, y);
   SkRect dest_rect = { SkIntToScalar(invalidated_rect->x()),
                        SkIntToScalar(invalidated_rect->y()),
-                       SkIntToScalar(invalidated_rect->right()),
-                       SkIntToScalar(invalidated_rect->bottom()) };
+                       SkIntToScalar(invalidated_rect->x() + invalidated_rect->width()),
+                       SkIntToScalar(invalidated_rect->y() + invalidated_rect->height()) };
 
   if (image->format() != image_data_->format()) {
     // Convert the image data if the format does not match.
@@ -701,15 +707,15 @@ void PPB_Graphics2D_Impl::ExecutePaintImageData(PPB_ImageData_Impl* image,
   }
 }
 
-void PPB_Graphics2D_Impl::ExecuteScroll(const gfx::Rect& clip,
+void PPB_Graphics2D_Impl::ExecuteScroll(const WebCore::IntRect& clip,
                                         int dx, int dy,
-                                        gfx::Rect* invalidated_rect) {
-  gfx::ScrollCanvas(image_data_->GetCanvas(), clip, gfx::Vector2d(dx, dy));
+                                        WebCore::IntRect* invalidated_rect) {
+  gfx::ScrollCanvas(image_data_->GetCanvas(), clip, WebCore::IntPoint(dx, dy));
   *invalidated_rect = clip;
 }
 
 void PPB_Graphics2D_Impl::ExecuteReplaceContents(PPB_ImageData_Impl* image,
-                                                 gfx::Rect* invalidated_rect,
+                                                 WebCore::IntRect* invalidated_rect,
                                                  PP_Resource* old_image_data) {
   if (image->format() != image_data_->format()) {
     DCHECK(image->width() == image_data_->width() &&
@@ -731,7 +737,7 @@ void PPB_Graphics2D_Impl::ExecuteReplaceContents(PPB_ImageData_Impl* image,
       *old_image_data = image_data_->GetReference();
     image_data_ = image;
   }
-  *invalidated_rect = gfx::Rect(0, 0,
+  *invalidated_rect = WebCore::IntRect(0, 0,
                                 image_data_->width(), image_data_->height());
 }
 

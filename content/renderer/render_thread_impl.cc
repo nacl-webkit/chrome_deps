@@ -9,14 +9,16 @@
 #include <map>
 #include <vector>
 
-#include "base/allocator/allocator_extension.h"
+//FIXME #include "base/allocator/allocator_extension.h"
 #include "base/command_line.h"
-#include "base/debug/trace_event.h"
+//FIXME #include "base/debug/trace_event.h"
 #include "base/lazy_instance.h"
 #include "base/logging.h"
+/*FIXME
 #include "base/metrics/field_trial.h"
 #include "base/metrics/histogram.h"
 #include "base/metrics/stats_table.h"
+*/
 #include "base/path_service.h"
 #include "base/shared_memory.h"
 #include "base/string16.h"
@@ -24,9 +26,10 @@
 #include "base/threading/thread_local.h"
 #include "base/utf_string_conversions.h"
 #include "base/values.h"
-#include "content/common/appcache/appcache_dispatcher.h"
-#include "content/common/child_histogram_message_filter.h"
+//FIXME #include "content/common/appcache/appcache_dispatcher.h"
+//FIXME #include "content/common/child_histogram_message_filter.h"
 #include "content/common/child_process_messages.h"
+/* FIXME
 #include "content/common/database_messages.h"
 #include "content/common/db_message_filter.h"
 #include "content/common/dom_storage_messages.h"
@@ -124,7 +127,7 @@ using WebKit::WebScriptController;
 using WebKit::WebSecurityPolicy;
 using WebKit::WebString;
 using WebKit::WebView;
-
+*/
 namespace content {
 
 namespace {
@@ -138,7 +141,7 @@ const int kIdleCPUUsageThresholdInPercents = 3;
 // incorrectly from the wrong thread.
 base::LazyInstance<base::ThreadLocalPointer<RenderThreadImpl> >
     lazy_tls = LAZY_INSTANCE_INITIALIZER;
-
+/* FIXME
 class RenderViewZoomer : public RenderViewVisitor {
  public:
   RenderViewZoomer(const std::string& host, double zoom_level)
@@ -217,9 +220,9 @@ void AddTraceEvent(char phase,
                                   arg_names, arg_types, arg_values, flags);
 }
 #endif
-
+*/
 }  // namespace
-
+/*FIXME
 class RenderThreadImpl::GpuVDAContextLostCallback
     : public WebKit::WebGraphicsContext3D::WebGraphicsContextLostCallback {
  public:
@@ -273,11 +276,11 @@ void RenderThreadImpl::HistogramCustomizer::SetCommonHost(
     v8::V8::SetCreateHistogramFunction(CreateHistogram);
   }
 }
-
+*/
 RenderThreadImpl* RenderThreadImpl::current() {
   return lazy_tls.Pointer()->Get();
 }
-
+/*FIXME
 // When we run plugins in process, we actually run them on the render thread,
 // which means that we need to make the render thread pump UI events.
 RenderThreadImpl::RenderThreadImpl() {
@@ -874,7 +877,7 @@ void RenderThreadImpl::PostponeIdleNotification() {
   idle_notifications_to_skip_ = 2;
 }
 
-/* static */
+/ * static * /
 void RenderThreadImpl::OnGpuVDAContextLoss() {
   RenderThreadImpl* self = RenderThreadImpl::current();
   DCHECK(self);
@@ -1179,7 +1182,7 @@ void RenderThreadImpl::OnTempCrashWithData(const GURL& data) {
   GetContentClient()->SetActiveURL(data);
   CHECK(false);
 }
-
+*/
 scoped_refptr<base::MessageLoopProxy>
 RenderThreadImpl::GetFileThreadMessageLoopProxy() {
   DCHECK(message_loop() == MessageLoop::current());

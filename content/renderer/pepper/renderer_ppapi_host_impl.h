@@ -38,6 +38,7 @@ class PluginModule;
 
 namespace content {
 
+class RendererPpapiHostImpl;
 class PepperInProcessRouter;
 
 // This class is attached to a PluginModule via the module's embedder state.
@@ -89,15 +90,15 @@ class RendererPpapiHostImpl
       PP_Instance instance) const OVERRIDE;
   virtual webkit::ppapi::PluginDelegate::PlatformGraphics2D*
       GetPlatformGraphics2D(PP_Resource resource) OVERRIDE;
-  virtual RenderView* GetRenderViewForInstance(
+  virtual WebKit::WebPage* GetRenderViewForInstance(
       PP_Instance instance) const OVERRIDE;
-  virtual WebKit::WebPluginContainer* GetContainerForInstance(
+  virtual WebKit::PepperPluginContainer* GetContainerForInstance(
       PP_Instance instance) const OVERRIDE;
   virtual bool HasUserGesture(PP_Instance instance) const OVERRIDE;
   virtual int GetRoutingIDForWidget(PP_Instance instance) const OVERRIDE;
-  virtual gfx::Point PluginPointToRenderView(
+  virtual WebCore::IntPoint PluginPointToRenderView(
       PP_Instance instance,
-      const gfx::Point& pt) const OVERRIDE;
+      const WebCore::IntPoint& pt) const OVERRIDE;
   virtual IPC::PlatformFileForTransit ShareHandleWithRemote(
       base::PlatformFile handle,
       bool should_close_source) OVERRIDE;

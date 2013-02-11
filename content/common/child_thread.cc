@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "content/common/child_thread.h"
 
 #include "base/allocator/allocator_extension.h"
@@ -11,20 +12,20 @@
 #include "base/process_util.h"
 #include "base/string_util.h"
 #include "base/tracked_objects.h"
-#include "components/tracing/child_trace_message_filter.h"
-#include "content/common/child_histogram_message_filter.h"
+//FIXME #include "components/tracing/child_trace_message_filter.h"
+//FIXME #include "content/common/child_histogram_message_filter.h"
 #include "content/common/child_process.h"
-#include "content/common/child_process_messages.h"
+//FIXME #include "content/common/child_process_messages.h"
 #include "content/common/fileapi/file_system_dispatcher.h"
 #include "content/common/quota_dispatcher.h"
 #include "content/common/resource_dispatcher.h"
-#include "content/common/socket_stream_dispatcher.h"
+//FIXME #include "content/common/socket_stream_dispatcher.h"
 #include "content/public/common/content_switches.h"
 #include "ipc/ipc_logging.h"
 #include "ipc/ipc_switches.h"
 #include "ipc/ipc_sync_channel.h"
 #include "ipc/ipc_sync_message_filter.h"
-#include "webkit/glue/webkit_glue.h"
+//FIXME #include "webkit/glue/webkit_glue.h"
 
 #if defined(OS_WIN)
 #include "content/common/handle_enumerator_win.h"
@@ -94,6 +95,7 @@ ChildThread::ChildThread(const std::string& channel_name)
 }
 
 void ChildThread::Init() {
+    /*FIXME
   on_channel_error_called_ = false;
   message_loop_ = MessageLoop::current();
   channel_.reset(new IPC::SyncChannel(channel_name_,
@@ -130,9 +132,11 @@ void ChildThread::Init() {
       base::Bind(&ChildThread::EnsureConnected,
                  channel_connected_factory_.GetWeakPtr()),
       base::TimeDelta::FromSeconds(kConnectionTimeoutS));
+      */
 }
 
 ChildThread::~ChildThread() {
+    /*FIXME
 #ifdef IPC_MESSAGE_LOG_ENABLED
   IPC::Logging::GetInstance()->SetIPCSender(NULL);
 #endif
@@ -149,8 +153,9 @@ ChildThread::~ChildThread() {
   // automatically.  We used to watch the object handle on Windows to do this,
   // but it wasn't possible to do so on POSIX.
   channel_->ClearIPCTaskRunner();
+*/
 }
-
+/*FIXME
 void ChildThread::OnChannelConnected(int32 peer_pid) {
   channel_connected_factory_.InvalidateWeakPtrs();
 }
@@ -233,11 +238,11 @@ ResourceDispatcher* ChildThread::resource_dispatcher() {
 IPC::SyncMessageFilter* ChildThread::sync_message_filter() {
   return sync_message_filter_;
 }
-
+*/
 MessageLoop* ChildThread::message_loop() {
   return message_loop_;
 }
-
+/*FIXME
 bool ChildThread::OnMessageReceived(const IPC::Message& msg) {
   // Resource responses are sent to the resource dispatcher.
   if (resource_dispatcher_->OnMessageReceived(msg))
@@ -328,11 +333,11 @@ void ChildThread::OnGetTcmallocStats() {
   Send(new ChildProcessHostMsg_TcmallocStats(result));
 }
 #endif
-
+*/
 ChildThread* ChildThread::current() {
   return ChildProcess::current()->main_thread();
 }
-
+/* FIXME
 bool ChildThread::IsWebFrameValid(WebKit::WebFrame* frame) {
   // Return false so that it is overridden in any process in which it is used.
   return false;
@@ -357,5 +362,5 @@ void ChildThread::EnsureConnected() {
   LOG(INFO) << "ChildThread::EnsureConnected()";
   base::KillProcess(base::GetCurrentProcessHandle(), 0, false);
 }
-
+*/
 }  // namespace content

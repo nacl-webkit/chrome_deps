@@ -8,7 +8,7 @@
 #include "build/build_config.h"
 
 #if !defined(OS_NACL) && !defined(NACL_WIN64)
-#include "third_party/skia/include/core/SkTypes.h"
+#include "SkTypes.h"
 #endif
 
 namespace ppapi {

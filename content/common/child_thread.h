@@ -13,7 +13,7 @@
 #include "content/common/content_export.h"
 #include "content/common/message_router.h"
 #include "ipc/ipc_message.h"  // For IPC_MESSAGE_LOG_ENABLED.
-#include "webkit/glue/resource_loader_bridge.h"
+//FIXME #include "webkit/glue/resource_loader_bridge.h"
 
 class MessageLoop;
 
@@ -41,6 +41,7 @@ class CONTENT_EXPORT ChildThread : public IPC::Listener, public IPC::Sender {
   // Used for single-process mode.
   explicit ChildThread(const std::string& channel_name);
   virtual ~ChildThread();
+/* FIXME
 
   // IPC::Sender implementation:
   virtual bool Send(IPC::Message* msg) OVERRIDE;
@@ -69,7 +70,7 @@ class CONTENT_EXPORT ChildThread : public IPC::Listener, public IPC::Sender {
   SocketStreamDispatcher* socket_stream_dispatcher() {
     return socket_stream_dispatcher_.get();
   }
-
+*/
   FileSystemDispatcher* file_system_dispatcher() const {
     return file_system_dispatcher_.get();
   }
@@ -77,6 +78,7 @@ class CONTENT_EXPORT ChildThread : public IPC::Listener, public IPC::Sender {
   QuotaDispatcher* quota_dispatcher() const {
     return quota_dispatcher_.get();
   }
+  /*FIXME
 
   // Safe to call on any thread, as long as it's guaranteed that the thread's
   // lifetime is less than the main thread.
@@ -85,11 +87,12 @@ class CONTENT_EXPORT ChildThread : public IPC::Listener, public IPC::Sender {
   ChildHistogramMessageFilter* child_histogram_message_filter() const {
     return histogram_message_filter_.get();
   }
-
+*/
   MessageLoop* message_loop();
 
   // Returns the one child thread.
   static ChildThread* current();
+/* FIXME
 
   virtual bool IsWebFrameValid(WebKit::WebFrame* frame);
 
@@ -109,10 +112,10 @@ class CONTENT_EXPORT ChildThread : public IPC::Listener, public IPC::Sender {
   virtual bool OnMessageReceived(const IPC::Message& msg) OVERRIDE;
   virtual void OnChannelConnected(int32 peer_pid) OVERRIDE;
   virtual void OnChannelError() OVERRIDE;
-
+*/
  private:
   void Init();
-
+/* FIXME
   // IPC message handlers.
   void OnShutdown();
   void OnSetProfilerStatus(tracked_objects::ThreadData::Status status);
@@ -126,10 +129,10 @@ class CONTENT_EXPORT ChildThread : public IPC::Listener, public IPC::Sender {
 #endif
 
   void EnsureConnected();
-
+*/
   std::string channel_name_;
   scoped_ptr<IPC::SyncChannel> channel_;
-
+  /* FIXME
   // Allows threads other than the main thread to send sync messages.
   scoped_refptr<IPC::SyncMessageFilter> sync_message_filter_;
 
@@ -141,7 +144,7 @@ class CONTENT_EXPORT ChildThread : public IPC::Listener, public IPC::Sender {
 
   // Handles SocketStream for this process.
   scoped_ptr<SocketStreamDispatcher> socket_stream_dispatcher_;
-
+*/
   // The OnChannelError() callback was invoked - the channel is dead, don't
   // attempt to communicate.
   bool on_channel_error_called_;
@@ -151,9 +154,10 @@ class CONTENT_EXPORT ChildThread : public IPC::Listener, public IPC::Sender {
   scoped_ptr<FileSystemDispatcher> file_system_dispatcher_;
 
   scoped_ptr<QuotaDispatcher> quota_dispatcher_;
+  /* FIXME
 
   scoped_refptr<ChildHistogramMessageFilter> histogram_message_filter_;
-
+*/
   base::WeakPtrFactory<ChildThread> channel_connected_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(ChildThread);

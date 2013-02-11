@@ -16,8 +16,8 @@
 
 #include "base/platform_file.h"
 #include "base/string16.h"
-#include "third_party/WebKit/Source/Platform/chromium/public/WebCanvas.h"
-#include "third_party/WebKit/Source/Platform/chromium/public/WebReferrerPolicy.h"
+#include "WebCanvas.h"
+//FIXME #include "third_party/WebKit/Source/WebKit/chromium/public/platform/WebReferrerPolicy.h"
 #include "webkit/glue/webkit_glue_export.h"
 
 class SkBitmap;
@@ -33,7 +33,7 @@ class WebFrame;
 }
 
 namespace webkit_glue {
-
+/* FIXME
 WEBKIT_GLUE_EXPORT void SetJavaScriptFlags(const std::string& flags);
 
 // Turn on logging for flags in the provided comma delimited list.
@@ -119,7 +119,7 @@ WEBKIT_GLUE_EXPORT void ConfigureURLRequestForReferrerPolicy(
 // allocations. Results are not comparable across platforms. The estimate is
 // computed inside the sandbox and thus its not always accurate.
 WEBKIT_GLUE_EXPORT size_t MemoryUsageKB();
-
+*/
 }  // namespace webkit_glue
 
 #endif  // WEBKIT_GLUE_WEBKIT_GLUE_H_

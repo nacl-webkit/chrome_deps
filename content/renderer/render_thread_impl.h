@@ -16,11 +16,11 @@
 #include "content/common/child_process.h"
 #include "content/common/child_thread.h"
 #include "content/common/content_export.h"
-#include "content/common/gpu/client/gpu_channel_host.h"
-#include "content/common/gpu/gpu_process_launch_causes.h"
+//FIXME #include "content/common/gpu/client/gpu_channel_host.h"
+//FIXME #include "content/common/gpu/gpu_process_launch_causes.h"
 #include "content/public/renderer/render_thread.h"
 #include "ipc/ipc_channel_proxy.h"
-#include "ui/gfx/native_widget_types.h"
+//FIXME #include "ui/gfx/native_widget_types.h"
 
 class SkBitmap;
 struct ViewMsg_New_Params;
@@ -85,8 +85,8 @@ class WebGraphicsContext3DCommandBufferImpl;
 // routed to the RenderThread according to the routing IDs of the messages.
 // The routing IDs correspond to RenderView instances.
 class CONTENT_EXPORT RenderThreadImpl : public RenderThread,
-                                        public ChildThread,
-                                        public GpuChannelHostFactory {
+                                        public ChildThread /* FIXME,
+                                        public GpuChannelHostFactory*/ {
  public:
   static RenderThreadImpl* current();
 
@@ -140,7 +140,7 @@ class CONTENT_EXPORT RenderThreadImpl : public RenderThread,
 
   // ChildThread:
   virtual bool IsWebFrameValid(WebKit::WebFrame* frame) OVERRIDE;
-
+/* FIXME:   
   // GpuChannelHostFactory implementation:
   virtual bool IsMainThread() OVERRIDE;
   virtual bool IsIOThread() OVERRIDE;
@@ -224,7 +224,7 @@ class CONTENT_EXPORT RenderThreadImpl : public RenderThread,
   // Get the GPU channel. Returns NULL if the channel is not established or
   // has been lost.
   GpuChannelHost* GetGpuChannel();
-
+*/
   // Returns a MessageLoopProxy instance corresponding to the message loop
   // of the thread on which file operations should be run. Must be called
   // on the renderer's main thread.
@@ -234,7 +234,7 @@ class CONTENT_EXPORT RenderThreadImpl : public RenderThread,
   // on the two next scheduled calls, so idle notifications are
   // not sent for at least one notification delay.
   void PostponeIdleNotification();
-
+/* FIXME
   // Returns a graphics context shared among all
   // RendererGpuVideoDecoderFactories, or NULL on error.  Context remains owned
   // by this class and must be null-tested before each use to detect context
@@ -304,12 +304,12 @@ class CONTENT_EXPORT RenderThreadImpl : public RenderThread,
   HistogramCustomizer* histogram_customizer() {
     return &histogram_customizer_;
   }
-
+*/
  private:
   virtual bool OnControlMessageReceived(const IPC::Message& msg) OVERRIDE;
 
   void Init();
-
+/* FIXME
   void OnSetZoomLevelForCurrentURL(const std::string& host, double zoom_level);
   void OnCreateNewView(const ViewMsg_New_Params& params);
   void OnTransferBitmap(const SkBitmap& bitmap, int resource_id);
@@ -375,10 +375,10 @@ class CONTENT_EXPORT RenderThreadImpl : public RenderThread,
 
   // The channel from the renderer process to the GPU process.
   scoped_refptr<GpuChannelHost> gpu_channel_;
-
+*/
   // A lazily initiated thread on which file operations are run.
   scoped_ptr<base::Thread> file_thread_;
-
+/*FIXME
   bool compositor_initialized_;
   scoped_ptr<CompositorThread> compositor_thread_;
   scoped_refptr<IPC::ForwardingMessageFilter> compositor_output_surface_filter_;
@@ -393,7 +393,7 @@ class CONTENT_EXPORT RenderThreadImpl : public RenderThread,
   scoped_ptr<media::AudioHardwareConfig> audio_hardware_config_;
 
   HistogramCustomizer histogram_customizer_;
-
+*/
   DISALLOW_COPY_AND_ASSIGN(RenderThreadImpl);
 };
 

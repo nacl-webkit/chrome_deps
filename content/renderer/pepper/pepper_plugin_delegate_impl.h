@@ -10,20 +10,33 @@
 #include <string>
 #include <vector>
 
+#include "Plugin.h"
+#include "content/public/renderer/renderer_ppapi_host.h"
+#include "content/common/content_export.h"
+#include "base/memory/ref_counted.h"
+#include "ppapi/c/pp_var.h"
+#include "wtf/RefCounted.h"
+#include "wtf/text/WTFString.h"
+
 #include "base/basictypes.h"
 #include "base/id_map.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+/*
+FIXME
 #include "content/public/renderer/render_view_observer.h"
 #include "content/renderer/mouse_lock_dispatcher.h"
 #include "content/renderer/pepper/pepper_parent_context_provider.h"
 #include "content/renderer/render_view_pepper_helper.h"
+*/
 #include "ppapi/shared_impl/private/ppb_host_resolver_shared.h"
 #include "ppapi/shared_impl/private/ppb_tcp_server_socket_shared.h"
 #include "ppapi/shared_impl/private/tcp_socket_private_impl.h"
+/* FIXME
 #include "ui/base/ime/text_input_type.h"
+*/
 #include "webkit/plugins/ppapi/plugin_delegate.h"
 
 namespace base {
@@ -40,17 +53,24 @@ class PPB_X509Certificate_Fields;
 class PpapiPermissions;
 }
 
-namespace webkit {
-struct WebPluginInfo;
-namespace ppapi {
-class PluginInstance;
-class PluginModule;
-}
+namespace WebKit {
+class Plugin;
 }
 
 namespace WebKit {
 class WebGamepads;
 struct WebCompositionUnderline;
+class WebFrame;
+class WebPage;
+class PepperPlugin;
+}
+
+namespace webkit {
+struct PepperPluginInfo;
+
+namespace ppapi {
+class PluginInstance;
+class PluginModule;
 }
 
 namespace content {
@@ -61,15 +81,18 @@ class RenderViewImpl;
 
 class PepperPluginDelegateImpl
     : public webkit::ppapi::PluginDelegate,
-      public RenderViewPepperHelper,
-      public base::SupportsWeakPtr<PepperPluginDelegateImpl>,
-      public PepperParentContextProvider,
-      public RenderViewObserver {
+//      public RenderViewPepperHelper,
+//      public base::SupportsWeakPtr<PepperPluginDelegateImpl>,
+//      public PepperParentContextProvider,
+//      public RenderViewObserver
+ {
  public:
-  explicit PepperPluginDelegateImpl(RenderViewImpl* render_view);
   virtual ~PepperPluginDelegateImpl();
+  PassRefPtr<WebKit::PepperPlugin> createPepperPlugin(WebKit::WebFrame* frame, WebKit::Plugin::Parameters& params);
+  bool getPluginInfo(const WTF::String& url, const WTF::String& pageUrl, const WTF::String& mimeType, PepperPluginInfo& pluginInfo, WTF::String& actualMimeType);
+  PepperPluginDelegateImpl(WebKit::WebPage* page);
 
-  RenderViewImpl* render_view() { return render_view_; }
+  WebKit::WebPage* page() { return render_view_; }
 
   // Sets up the renderer host and out-of-process proxy for an external plugin
   // module. Returns the renderer host, or NULL if it couldn't be created.
@@ -102,19 +125,20 @@ class PepperPluginDelegateImpl
   // Gets audio/video session ID given a label.
   int GetSessionID(PP_DeviceType_Dev type, const std::string& label);
 
- private:
   // RenderViewPepperHelper implementation.
+/* FIXME
   virtual WebKit::WebPlugin* CreatePepperWebPlugin(
     const webkit::WebPluginInfo& webplugin_info,
     const WebKit::WebPluginParams& params) OVERRIDE;
+*/
   virtual void ViewWillInitiatePaint() OVERRIDE;
   virtual void ViewInitiatedPaint() OVERRIDE;
   virtual void ViewFlushedPaint() OVERRIDE;
   virtual webkit::ppapi::PluginInstance* GetBitmapForOptimizedPluginPaint(
-      const gfx::Rect& paint_bounds,
+      const WebCore::IntRect& paint_bounds,
       TransportDIB** dib,
-      gfx::Rect* location,
-      gfx::Rect* clip,
+      WebCore::IntRect* location,
+      WebCore::IntRect* clip,
       float* scale_factor) OVERRIDE;
   virtual void OnAsyncFileOpened(base::PlatformFileError error_code,
                                  base::PlatformFile file,
@@ -128,12 +152,12 @@ class PepperPluginDelegateImpl
   virtual void OnSetFocus(bool has_focus) OVERRIDE;
   virtual void PageVisibilityChanged(bool is_visible) OVERRIDE;
   virtual bool IsPluginFocused() const OVERRIDE;
-  virtual gfx::Rect GetCaretBounds() const OVERRIDE;
-  virtual ui::TextInputType GetTextInputType() const OVERRIDE;
+  virtual WebCore::IntRect GetCaretBounds() const OVERRIDE;
+//FIXME  virtual ui::TextInputType GetTextInputType() const OVERRIDE;
   virtual bool IsPluginAcceptingCompositionEvents() const OVERRIDE;
   virtual bool CanComposeInline() const OVERRIDE;
-  virtual void GetSurroundingText(string16* text,
-                                  ui::Range* range) const OVERRIDE;
+//FIXME  virtual void GetSurroundingText(string16* text,
+//FIXME                                  ui::Range* range) const OVERRIDE;
   virtual void OnImeSetComposition(
       const string16& text,
       const std::vector<WebKit::WebCompositionUnderline>& underlines,
@@ -168,7 +192,7 @@ class PepperPluginDelegateImpl
       CreateResourceCreationAPI(
           webkit::ppapi::PluginInstance* instance) OVERRIDE;
   virtual SkBitmap* GetSadPluginBitmap() OVERRIDE;
-  virtual WebKit::WebPlugin* CreatePluginReplacement(
+  virtual WebKit::PepperPlugin* CreatePluginReplacement(
       const base::FilePath& file_path) OVERRIDE;
   virtual uint32_t GetAudioHardwareOutputSampleRate() OVERRIDE;
   virtual uint32_t GetAudioHardwareOutputBufferSize() OVERRIDE;
@@ -208,7 +232,7 @@ class PepperPluginDelegateImpl
       const AsyncOpenFileSystemURLCallback& callback) OVERRIDE;
   virtual bool OpenFileSystem(
       const GURL& origin_url,
-      fileapi::FileSystemType type,
+      WebCore::FileSystemType type,
       long long size,
       fileapi::FileSystemCallbackDispatcher* dispatcher) OVERRIDE;
   virtual bool MakeDirectory(
@@ -297,7 +321,7 @@ class PepperPluginDelegateImpl
   virtual webkit::ppapi::FullscreenContainer*
       CreateFullscreenContainer(
           webkit::ppapi::PluginInstance* instance) OVERRIDE;
-  virtual gfx::Size GetScreenSize() OVERRIDE;
+  virtual WebCore::IntSize GetScreenSize() OVERRIDE;
   virtual std::string GetDefaultEncoding() OVERRIDE;
   virtual void ZoomLimitsChanged(double minimum_factor, double maximum_factor)
       OVERRIDE;
@@ -318,11 +342,13 @@ class PepperPluginDelegateImpl
   virtual bool IsInFullscreenMode() OVERRIDE;
   virtual void SampleGamepads(WebKit::WebGamepads* data) OVERRIDE;
   virtual bool IsPageVisible() const OVERRIDE;
+/*
+FIXME
   virtual int EnumerateDevices(
       PP_DeviceType_Dev type,
       const EnumerateDevicesCallback& callback) OVERRIDE;
   virtual void StopEnumerateDevices(int request_id) OVERRIDE;
-
+*/
   // RenderViewObserver implementation.
   virtual bool OnMessageReceived(const IPC::Message& message) OVERRIDE;
   virtual void OnDestruct() OVERRIDE;
@@ -372,13 +398,15 @@ class PepperPluginDelegateImpl
   // not fall back on any other plugin types.
   scoped_refptr<webkit::ppapi::PluginModule>
   CreatePepperPluginModule(
-      const webkit::WebPluginInfo& webplugin_info,
+      const PepperPluginInfo& webplugin_info,
       bool* pepper_plugin_was_registered);
 
+/*
+FIXME
   // Asynchronously attempts to create a PPAPI broker for the given plugin.
   scoped_refptr<PepperBrokerImpl> CreateBroker(
       webkit::ppapi::PluginModule* plugin_module);
-
+*/
   // Create a new HostDispatcher for proxying, hook it to the PluginModule,
   // and perform other common initialization.
   RendererPpapiHost* CreateOutOfProcessModule(
@@ -390,6 +418,8 @@ class PepperPluginDelegateImpl
       int plugin_child_id,
       bool is_external);
 
+/*
+FIXME
   // Implementation of PepperParentContextProvider.
   virtual WebGraphicsContext3DCommandBufferImpl*
       GetParentContextForPlatformContext3D() OVERRIDE;
@@ -403,12 +433,14 @@ class PepperPluginDelegateImpl
 
   // Pointer to the RenderView that owns us.
   RenderViewImpl* render_view_;
-
+*/
   std::set<webkit::ppapi::PluginInstance*> active_instances_;
+/*
+FIXME
   typedef std::map<webkit::ppapi::PluginInstance*,
                    MouseLockDispatcher::LockTarget*> LockTargetMap;
   LockTargetMap mouse_lock_instances_;
-
+*/
   IDMap<AsyncOpenFileCallback> pending_async_open_files_;
 
   IDMap<webkit::ppapi::PPB_TCPSocket_Private_Impl> tcp_sockets_;
@@ -416,10 +448,10 @@ class PepperPluginDelegateImpl
   IDMap<ppapi::PPB_TCPServerSocket_Shared> tcp_server_sockets_;
 
   IDMap<ppapi::PPB_HostResolver_Shared> host_resolvers_;
-
+/* FIXME
   typedef IDMap<scoped_refptr<PepperBrokerImpl>, IDMapOwnPointer> BrokerMap;
   BrokerMap pending_connect_broker_;
-
+*/
   typedef IDMap<base::WeakPtr<webkit::ppapi::PPB_Broker_Impl> >
       PermissionRequestMap;
   PermissionRequestMap pending_permission_requests_;
@@ -436,11 +468,14 @@ class PepperPluginDelegateImpl
   // |last_mouse_event_target_| is not owned by this class. We can know about
   // when it is destroyed via InstanceDeleted().
   webkit::ppapi::PluginInstance* last_mouse_event_target_;
-
+/*
+FIXME
   scoped_ptr<GamepadSharedMemoryReader> gamepad_shared_memory_reader_;
 
   scoped_ptr<PepperDeviceEnumerationEventHandler>
       device_enumeration_event_handler_;
+*/
+   WebKit::WebPage* render_view_;
 
   DISALLOW_COPY_AND_ASSIGN(PepperPluginDelegateImpl);
 };

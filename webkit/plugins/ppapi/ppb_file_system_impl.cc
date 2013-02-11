@@ -2,16 +2,17 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "webkit/plugins/ppapi/ppb_file_system_impl.h"
 
 #include "base/memory/ref_counted.h"
 #include "ppapi/c/pp_completion_callback.h"
 #include "ppapi/c/ppb_file_system.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebDocument.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebElement.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebFrame.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebPluginContainer.h"
-#include "webkit/fileapi/file_system_types.h"
+#include <WebCore/Document.h>
+#include <WebCore/Element.h>
+#include <WebCore/Frame.h>
+#include "PepperPluginContainer.h"
+#include "FileSystemType.h"
 #include "webkit/plugins/ppapi/common.h"
 #include "webkit/plugins/ppapi/file_callbacks.h"
 #include "webkit/plugins/ppapi/plugin_delegate.h"
@@ -22,6 +23,7 @@
 
 using ppapi::thunk::PPB_FileSystem_API;
 using ppapi::TrackedCallback;
+using namespace WebCore;
 
 namespace webkit {
 namespace ppapi {
@@ -59,16 +61,16 @@ int32_t PPB_FileSystem_Impl::Open(int64_t expected_size,
     return PP_ERROR_INPROGRESS;
   called_open_ = true;
 
-  fileapi::FileSystemType file_system_type;
+  FileSystemType file_system_type;
   switch (type_) {
     case PP_FILESYSTEMTYPE_LOCALTEMPORARY:
-      file_system_type = fileapi::kFileSystemTypeTemporary;
+      file_system_type = FileSystemTypeTemporary;
       break;
     case PP_FILESYSTEMTYPE_LOCALPERSISTENT:
-      file_system_type = fileapi::kFileSystemTypePersistent;
+      file_system_type = FileSystemTypePersistent;
       break;
     case PP_FILESYSTEMTYPE_EXTERNAL:
-      file_system_type = fileapi::kFileSystemTypeExternal;
+      file_system_type = FileSystemTypeExternal;
       break;
     default:
       return PP_ERROR_FAILED;
@@ -79,7 +81,7 @@ int32_t PPB_FileSystem_Impl::Open(int64_t expected_size,
     return PP_ERROR_FAILED;
 
   if (!plugin_instance->delegate()->OpenFileSystem(
-      GURL(plugin_instance->container()->element().document().url()).
+      GURL(plugin_instance->container()->element()->document()->url()).
           GetOrigin(),
       file_system_type, expected_size,
       new FileCallbacks(this, callback, NULL,

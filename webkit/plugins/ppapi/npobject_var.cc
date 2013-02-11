@@ -2,16 +2,16 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "webkit/plugins/ppapi/npobject_var.h"
 
 #include "base/logging.h"
 #include "ppapi/c/pp_var.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebBindings.h"
+#include "npruntime_impl.h"
 #include "webkit/plugins/ppapi/host_globals.h"
 #include "webkit/plugins/ppapi/host_var_tracker.h"
 
 using webkit::ppapi::HostGlobals;
-using WebKit::WebBindings;
 
 namespace ppapi {
 
@@ -21,14 +21,14 @@ NPObjectVar::NPObjectVar(PP_Instance instance,
                          NPObject* np_object)
     : pp_instance_(instance),
       np_object_(np_object) {
-  WebBindings::retainObject(np_object_);
+  _NPN_RetainObject(np_object_);
   HostGlobals::Get()->host_var_tracker()->AddNPObjectVar(this);
 }
 
 NPObjectVar::~NPObjectVar() {
   if (pp_instance())
     HostGlobals::Get()->host_var_tracker()->RemoveNPObjectVar(this);
-  WebBindings::releaseObject(np_object_);
+  _NPN_ReleaseObject(np_object_);
 }
 
 NPObjectVar* NPObjectVar::AsNPObjectVar() {

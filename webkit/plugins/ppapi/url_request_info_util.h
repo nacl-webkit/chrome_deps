@@ -12,9 +12,9 @@ namespace ppapi {
 struct URLRequestInfoData;
 }
 
-namespace WebKit {
-class WebFrame;
-class WebURLRequest;
+namespace WebCore {
+class Frame;
+class ResourceRequest;
 }
 
 namespace webkit {
@@ -26,8 +26,8 @@ namespace ppapi {
 // pointers) will be populated by this function on success.
 WEBKIT_PLUGINS_EXPORT bool CreateWebURLRequest(
     ::ppapi::URLRequestInfoData* data,
-    WebKit::WebFrame* frame,
-    WebKit::WebURLRequest* dest);
+    WebCore::Frame* frame,
+    WebCore::ResourceRequest* dest);
 
 // Returns true if universal access is required to use the given request.
 WEBKIT_PLUGINS_EXPORT bool URLRequestRequiresUniversalAccess(

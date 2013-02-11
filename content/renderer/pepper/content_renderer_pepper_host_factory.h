@@ -5,6 +5,8 @@
 #ifndef CONTENT_RENDERER_PEPPER_CONTENT_RENDERER_PEPPER_HOST_FACTORY_H_
 #define CONTENT_RENDERER_PEPPER_CONTENT_RENDERER_PEPPER_HOST_FACTORY_H_
 
+#if ENABLE(PEPPER_PLUGIN_API)
+
 #include "base/compiler_specific.h"
 #include "ppapi/host/host_factory.h"
 #include "ppapi/shared_impl/ppapi_permissions.h"
@@ -40,5 +42,7 @@ class ContentRendererPepperHostFactory : public ppapi::host::HostFactory {
 };
 
 }  // namespace content
+
+#endif // ENABLE(PEPPER_PLUGIN_API)
 
 #endif  // CONTENT_RENDERER_PEPPER_CONTENT_RENDERER_PEPPER_HOST_FACTORY_H_

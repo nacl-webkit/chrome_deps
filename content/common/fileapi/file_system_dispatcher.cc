@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "content/common/fileapi/file_system_dispatcher.h"
 
 #include "base/file_util.h"
@@ -42,7 +43,7 @@ bool FileSystemDispatcher::OnMessageReceived(const IPC::Message& msg) {
 }
 
 bool FileSystemDispatcher::OpenFileSystem(
-    const GURL& origin_url, fileapi::FileSystemType type,
+    const GURL& origin_url, WebCore::FileSystemType type,
     long long size, bool create,
     fileapi::FileSystemCallbackDispatcher* dispatcher) {
   int request_id = dispatchers_.Add(dispatcher);
@@ -57,7 +58,7 @@ bool FileSystemDispatcher::OpenFileSystem(
 
 bool FileSystemDispatcher::DeleteFileSystem(
     const GURL& origin_url,
-    fileapi::FileSystemType type,
+    WebCore::FileSystemType type,
     fileapi::FileSystemCallbackDispatcher* dispatcher) {
   int request_id = dispatchers_.Add(dispatcher);
   if (!ChildThread::current()->Send(new FileSystemHostMsg_DeleteFileSystem(

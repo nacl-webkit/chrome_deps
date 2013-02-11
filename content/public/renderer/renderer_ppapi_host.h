@@ -13,13 +13,10 @@
 #include "ppapi/c/pp_instance.h"
 #include "webkit/plugins/ppapi/plugin_delegate.h"
 
-namespace base {
-class FilePath;
-}
-
-namespace gfx {
-class Point;
-}
+#include <WebCore/IntPoint.h>
+#include <WebCore/IntRect.h>
+#include <WebCore/IntSize.h>
+#include <wtf/text/WTFString.h>
 
 namespace IPC {
 struct ChannelHandle;
@@ -39,7 +36,8 @@ class PluginInstance;
 }
 
 namespace WebKit {
-class WebPluginContainer;
+class PepperPluginContainer;
+class WebPage;
 }
 
 namespace webkit {
@@ -59,6 +57,8 @@ class RenderView;
 // There will be one of these objects in the renderer per plugin module.
 class RendererPpapiHost {
  public:
+/*
+FIXME:
   // Creates a host and sets up an out-of-process proxy for an external plugin
   // module. |file_path| should identify the module. It is only used to report
   // failures to the renderer.
@@ -72,7 +72,7 @@ class RendererPpapiHost {
       const IPC::ChannelHandle& channel_handle,
       base::ProcessId plugin_pid,
       int plugin_child_id);
-
+*/
   // Returns the RendererPpapiHost associated with the given PP_Instance,
   // or NULL if the instance is invalid.
   CONTENT_EXPORT static RendererPpapiHost* GetForPPInstance(
@@ -93,11 +93,11 @@ class RendererPpapiHost {
 
   // Returns the RenderView for the given plugin instance, or NULL if the
   // instance is invalid.
-  virtual RenderView* GetRenderViewForInstance(PP_Instance instance) const = 0;
+  virtual WebKit::WebPage* GetRenderViewForInstance(PP_Instance instance) const = 0;
 
   // Returns the WebPluginContainer for the given plugin instance, or NULL if
   // the instance is invalid.
-  virtual WebKit::WebPluginContainer* GetContainerForInstance(
+  virtual WebKit::PepperPluginContainer* GetContainerForInstance(
       PP_Instance instance) const = 0;
 
   // Returns the PlatformGraphics2D for the given plugin resource, or NULL if
@@ -121,9 +121,9 @@ class RendererPpapiHost {
   // Converts the given plugin coordinate to the containing RenderView. This
   // will take into account the current Flash fullscreen state so will use
   // the fullscreen widget if it's displayed.
-  virtual gfx::Point PluginPointToRenderView(
+  virtual WebCore::IntPoint PluginPointToRenderView(
       PP_Instance instance,
-      const gfx::Point& pt) const = 0;
+      const WebCore::IntPoint& pt) const = 0;
 
   // Shares a file handle (HANDLE / file descriptor) with the remote side. It
   // returns a handle that should be sent in exactly one IPC message. Upon

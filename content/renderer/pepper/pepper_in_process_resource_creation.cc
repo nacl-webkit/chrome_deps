@@ -2,12 +2,14 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "content/renderer/pepper/pepper_in_process_resource_creation.h"
 
 #include "base/bind.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/message_loop.h"
+#include "WebPage.h"
 #include "content/renderer/pepper/pepper_in_process_router.h"
 #include "content/renderer/pepper/renderer_ppapi_host_impl.h"
 #include "content/renderer/render_view_impl.h"
@@ -49,6 +51,7 @@ PepperInProcessResourceCreation::~PepperInProcessResourceCreation() {
 PP_Resource PepperInProcessResourceCreation::CreateBrowserFont(
     PP_Instance instance,
     const PP_BrowserFont_Trusted_Description* description) {
+/* FIXME
   if (!ppapi::proxy::BrowserFontResource_Trusted::IsPPFontDescriptionValid(
       *description))
     return 0;
@@ -59,6 +62,7 @@ PP_Resource PepperInProcessResourceCreation::CreateBrowserFont(
       instance,
       *description,
       prefs))->GetReference();
+*/
 }
 
 PP_Resource PepperInProcessResourceCreation::CreateFileChooser(
@@ -88,6 +92,7 @@ PP_Resource PepperInProcessResourceCreation::CreateGraphics2D(
 
 PP_Resource PepperInProcessResourceCreation::CreatePrinting(
     PP_Instance instance) {
+/* FIXME
   return (new ppapi::proxy::PrintingResource(
       host_impl_->in_process_router()->GetPluginConnection(),
       instance))->GetReference();
@@ -97,6 +102,7 @@ PP_Resource PepperInProcessResourceCreation::CreateUDPSocketPrivate(
     PP_Instance instance) {
   NOTIMPLEMENTED();
   return 0;
+*/
 }
 
 PP_Resource PepperInProcessResourceCreation::CreateURLRequestInfo(

@@ -8,7 +8,7 @@
 #include "ppapi/c/pp_size.h"
 #include "ppapi/c/trusted/ppb_image_data_trusted.h"
 #include "ppapi/proxy/audio_input_resource.h"
-#include "ppapi/proxy/browser_font_resource_trusted.h"
+//FIXME #include "ppapi/proxy/browser_font_resource_trusted.h"
 #include "ppapi/proxy/connection.h"
 #include "ppapi/proxy/file_chooser_resource.h"
 #include "ppapi/proxy/file_io_resource.h"
@@ -26,7 +26,7 @@
 #include "ppapi/proxy/ppb_file_ref_proxy.h"
 #include "ppapi/proxy/ppb_file_system_proxy.h"
 #include "ppapi/proxy/ppb_flash_message_loop_proxy.h"
-#include "ppapi/proxy/ppb_graphics_3d_proxy.h"
+// FIXME #include "ppapi/proxy/ppb_graphics_3d_proxy.h"
 #include "ppapi/proxy/ppb_host_resolver_private_proxy.h"
 #include "ppapi/proxy/ppb_image_data_proxy.h"
 #include "ppapi/proxy/ppb_network_monitor_private_proxy.h"
@@ -210,7 +210,7 @@ PP_Resource ResourceCreationProxy::CreateGraphics2D(PP_Instance instance,
   return (new Graphics2DResource(GetConnection(), instance, size,
                                  is_always_opaque))->GetReference();
 }
-
+/* FIXME
 PP_Resource ResourceCreationProxy::CreateGraphics3D(
     PP_Instance instance,
     PP_Resource share_context,
@@ -227,7 +227,7 @@ PP_Resource ResourceCreationProxy::CreateGraphics3DRaw(
   // of the proxy on the host side.
   return 0;
 }
-
+*/
 PP_Resource ResourceCreationProxy::CreateHostResolverPrivate(
     PP_Instance instance) {
   return PPB_HostResolver_Private_Proxy::CreateProxyResource(instance);
@@ -251,6 +251,7 @@ PP_Resource ResourceCreationProxy::CreateImageDataNaCl(
   // if we're untrusted (see PPB_ImageData_Proxy::CreateProxyResource()).
   return CreateImageData(instance, format, size, init_to_zero);
 }
+/* FIXME
 
 PP_Resource ResourceCreationProxy::CreateNetworkMonitor(
     PP_Instance instance,
@@ -279,17 +280,18 @@ PP_Resource ResourceCreationProxy::CreateUDPSocketPrivate(
   return (new UDPSocketPrivateResource(
       GetConnection(), instance))->GetReference();
 }
-
+*/
 PP_Resource ResourceCreationProxy::CreateWebSocket(PP_Instance instance) {
   return (new WebSocketResource(GetConnection(), instance))->GetReference();
 }
-
+/* FIXME
 PP_Resource ResourceCreationProxy::CreateX509CertificatePrivate(
     PP_Instance instance) {
   return PPB_X509Certificate_Private_Proxy::CreateProxyResource(instance);
 }
 
 #if !defined(OS_NACL)
+*/
 PP_Resource ResourceCreationProxy::CreateAudioInput(
     PP_Instance instance) {
   return (new AudioInputResource(GetConnection(), instance))->GetReference();
@@ -298,7 +300,7 @@ PP_Resource ResourceCreationProxy::CreateAudioInput(
 PP_Resource ResourceCreationProxy::CreateBroker(PP_Instance instance) {
   return PPB_Broker_Proxy::CreateProxyResource(instance);
 }
-
+/* FIXME
 PP_Resource ResourceCreationProxy::CreateBrowserFont(
     PP_Instance instance,
     const PP_BrowserFont_Trusted_Description* description) {
@@ -376,7 +378,7 @@ PP_Resource ResourceCreationProxy::CreateVideoDecoder(
 }
 
 #endif  // !defined(OS_NACL)
-
+*/
 bool ResourceCreationProxy::Send(IPC::Message* msg) {
   return dispatcher()->Send(msg);
 }

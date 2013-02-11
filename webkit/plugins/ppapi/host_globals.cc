@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "webkit/plugins/ppapi/host_globals.h"
 
 #include <limits>
@@ -12,12 +13,12 @@
 #include "base/utf_string_conversions.h"
 #include "ppapi/shared_impl/api_id.h"
 #include "ppapi/shared_impl/id_assignment.h"
-#include "third_party/WebKit/Source/Platform/chromium/public/WebString.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebConsoleMessage.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebDocument.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebElement.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebFrame.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebPluginContainer.h"
+#include <wtf/text/WTFString.h>
+// FIXME: #include "third_party/WebKit/Source/WebKit/chromium/public/WebConsoleMessage.h"
+#include <WebCore/Document.h>
+#include <WebCore/Element.h>
+#include <WebCore/Frame.h>
+#include "PepperPluginContainer.h"
 #include "webkit/plugins/plugin_switches.h"
 #include "webkit/plugins/ppapi/plugin_module.h"
 #include "webkit/plugins/ppapi/ppapi_plugin_instance.h"
@@ -25,15 +26,13 @@
 using ppapi::CheckIdType;
 using ppapi::MakeTypedId;
 using ppapi::PPIdType;
-using WebKit::WebConsoleMessage;
-using WebKit::WebString;
 
 namespace webkit {
 namespace ppapi {
 
 namespace {
 
-typedef std::set<WebKit::WebPluginContainer*> ContainerSet;
+typedef std::set<WebKit::PepperPluginContainer*> ContainerSet;
 
 // Adds all WebPluginContainers associated with the given module to the set.
 void GetAllContainersForModule(PluginModule* module,
@@ -44,7 +43,7 @@ void GetAllContainersForModule(PluginModule* module,
        i != instances.end(); ++i)
     containers->insert((*i)->container());
 }
-
+/* FIXME
 WebConsoleMessage::Level LogLevelToWebLogLevel(PP_LogLevel level) {
   switch (level) {
     case PP_LOGLEVEL_TIP:
@@ -69,7 +68,7 @@ WebConsoleMessage MakeLogMessage(PP_LogLevel level,
   return WebConsoleMessage(LogLevelToWebLogLevel(level),
                            WebString(UTF8ToUTF16(result)));
 }
-
+*/
 }  // namespace
 
 HostGlobals* HostGlobals::host_globals_ = NULL;
@@ -147,8 +146,10 @@ void HostGlobals::LogWithSource(PP_Instance instance,
                                 const std::string& value) {
   PluginInstance* instance_object = HostGlobals::Get()->GetInstance(instance);
   if (instance_object) {
+/* FIXME
     instance_object->container()->element().document().frame()->
         addMessageToConsole(MakeLogMessage(level, source, value));
+*/
   } else {
     BroadcastLogWithSource(0, level, source, value);
   }
@@ -173,10 +174,12 @@ void HostGlobals::BroadcastLogWithSource(PP_Module pp_module,
     }
   }
 
+/* FIXME
   WebConsoleMessage message = MakeLogMessage(level, source, value);
   for (ContainerSet::iterator i = containers.begin();
        i != containers.end(); ++i)
      (*i)->element().document().frame()->addMessageToConsole(message);
+*/
 }
 
 ::ppapi::MessageLoopShared* HostGlobals::GetCurrentMessageLoop() {

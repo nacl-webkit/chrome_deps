@@ -5,6 +5,7 @@
 #include "content/public/common/common_param_traits.h"
 
 #include "content/public/common/content_constants.h"
+/*FIXME
 #include "content/public/common/referrer.h"
 #include "net/base/host_port_pair.h"
 #include "third_party/skia/include/core/SkBitmap.h"
@@ -45,7 +46,7 @@ struct SkBitmap_Data {
 };
 
 }  // namespace
-
+*/
 namespace IPC {
 
 void ParamTraits<GURL>::Write(Message* m, const GURL& p) {
@@ -83,7 +84,7 @@ bool ParamTraits<GURL>::Read(const Message* m, PickleIterator* iter, GURL* p) {
 void ParamTraits<GURL>::Log(const GURL& p, std::string* l) {
   l->append(p.spec());
 }
-
+/* FIXME
 void ParamTraits<net::HostPortPair>::Write(Message* m, const param_type& p) {
   WriteParam(m, p.host());
   WriteParam(m, p.port());
@@ -366,4 +367,5 @@ namespace IPC {
 namespace IPC {
 #undef CONTENT_PUBLIC_COMMON_COMMON_PARAM_TRAITS_MACROS_H_
 #include "content/public/common/common_param_traits_macros.h"
+*/
 }  // namespace IPC

@@ -12,8 +12,8 @@
 #include "base/shared_memory.h"
 #include "base/string16.h"
 #include "base/sync_socket.h"
-#include "gpu/command_buffer/common/command_buffer.h"
-#include "gpu/ipc/gpu_command_buffer_traits.h"
+//FIXME: #include "gpu/command_buffer/common/command_buffer.h"
+//FIXME: #include "gpu/ipc/gpu_command_buffer_traits.h"
 #include "ipc/ipc_channel_handle.h"
 #include "ipc/ipc_message_macros.h"
 #include "ipc/ipc_message_utils.h"
@@ -68,22 +68,28 @@
 
 IPC_ENUM_TRAITS(PP_AudioSampleRate)
 IPC_ENUM_TRAITS(PP_DeviceType_Dev)
+/* FIXME:
 IPC_ENUM_TRAITS(PP_DecryptorStreamType)
 IPC_ENUM_TRAITS(PP_Flash_BrowserOperations_Permission)
 IPC_ENUM_TRAITS(PP_Flash_BrowserOperations_SettingType)
 IPC_ENUM_TRAITS(PP_FlashSetting)
+*/
 IPC_ENUM_TRAITS(PP_InputEvent_MouseButton)
 IPC_ENUM_TRAITS(PP_InputEvent_Type)
 IPC_ENUM_TRAITS(PP_NetAddressFamily_Private)
+/* FIXME
 IPC_ENUM_TRAITS(PP_NetworkListState_Private)
 IPC_ENUM_TRAITS(PP_NetworkListType_Private)
 IPC_ENUM_TRAITS(PP_PrintOrientation_Dev)
 IPC_ENUM_TRAITS(PP_PrintOutputFormat_Dev)
 IPC_ENUM_TRAITS(PP_PrintScalingOption_Dev)
 IPC_ENUM_TRAITS(PP_PrivateFontCharset)
+*/
 IPC_ENUM_TRAITS(PP_TextInput_Type)
+/* FIXME
 IPC_ENUM_TRAITS(PP_VideoDecodeError_Dev)
 IPC_ENUM_TRAITS(PP_VideoDecoder_Profile)
+*/
 
 IPC_STRUCT_TRAITS_BEGIN(PP_Point)
   IPC_STRUCT_TRAITS_MEMBER(x)
@@ -105,6 +111,8 @@ IPC_STRUCT_TRAITS_BEGIN(PP_Rect)
   IPC_STRUCT_TRAITS_MEMBER(size)
 IPC_STRUCT_TRAITS_END()
 
+/*
+FIXME:
 IPC_STRUCT_TRAITS_BEGIN(PP_PictureBuffer_Dev)
   IPC_STRUCT_TRAITS_MEMBER(id)
   IPC_STRUCT_TRAITS_MEMBER(size)
@@ -126,12 +134,12 @@ IPC_STRUCT_TRAITS_BEGIN(PP_VideoCaptureDeviceInfo_Dev)
   IPC_STRUCT_TRAITS_MEMBER(height)
   IPC_STRUCT_TRAITS_MEMBER(frames_per_second)
 IPC_STRUCT_TRAITS_END()
-
+*/
 IPC_STRUCT_TRAITS_BEGIN(PP_HostResolver_Private_Hint)
   IPC_STRUCT_TRAITS_MEMBER(family)
   IPC_STRUCT_TRAITS_MEMBER(flags)
 IPC_STRUCT_TRAITS_END()
-
+/* FIXME
 IPC_STRUCT_TRAITS_BEGIN(PP_PrintSettings_Dev)
   IPC_STRUCT_TRAITS_MEMBER(printable_area)
   IPC_STRUCT_TRAITS_MEMBER(content_area)
@@ -142,7 +150,7 @@ IPC_STRUCT_TRAITS_BEGIN(PP_PrintSettings_Dev)
   IPC_STRUCT_TRAITS_MEMBER(grayscale)
   IPC_STRUCT_TRAITS_MEMBER(format)
 IPC_STRUCT_TRAITS_END()
-
+*/
 IPC_STRUCT_TRAITS_BEGIN(PP_URLComponent_Dev)
   IPC_STRUCT_TRAITS_MEMBER(begin)
   IPC_STRUCT_TRAITS_MEMBER(len)
@@ -170,10 +178,12 @@ IPC_STRUCT_TRAITS_BEGIN(ppapi::DirEntry)
   IPC_STRUCT_TRAITS_MEMBER(is_dir)
 IPC_STRUCT_TRAITS_END()
 
+/* FIXME
 IPC_STRUCT_TRAITS_BEGIN(ppapi::FlashSiteSetting)
   IPC_STRUCT_TRAITS_MEMBER(site)
   IPC_STRUCT_TRAITS_MEMBER(permission)
 IPC_STRUCT_TRAITS_END()
+*/
 
 IPC_STRUCT_TRAITS_BEGIN(ppapi::ViewData)
   IPC_STRUCT_TRAITS_MEMBER(rect)
@@ -192,11 +202,22 @@ IPC_STRUCT_TRAITS_BEGIN(PP_TouchPoint)
   IPC_STRUCT_TRAITS_MEMBER(pressure)
 IPC_STRUCT_TRAITS_END()
 
+/*
+FIXME:
 IPC_STRUCT_TRAITS_BEGIN(ppapi::Preferences)
   IPC_STRUCT_TRAITS_MEMBER(standard_font_family_map)
   IPC_STRUCT_TRAITS_MEMBER(fixed_font_family_map)
   IPC_STRUCT_TRAITS_MEMBER(serif_font_family_map)
   IPC_STRUCT_TRAITS_MEMBER(sans_serif_font_family_map)
+  IPC_STRUCT_TRAITS_MEMBER(default_font_size)
+  IPC_STRUCT_TRAITS_MEMBER(default_fixed_font_size)
+  IPC_STRUCT_TRAITS_MEMBER(number_of_cpu_cores)
+  IPC_STRUCT_TRAITS_MEMBER(is_3d_supported)
+  IPC_STRUCT_TRAITS_MEMBER(is_stage3d_supported)
+IPC_STRUCT_TRAITS_END()
+*/
+
+IPC_STRUCT_TRAITS_BEGIN(ppapi::Preferences)
   IPC_STRUCT_TRAITS_MEMBER(default_font_size)
   IPC_STRUCT_TRAITS_MEMBER(default_fixed_font_size)
   IPC_STRUCT_TRAITS_MEMBER(number_of_cpu_cores)
@@ -272,6 +293,7 @@ IPC_STRUCT_TRAITS_BEGIN(ppapi::URLResponseInfoData)
   IPC_STRUCT_TRAITS_MEMBER(redirect_url)
   IPC_STRUCT_TRAITS_MEMBER(body_as_file_ref)
 IPC_STRUCT_TRAITS_END()
+/* FIXME
 
 IPC_STRUCT_TRAITS_BEGIN(ppapi::NetworkInfo)
   IPC_STRUCT_TRAITS_MEMBER(name)
@@ -291,7 +313,7 @@ IPC_STRUCT_TRAITS_BEGIN(ppapi::proxy::PPPDecryptor_Buffer)
 IPC_STRUCT_TRAITS_END()
 
 #endif  // !defined(OS_NACL) && !defined(NACL_WIN64)
-
+*/
 // These are from the browser to the plugin.
 // Loads the given plugin.
 IPC_MESSAGE_CONTROL2(PpapiMsg_LoadPlugin,
@@ -348,6 +370,8 @@ IPC_SYNC_MESSAGE_CONTROL1_1(PpapiMsg_SupportsInterface,
                             std::string /* interface_name */,
                             bool /* result */)
 
+#if 0
+// FIXME:
 #if !defined(OS_NACL) && !defined(NACL_WIN64)
 // Network state notification from the browser for implementing
 // PPP_NetworkState_Dev.
@@ -420,6 +444,7 @@ IPC_SYNC_MESSAGE_CONTROL2_1(PpapiMsg_ConnectToPlugin,
                             IPC::PlatformFileForTransit /* handle */,
                             int32_t /* result */)
 #endif  // !defined(OS_NACL) && !defined(NACL_WIN64)
+#endif // 0
 
 // PPB_Audio.
 
@@ -449,10 +474,13 @@ IPC_MESSAGE_ROUTED2(
     ppapi::HostResource /* filesystem */,
     int32_t /* result */)
 
+#if 0
+// FIXME:
 // PPB_Graphics3D.
 IPC_MESSAGE_ROUTED2(PpapiMsg_PPBGraphics3D_SwapBuffersACK,
                     ppapi::HostResource /* graphics_3d */,
                     int32_t /* pp_error */)
+#endif // 0
 
 // PPB_ImageData.
 IPC_MESSAGE_ROUTED1(PpapiMsg_PPBImageData_NotifyUnusedImageData,
@@ -515,10 +543,13 @@ IPC_MESSAGE_ROUTED2(PpapiMsg_PPPClass_Deallocate,
                     int64 /* ppp_class */,
                     int64 /* object */)
 
+#if 0
+// FIXME:
 // PPP_Graphics3D_Dev.
 IPC_MESSAGE_ROUTED1(PpapiMsg_PPPGraphics3D_ContextLost,
                     PP_Instance /* instance */)
 
+#endif // 0
 // PPP_InputEvent.
 IPC_MESSAGE_ROUTED2(PpapiMsg_PPPInputEvent_HandleInputEvent,
                     PP_Instance /* instance */,
@@ -553,6 +584,8 @@ IPC_MESSAGE_ROUTED2(PpapiMsg_PPPMessaging_HandleMessage,
                     PP_Instance /* instance */,
                     ppapi::proxy::SerializedVar /* message */)
 
+#if 0
+// FIXME:
 // PPP_MouseLock.
 IPC_MESSAGE_ROUTED1(PpapiMsg_PPPMouseLock_MouseLockLost,
                     PP_Instance /* instance */)
@@ -580,6 +613,7 @@ IPC_SYNC_MESSAGE_ROUTED1_1(PpapiMsg_PPPPrinting_IsScalingDisabled,
                            PP_Instance /* instance */,
                            bool /* result */)
 
+#endif // 0
 // PPP_TextInput.
 IPC_MESSAGE_ROUTED2(PpapiMsg_PPPTextInput_RequestSurroundingText,
                    PP_Instance /* instance */,
@@ -598,14 +632,16 @@ IPC_MESSAGE_ROUTED0(PpapiMsg_PPBURLLoader_ReadResponseBody_Ack)
 IPC_MESSAGE_ROUTED2(PpapiMsg_PPBURLLoader_CallbackComplete,
                     ppapi::HostResource /* loader */,
                     int32_t /* result */)
-#if !defined(OS_NACL) && !defined(NACL_WIN64)
+//FIXME #if !defined(OS_NACL) && !defined(NACL_WIN64)
+
 // PPB_Broker.
 IPC_MESSAGE_ROUTED3(
     PpapiMsg_PPBBroker_ConnectComplete,
     ppapi::HostResource /* broker */,
     IPC::PlatformFileForTransit /* handle */,
     int32_t /* result */)
-
+#if 0
+FIXME
 // PPP_ContentDecryptor_Dev
 IPC_MESSAGE_ROUTED4(PpapiMsg_PPPContentDecryptor_GenerateKeyRequest,
                     PP_Instance /* instance */,
@@ -647,7 +683,7 @@ IPC_MESSAGE_ROUTED4(PpapiMsg_PPPContentDecryptor_DecryptAndDecode,
                     PP_DecryptorStreamType /* decoder_type */,
                     ppapi::proxy::PPPDecryptor_Buffer /* buffer */,
                     std::string /* serialized_block_info */)
-#endif  // !defined(OS_NACL) && !defined(NACL_WIN64)
+//FIXME #endif  // !defined(OS_NACL) && !defined(NACL_WIN64)
 
 // PPB_TCPSocket_Private.
 IPC_MESSAGE_ROUTED5(PpapiMsg_PPBTCPSocket_ConnectACK,
@@ -671,6 +707,7 @@ IPC_MESSAGE_ROUTED4(PpapiMsg_PPBTCPSocket_WriteACK,
                     uint32 /* socket_id */,
                     bool /* succeeded */,
                     int32_t /* bytes_written */)
+#endif // 0
 
 // PPB_URLLoader_Trusted
 IPC_MESSAGE_ROUTED1(
@@ -713,6 +750,8 @@ IPC_SYNC_MESSAGE_ROUTED1_1(PpapiMsg_PPPInstancePrivate_GetInstanceObject,
                            PP_Instance /* instance */,
                            ppapi::proxy::SerializedVar /* result */)
 
+#if 0
+// FIXME:
 // PPB_VideoDecoder_Dev.
 // (Messages from renderer to plugin to notify it to run callbacks.)
 IPC_MESSAGE_ROUTED3(PpapiMsg_PPBVideoDecoder_EndOfBitstreamACK,
@@ -742,6 +781,7 @@ IPC_MESSAGE_ROUTED2(PpapiMsg_PPPVideoDecoder_NotifyError,
                     ppapi::HostResource /* video_decoder */,
                     PP_VideoDecodeError_Dev /* error */)
 #endif  // !defined(OS_NACL) && !defined(NACL_WIN64)
+#endif // 0
 
 // -----------------------------------------------------------------------------
 // These are from the plugin to the renderer.
@@ -813,6 +853,8 @@ IPC_MESSAGE_ROUTED2(PpapiHostMsg_PPBFileSystem_Open,
                     ppapi::HostResource /* result */,
                     int64_t /* expected_size */)
 
+#if 0
+// FIXME:
 // PPB_Graphics3D.
 IPC_SYNC_MESSAGE_ROUTED3_1(PpapiHostMsg_PPBGraphics3D_Create,
                            PP_Instance /* instance */,
@@ -850,7 +892,7 @@ IPC_SYNC_MESSAGE_ROUTED2_1(PpapiHostMsg_PPBGraphics3D_GetTransferBuffer,
                            ppapi::proxy::SerializedHandle /* transfer_buffer */)
 IPC_MESSAGE_ROUTED1(PpapiHostMsg_PPBGraphics3D_SwapBuffers,
                     ppapi::HostResource /* graphics_3d */)
-
+#endif // 0
 // PPB_ImageData.
 IPC_SYNC_MESSAGE_ROUTED4_3(PpapiHostMsg_PPBImageData_Create,
                            PP_Instance /* instance */,
@@ -932,13 +974,18 @@ IPC_SYNC_MESSAGE_ROUTED2_1(PpapiHostMsg_PPBInstance_DocumentCanAccessDocument,
                            PP_Instance /* active */,
                            PP_Instance /* target */,
                            PP_Bool /* result */)
+#if 0
+// FIXME:
 IPC_SYNC_MESSAGE_ROUTED1_2(PpapiHostMsg_PPBInstance_GetDocumentURL,
                            PP_Instance /* active */,
                            PP_URLComponents_Dev /* components */,
                            ppapi::proxy::SerializedVar /* result */)
+#endif // 0
 IPC_SYNC_MESSAGE_ROUTED1_1(PpapiHostMsg_PPBInstance_GetPluginInstanceURL,
                            PP_Instance /* active */,
                            ppapi::proxy::SerializedVar /* result */)
+#if 0
+// FIXME:
 IPC_MESSAGE_ROUTED4(PpapiHostMsg_PPBInstance_SetCursor,
                     PP_Instance /* instance */,
                     int32_t /* type */,
@@ -958,6 +1005,7 @@ IPC_MESSAGE_ROUTED4(PpapiHostMsg_PPBInstance_UpdateSurroundingText,
                     std::string /* text */,
                     uint32_t /* caret */,
                     uint32_t /* anchor */)
+#endif // 0
 
 // PPB_URLLoader.
 IPC_SYNC_MESSAGE_ROUTED1_1(PpapiHostMsg_PPBURLLoader_Create,
@@ -1047,6 +1095,8 @@ IPC_SYNC_MESSAGE_ROUTED1_1(PpapiHostMsg_PPBBroker_Create,
                            ppapi::HostResource /* result_resource */)
 IPC_MESSAGE_ROUTED1(PpapiHostMsg_PPBBroker_Connect,
                     ppapi::HostResource /* broker */)
+#if 0
+FIXME
 
 // PPB_Buffer.
 IPC_SYNC_MESSAGE_ROUTED2_2(
@@ -1110,7 +1160,7 @@ IPC_MESSAGE_CONTROL1(PpapiHostMsg_PPBNetworkMonitor_Start,
                      uint32 /* plugin_dispatcher_id */)
 IPC_MESSAGE_CONTROL1(PpapiHostMsg_PPBNetworkMonitor_Stop,
                      uint32 /* plugin_dispatcher_id */)
-
+#endif // 0
 // PPB_HostResolver_Private.
 IPC_MESSAGE_CONTROL5(PpapiHostMsg_PPBHostResolver_Resolve,
                      int32 /* routing_id */,
@@ -1119,6 +1169,8 @@ IPC_MESSAGE_CONTROL5(PpapiHostMsg_PPBHostResolver_Resolve,
                      ppapi::HostPortPair /* host_port */,
                      PP_HostResolver_Private_Hint /* hint */)
 
+#if 0
+FIXME
 #if !defined(OS_NACL) && !defined(NACL_WIN64)
 // PPB_PDF
 IPC_SYNC_MESSAGE_ROUTED3_1(
@@ -1256,6 +1308,7 @@ IPC_SYNC_MESSAGE_CONTROL1_2(PpapiHostMsg_PPBX509Certificate_ParseDER,
                             std::vector<char> /* der */,
                             bool /* succeeded */,
                             ppapi::PPB_X509Certificate_Fields /* result */)
+#endif // 0
 
 //-----------------------------------------------------------------------------
 // Resource call/reply messages.
@@ -1316,6 +1369,8 @@ IPC_SYNC_MESSAGE_CONTROL2_2(PpapiHostMsg_ResourceSyncCall,
 //-----------------------------------------------------------------------------
 // Messages for resources using call/reply above.
 
+#if 0
+// FIXME:
 // Broker ----------------------------------------------------------------------
 IPC_MESSAGE_CONTROL0(PpapiHostMsg_Broker_Create)
 
@@ -1323,6 +1378,7 @@ IPC_MESSAGE_CONTROL0(PpapiHostMsg_Broker_Create)
 // The response is contained in the error value of the
 // ResourceMessageReplyParams in the reply message.
 IPC_MESSAGE_CONTROL0(PpapiHostMsg_Broker_IsAllowed)
+#endif // 0
 
 // File chooser.
 IPC_MESSAGE_CONTROL0(PpapiHostMsg_FileChooser_Create)
@@ -1366,6 +1422,8 @@ IPC_MESSAGE_CONTROL1(PpapiPluginMsg_FileIO_GetOSFileDescriptorReply,
                      int32_t /* file descriptor */)
 IPC_MESSAGE_CONTROL0(PpapiPluginMsg_FileIO_GeneralReply)
 
+#if 0
+// FIXME:
 // Flash device ID.
 IPC_MESSAGE_CONTROL0(PpapiHostMsg_FlashDeviceID_Create)
 IPC_MESSAGE_CONTROL0(PpapiHostMsg_FlashDeviceID_GetDeviceID)
@@ -1383,7 +1441,7 @@ IPC_MESSAGE_CONTROL0(PpapiHostMsg_Gamepad_RequestMemory)
 // actual handle is passed in the ReplyParams struct.
 IPC_MESSAGE_CONTROL0(PpapiPluginMsg_Gamepad_SendMemory)
 
-
+#endif // 0
 // Graphics2D, plugin -> host
 IPC_MESSAGE_CONTROL2(PpapiHostMsg_Graphics2D_Create,
                      PP_Size /* size */,
@@ -1411,13 +1469,15 @@ IPC_MESSAGE_CONTROL2(PpapiHostMsg_Graphics2D_ReadImageData,
                      PP_Point /* top_left */)
 IPC_MESSAGE_CONTROL0(PpapiPluginMsg_Graphics2D_ReadImageDataAck)
 
+#if 0
+FIXME
 
 // Printing.
 IPC_MESSAGE_CONTROL0(PpapiHostMsg_Printing_Create)
 IPC_MESSAGE_CONTROL0(PpapiHostMsg_Printing_GetDefaultPrintSettings)
 IPC_MESSAGE_CONTROL1(PpapiPluginMsg_Printing_GetDefaultPrintSettingsReply,
                      PP_PrintSettings_Dev /* print_settings */)
-
+#endif // 0
 // WebSocket ------------------------------------------------------------------
 IPC_MESSAGE_CONTROL0(PpapiHostMsg_WebSocket_Create)
 
@@ -1511,6 +1571,8 @@ IPC_MESSAGE_CONTROL0(PpapiPluginMsg_AudioInput_OpenReply)
 IPC_MESSAGE_CONTROL1(PpapiHostMsg_AudioInput_StartOrStop, bool /* capture */)
 IPC_MESSAGE_CONTROL0(PpapiHostMsg_AudioInput_Close)
 
+#if 0
+FIXME
 // BrowserFont -----------------------------------------------------------------
 
 IPC_MESSAGE_CONTROL0(PpapiHostMsg_BrowserFontSingleton_Create)
@@ -1582,7 +1644,7 @@ IPC_MESSAGE_CONTROL1(PpapiHostMsg_Flash_IsRectTopmost,
 // Notifies the renderer to invoke printing for the given plugin instance. No
 // reply is sent.
 IPC_MESSAGE_CONTROL0(PpapiHostMsg_Flash_InvokePrinting)
-
+#endif // 0
 // DeviceEnumeration -----------------------------------------------------------
 // Device enumeration messages used by audio input and video capture.
 IPC_MESSAGE_CONTROL0(PpapiHostMsg_DeviceEnumeration_EnumerateDevices)
@@ -1614,6 +1676,8 @@ IPC_MESSAGE_CONTROL3(PpapiHostMsg_FlashClipboard_WriteData,
                      std::vector<uint32_t> /* formats */,
                      std::vector<std::string> /* data */)
 
+#if 0
+FIXME
 // Flash file.
 IPC_MESSAGE_CONTROL0(PpapiHostMsg_FlashFile_Create)
 IPC_MESSAGE_CONTROL2(PpapiHostMsg_FlashFile_OpenFile,
@@ -1704,5 +1768,6 @@ IPC_MESSAGE_CONTROL1(PpapiPluginMsg_VideoCapture_OnError,
                      uint32_t /* error */)
 IPC_MESSAGE_CONTROL1(PpapiPluginMsg_VideoCapture_OnBufferReady,
                      uint32_t /* buffer */)
+#endif // 0
 
 #endif  // !defined(OS_NACL) && !defined(NACL_WIN64)

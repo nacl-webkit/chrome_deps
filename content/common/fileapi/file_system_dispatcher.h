@@ -15,13 +15,13 @@
 #include "ipc/ipc_listener.h"
 #include "ipc/ipc_platform_file.h"
 #include "webkit/fileapi/file_system_callback_dispatcher.h"
-#include "webkit/fileapi/file_system_types.h"
+#include "FileSystemType.h"
 
 namespace base {
-class FilePath;
 struct PlatformFileInfo;
 }
 
+class FilePath;
 class GURL;
 
 namespace content {
@@ -38,12 +38,12 @@ class FileSystemDispatcher : public IPC::Listener {
   virtual bool OnMessageReceived(const IPC::Message& msg) OVERRIDE;
 
   bool OpenFileSystem(const GURL& origin_url,
-                      fileapi::FileSystemType type,
+                      WebCore::FileSystemType type,
                       long long size,
                       bool create,
                       fileapi::FileSystemCallbackDispatcher* dispatcher);
   bool DeleteFileSystem(const GURL& origin_url,
-                        fileapi::FileSystemType type,
+                        WebCore::FileSystemType type,
                         fileapi::FileSystemCallbackDispatcher* dispatcher);
   bool Move(const GURL& src_path,
             const GURL& dest_path,
@@ -102,7 +102,7 @@ class FileSystemDispatcher : public IPC::Listener {
   void OnDidSucceed(int request_id);
   void OnDidReadMetadata(int request_id,
                          const base::PlatformFileInfo& file_info,
-                         const base::FilePath& platform_path);
+                         const FilePath& platform_path);
   void OnDidReadDirectory(
       int request_id,
       const std::vector<base::FileUtilProxy::Entry>& entries,

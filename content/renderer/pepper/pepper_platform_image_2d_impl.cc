@@ -2,12 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "content/renderer/pepper/pepper_platform_image_2d_impl.h"
 
 #include "build/build_config.h"
+/* FIXME
 #include "content/common/view_messages.h"
 #include "content/renderer/render_thread_impl.h"
-#include "ui/surface/transport_dib.h"
+*/
+#include "transport_dib.h"
 
 namespace content {
 

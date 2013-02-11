@@ -115,12 +115,14 @@ class ResourceCreationAPI {
   virtual PP_Resource CreateGraphics2D(PP_Instance instance,
                                        const PP_Size& size,
                                        PP_Bool is_always_opaque) = 0;
+/* FIXME
   virtual PP_Resource CreateGraphics3D(PP_Instance instance,
                                        PP_Resource share_context,
                                        const int32_t* attrib_list) = 0;
   virtual PP_Resource CreateGraphics3DRaw(PP_Instance instance,
                                           PP_Resource share_context,
                                           const int32_t* attrib_list) = 0;
+*/
   virtual PP_Resource CreateHostResolverPrivate(PP_Instance instance) = 0;
   virtual PP_Resource CreateImageData(PP_Instance instance,
                                       PP_ImageDataFormat format,
@@ -130,6 +132,7 @@ class ResourceCreationAPI {
                                           PP_ImageDataFormat format,
                                           const PP_Size& size,
                                           PP_Bool init_to_zero) = 0;
+/* FIXME
   virtual PP_Resource CreateNetworkMonitor(
       PP_Instance instance,
       PPB_NetworkMonitor_Callback callback,
@@ -138,11 +141,15 @@ class ResourceCreationAPI {
   virtual PP_Resource CreateTCPServerSocketPrivate(PP_Instance instance) = 0;
   virtual PP_Resource CreateTCPSocketPrivate(PP_Instance instace) = 0;
   virtual PP_Resource CreateUDPSocketPrivate(PP_Instance instace) = 0;
+*/
   virtual PP_Resource CreateWebSocket(PP_Instance instance) = 0;
+/* FIXME
   virtual PP_Resource CreateX509CertificatePrivate(PP_Instance instance) = 0;
 #if !defined(OS_NACL)
+  */
   virtual PP_Resource CreateAudioInput(PP_Instance instance) = 0;
   virtual PP_Resource CreateBroker(PP_Instance instance) = 0;
+/* FIXME
   virtual PP_Resource CreateBrowserFont(
       PP_Instance instance,
       const PP_BrowserFont_Trusted_Description* description) = 0;
@@ -165,7 +172,7 @@ class ResourceCreationAPI {
       PP_Resource context3d_id,
       PP_VideoDecoder_Profile profile) = 0;
 #endif  // !defined(OS_NACL)
-
+*/
   static const ApiID kApiID = API_ID_RESOURCE_CREATION;
 };
 

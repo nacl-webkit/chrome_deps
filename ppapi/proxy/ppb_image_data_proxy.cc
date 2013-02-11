@@ -28,8 +28,8 @@
 #include "ppapi/thunk/thunk.h"
 
 #if !defined(OS_NACL)
-#include "skia/ext/platform_canvas.h"
-#include "ui/surface/transport_dib.h"
+#include "WebCanvas.h"
+#include "transport_dib.h"
 #endif
 
 using ppapi::thunk::PPB_ImageData_API;

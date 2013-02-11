@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "content/renderer/pepper/renderer_ppapi_host_impl.h"
 
 #include "base/file_path.h"
@@ -10,13 +11,13 @@
 #include "content/renderer/pepper/pepper_in_process_resource_creation.h"
 #include "content/renderer/pepper/pepper_in_process_router.h"
 #include "content/renderer/pepper/pepper_plugin_delegate_impl.h"
-#include "content/renderer/render_view_impl.h"
-#include "content/renderer/render_widget_fullscreen_pepper.h"
+#include "WebPage.h"
+// FIXME: #include "content/renderer/render_widget_fullscreen_pepper.h"
 #include "ppapi/host/ppapi_host.h"
 #include "ppapi/proxy/host_dispatcher.h"
-#include "third_party/WebKit/Source/Platform/chromium/public/WebRect.h"
-#include "ui/gfx/point.h"
-#include "webkit/plugins/ppapi/fullscreen_container.h"
+// FIXME: #include "webkit/plugins/ppapi/fullscreen_container.h"
+#include "PepperPluginImpl.h"
+#include "content_renderer_pepper_host_factory.h"
 #include "webkit/plugins/ppapi/host_globals.h"
 #include "webkit/plugins/ppapi/plugin_delegate.h"
 #include "webkit/plugins/ppapi/plugin_module.h"
@@ -25,15 +26,18 @@
 using webkit::ppapi::HostGlobals;
 using webkit::ppapi::PluginInstance;
 using webkit::ppapi::PluginModule;
+using WebKit::WebPage;
+using webkit::PepperPluginDelegate;
 
 namespace content {
-
+/*
+FIXME:
 // static
 CONTENT_EXPORT RendererPpapiHost*
 RendererPpapiHost::CreateExternalPluginModule(
     scoped_refptr<PluginModule> plugin_module,
     PluginInstance* plugin_instance,
-    const FilePath& file_path,
+    const WTF::String& file_path,
     ppapi::PpapiPermissions permissions,
     const IPC::ChannelHandle& channel_handle,
     base::ProcessId plugin_pid,
@@ -54,7 +58,7 @@ RendererPpapiHost::CreateExternalPluginModule(
   }
   return renderer_ppapi_host;
 }
-
+*/
 // static
 CONTENT_EXPORT RendererPpapiHost*
 RendererPpapiHost::GetForPPInstance(PP_Instance instance) {
@@ -69,11 +73,13 @@ RendererPpapiHostImpl::RendererPpapiHostImpl(
     : module_(module),
       dispatcher_(dispatcher) {
   // Hook the PpapiHost up to the dispatcher for out-of-process communication.
+/* FIXME
   ppapi_host_.reset(
       new ppapi::host::PpapiHost(dispatcher, permissions));
   ppapi_host_->AddHostFactoryFilter(scoped_ptr<ppapi::host::HostFactory>(
       new ContentRendererPepperHostFactory(this)));
   dispatcher->AddFilter(ppapi_host_.get());
+*/
   is_running_in_process_ = false;
 }
 
@@ -154,7 +160,7 @@ ppapi::host::PpapiHost* RendererPpapiHostImpl::GetPpapiHost() {
   return ppapi_host_.get();
 }
 
-RenderView* RendererPpapiHostImpl::GetRenderViewForInstance(
+WebPage* RendererPpapiHostImpl::GetRenderViewForInstance(
     PP_Instance instance) const {
   PluginInstance* instance_object = GetAndValidateInstance(instance);
   if (!instance_object)
@@ -188,7 +194,7 @@ webkit::ppapi::PluginInstance* RendererPpapiHostImpl::GetPluginInstance(
   return GetAndValidateInstance(instance);
 }
 
-WebKit::WebPluginContainer* RendererPpapiHostImpl::GetContainerForInstance(
+WebKit::PepperPluginContainer* RendererPpapiHostImpl::GetContainerForInstance(
       PP_Instance instance) const {
   PluginInstance* instance_object = GetAndValidateInstance(instance);
   if (!instance_object)
@@ -228,8 +234,9 @@ gfx::Point RendererPpapiHostImpl::PluginPointToRenderView(
   if (!plugin_instance)
     return pt;
 
-  RenderViewImpl* render_view = static_cast<RenderViewImpl*>(
+  WebPage* renderView = static_cast<WebPage*>(
       GetRenderViewForInstance(instance));
+/* FIXME
   if (plugin_instance->view_data().is_fullscreen ||
       plugin_instance->flash_fullscreen()) {
     WebKit::WebRect window_rect = render_view->windowRect();
@@ -239,6 +246,7 @@ gfx::Point RendererPpapiHostImpl::PluginPointToRenderView(
   }
   return gfx::Point(pt.x() + plugin_instance->view_data().rect.point.x,
                     pt.y() + plugin_instance->view_data().rect.point.y);
+*/
 }
 
 IPC::PlatformFileForTransit RendererPpapiHostImpl::ShareHandleWithRemote(

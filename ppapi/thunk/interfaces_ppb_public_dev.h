@@ -9,13 +9,16 @@
 
 // Map the old dev console interface to the stable one (which is the same) to
 // keep Flash, etc. working.
+/* FIXME
 PROXIED_IFACE(PPB_Instance, "PPB_Console(Dev);0.1", PPB_Console_1_0)
 PROXIED_IFACE(NoAPIName, PPB_CURSOR_CONTROL_DEV_INTERFACE_0_4,
               PPB_CursorControl_Dev_0_4)
+*/
 PROXIED_IFACE(NoAPIName, PPB_FILECHOOSER_DEV_INTERFACE_0_5,
               PPB_FileChooser_Dev_0_5)
 PROXIED_IFACE(NoAPIName, PPB_FILECHOOSER_DEV_INTERFACE_0_6,
               PPB_FileChooser_Dev_0_6)
+/* FIXME
 UNPROXIED_IFACE(PPB_Find, PPB_FIND_DEV_INTERFACE_0_3, PPB_Find_Dev_0_3)
 PROXIED_IFACE(NoAPIName, PPB_IME_INPUT_EVENT_DEV_INTERFACE_0_2,
               PPB_IMEInputEvent_Dev_0_2)
@@ -74,5 +77,5 @@ PROXIED_IFACE(PPB_VideoDecoder, PPB_VIDEODECODER_DEV_INTERFACE_0_16,
 UNPROXIED_IFACE(PPB_Widget, PPB_WIDGET_DEV_INTERFACE_0_3, PPB_Widget_Dev_0_3)
 UNPROXIED_IFACE(PPB_Widget, PPB_WIDGET_DEV_INTERFACE_0_4, PPB_Widget_Dev_0_4)
 #endif  // !defined(OS_NACL)
-
+*/
 #include "ppapi/thunk/interfaces_postamble.h"

@@ -14,7 +14,7 @@
 #include "ppapi/shared_impl/ppapi_globals.h"
 #include "ppapi/shared_impl/var.h"
 #include "ppapi/shared_impl/var_tracker.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebSocket.h"
+// FIXME: #include "third_party/WebKit/Source/WebKit/chromium/public/WebSocket.h"
 
 namespace {
 
@@ -128,6 +128,7 @@ int32_t WebSocketResource::Connect(
 int32_t WebSocketResource::Close(uint16_t code,
                                  const PP_Var& reason,
                                  scoped_refptr<TrackedCallback> callback) {
+/* FIXME
   if (TrackedCallback::IsPending(close_callback_))
     return PP_ERROR_INPROGRESS;
   if (state_ == PP_WEBSOCKETREADYSTATE_INVALID)
@@ -199,6 +200,7 @@ int32_t WebSocketResource::Close(uint16_t code,
   Call<PpapiPluginMsg_WebSocket_CloseReply>(RENDERER, msg,
       base::Bind(&WebSocketResource::OnPluginMsgCloseReply, this));
   return PP_OK_COMPLETIONPENDING;
+*/
 }
 
 int32_t WebSocketResource::ReceiveMessage(

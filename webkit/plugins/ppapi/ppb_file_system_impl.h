@@ -7,7 +7,7 @@
 
 #include "base/basictypes.h"
 #include "base/compiler_specific.h"
-#include "googleurl/src/gurl.h"
+#include "gurl.h"
 #include "ppapi/c/pp_file_info.h"
 #include "ppapi/c/ppb_file_system.h"
 #include "ppapi/shared_impl/resource.h"

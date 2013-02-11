@@ -63,6 +63,8 @@ int32_t PPB_Instance_Shared::ValidateRequestInputEvents(
 bool PPB_Instance_Shared::ValidateSetCursorParams(PP_MouseCursor_Type type,
                                                   PP_Resource image,
                                                   const PP_Point* hot_spot) {
+/*
+FIXME
   if (static_cast<int>(type) < static_cast<int>(PP_MOUSECURSOR_TYPE_CUSTOM) ||
       static_cast<int>(type) > static_cast<int>(PP_MOUSECURSOR_TYPE_GRABBING))
     return false;  // Cursor type out of range.
@@ -98,6 +100,7 @@ bool PPB_Instance_Shared::ValidateSetCursorParams(PP_MouseCursor_Type type,
       hot_spot->y < 0 || hot_spot->y >= desc.size.height)
     return false;
   return true;
+*/
 }
 
 }  // namespace ppapi

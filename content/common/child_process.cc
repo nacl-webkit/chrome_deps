@@ -79,7 +79,7 @@ ChildProcess::~ChildProcess() {
 ChildThread* ChildProcess::main_thread() {
   return main_thread_.get();
 }
-
+/* FIXME
 void ChildProcess::set_main_thread(ChildThread* thread) {
   main_thread_.reset(thread);
 }
@@ -144,5 +144,5 @@ void ChildProcess::WaitForDebugger(const std::string& label) {
 #endif  // defined(OS_ANDROID)
 #endif  // defined(OS_POSIX)
 }
-
+*/
 }  // namespace content

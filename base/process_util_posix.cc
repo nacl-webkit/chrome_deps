@@ -247,11 +247,11 @@ bool KillProcess(ProcessHandle process_id, int exit_code, bool wait) {
   if (result && wait) {
     int tries = 60;
 
-    if (RunningOnValgrind()) {
+// FIXME:    if (RunningOnValgrind()) {
       // Wait for some extra time when running under Valgrind since the child
       // processes may take some time doing leak checking.
-      tries *= 2;
-    }
+// FIXME:      tries *= 2;
+// FIXME:    }
 
     unsigned sleep_ms = 4;
 

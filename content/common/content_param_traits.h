@@ -13,11 +13,12 @@
 
 #ifndef CONTENT_COMMON_CONTENT_PARAM_TRAITS_H_
 #define CONTENT_COMMON_CONTENT_PARAM_TRAITS_H_
-
+/*FIXME
 #include "content/common/content_param_traits_macros.h"
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebInputEvent.h"
 #include "webkit/glue/npruntime_util.h"
 #include "webkit/glue/webcursor.h"
+*/
 
 namespace net {
 class IPEndPoint;

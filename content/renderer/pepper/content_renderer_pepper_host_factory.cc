@@ -62,13 +62,14 @@ scoped_ptr<ResourceHost> ContentRendererPepperHostFactory::CreateResourceHost(
       */
   }
 
-/* FIXME
   // Dev interfaces.
   if (GetPermissions().HasPermission(ppapi::PERMISSION_DEV)) {
     switch (message.type()) {
+    /* FIXME
       case PpapiHostMsg_AudioInput_Create::ID:
         return scoped_ptr<ResourceHost>(new PepperAudioInputHost(
             host_, instance, params.pp_resource()));
+    */
       case PpapiHostMsg_FileChooser_Create::ID:
         return scoped_ptr<ResourceHost>(new PepperFileChooserHost(
             host_, instance, params.pp_resource()));
@@ -105,3 +106,4 @@ ContentRendererPepperHostFactory::GetPermissions() const {
 }
 
 }  // namespace content
+

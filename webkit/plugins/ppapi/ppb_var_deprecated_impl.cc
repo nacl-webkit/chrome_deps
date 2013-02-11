@@ -1,11 +1,7 @@
 // Copyright (c) 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-<<<<<<< HEAD
-
-=======
 #include "config.h"
->>>>>>> 85c62b5... File chooser API implementation.
 #include "webkit/plugins/ppapi/ppb_var_deprecated_impl.h"
 
 #include <limits>
@@ -14,13 +10,8 @@
 #include "ppapi/c/ppb_var.h"
 #include "ppapi/c/pp_var.h"
 #include "ppapi/shared_impl/ppb_var_shared.h"
-<<<<<<< HEAD
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebBindings.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebScopedUserGesture.h"
-=======
 #include "npruntime_impl.h"
 #include "UserGestureIndicator.h"
->>>>>>> 85c62b5... File chooser API implementation.
 #include "webkit/plugins/ppapi/common.h"
 #include "webkit/plugins/ppapi/host_globals.h"
 #include "webkit/plugins/ppapi/npapi_glue.h"
@@ -33,10 +24,6 @@ using ppapi::NPObjectVar;
 using ppapi::PpapiGlobals;
 using ppapi::StringVar;
 using ppapi::Var;
-<<<<<<< HEAD
-using WebKit::WebBindings;
-=======
->>>>>>> 85c62b5... File chooser API implementation.
 
 namespace webkit {
 namespace ppapi {
@@ -132,11 +119,7 @@ class ObjectAccessorTryCatch : public TryCatch {
   NPObjectVar* object() { return object_.get(); }
 
   PluginInstance* GetPluginInstance() {
-<<<<<<< HEAD
-    return HostGlobals::Get()->GetInstance(object()->pp_instance());
-=======
     return HostGlobals::Get()->getInstance(object()->pp_instance());
->>>>>>> 85c62b5... File chooser API implementation.
   }
 
  protected:
@@ -185,11 +168,7 @@ PP_Bool HasProperty(PP_Var var,
   ObjectAccessorWithIdentifierTryCatch accessor(var, name, exception);
   if (accessor.has_exception())
     return PP_FALSE;
-<<<<<<< HEAD
-  return BoolToPPBool(WebBindings::hasProperty(NULL,
-=======
   return BoolToPPBool(_NPN_HasProperty(NULL,
->>>>>>> 85c62b5... File chooser API implementation.
                                                accessor.object()->np_object(),
                                                accessor.identifier()));
 }
@@ -206,11 +185,7 @@ bool HasMethodDeprecated(PP_Var var,
   ObjectAccessorWithIdentifierTryCatch accessor(var, name, exception);
   if (accessor.has_exception())
     return false;
-<<<<<<< HEAD
-  return WebBindings::hasMethod(NULL, accessor.object()->np_object(),
-=======
   return _NPN_HasMethod(NULL, accessor.object()->np_object(),
->>>>>>> 85c62b5... File chooser API implementation.
                                 accessor.identifier());
 }
 
@@ -222,11 +197,7 @@ PP_Var GetProperty(PP_Var var,
     return PP_MakeUndefined();
 
   NPVariant result;
-<<<<<<< HEAD
-  if (!WebBindings::getProperty(NULL, accessor.object()->np_object(),
-=======
   if (!_NPN_GetProperty(NULL, accessor.object()->np_object(),
->>>>>>> 85c62b5... File chooser API implementation.
                                 accessor.identifier(), &result)) {
     // An exception may have been raised.
     accessor.SetException(kUnableToGetPropertyException);
@@ -234,11 +205,7 @@ PP_Var GetProperty(PP_Var var,
   }
 
   PP_Var ret = NPVariantToPPVar(accessor.GetPluginInstance(), &result);
-<<<<<<< HEAD
-  WebBindings::releaseVariantValue(&result);
-=======
   _NPN_ReleaseVariantValue(&result);
->>>>>>> 85c62b5... File chooser API implementation.
   return ret;
 }
 
@@ -255,11 +222,7 @@ void EnumerateProperties(PP_Var var,
 
   NPIdentifier* identifiers = NULL;
   uint32_t count = 0;
-<<<<<<< HEAD
-  if (!WebBindings::enumerate(NULL, accessor.object()->np_object(),
-=======
   if (!_NPN_Enumerate(NULL, accessor.object()->np_object(),
->>>>>>> 85c62b5... File chooser API implementation.
                               &identifiers, &count)) {
     accessor.SetException(kUnableToGetAllPropertiesException);
     return;
@@ -289,11 +252,7 @@ void SetPropertyDeprecated(PP_Var var,
     accessor.SetException(kInvalidValueException);
     return;
   }
-<<<<<<< HEAD
-  if (!WebBindings::setProperty(NULL, accessor.object()->np_object(),
-=======
   if (!_NPN_SetProperty(NULL, accessor.object()->np_object(),
->>>>>>> 85c62b5... File chooser API implementation.
                                 accessor.identifier(), &variant))
     accessor.SetException(kUnableToSetPropertyException);
 }
@@ -305,11 +264,7 @@ void DeletePropertyDeprecated(PP_Var var,
   if (accessor.has_exception())
     return;
 
-<<<<<<< HEAD
-  if (!WebBindings::removeProperty(NULL, accessor.object()->np_object(),
-=======
   if (!_NPN_RemoveProperty(NULL, accessor.object()->np_object(),
->>>>>>> 85c62b5... File chooser API implementation.
                                    accessor.identifier()))
     accessor.SetException(kUnableToRemovePropertyException);
 }
@@ -350,17 +305,10 @@ PP_Var InternalCallDeprecated(ObjectAccessorTryCatch* accessor,
 
   NPVariant result;
   if (identifier) {
-<<<<<<< HEAD
-    ok = WebBindings::invoke(NULL, accessor->object()->np_object(),
-                             identifier, args.get(), argc, &result);
-  } else {
-    ok = WebBindings::invokeDefault(NULL, accessor->object()->np_object(),
-=======
     ok = _NPN_Invoke(NULL, accessor->object()->np_object(),
                              identifier, args.get(), argc, &result);
   } else {
     ok = _NPN_InvokeDefault(NULL, accessor->object()->np_object(),
->>>>>>> 85c62b5... File chooser API implementation.
                                     args.get(), argc, &result);
   }
 
@@ -371,11 +319,7 @@ PP_Var InternalCallDeprecated(ObjectAccessorTryCatch* accessor,
   }
 
   PP_Var ret = NPVariantToPPVar(accessor->GetPluginInstance(), &result);
-<<<<<<< HEAD
-  WebBindings::releaseVariantValue(&result);
-=======
   _NPN_ReleaseVariantValue(&result);
->>>>>>> 85c62b5... File chooser API implementation.
   return ret;
 }
 
@@ -389,11 +333,7 @@ PP_Var CallDeprecated(PP_Var var,
     return PP_MakeUndefined();
   PluginInstance* plugin = accessor.GetPluginInstance();
   if (plugin && plugin->IsProcessingUserGesture()) {
-<<<<<<< HEAD
-    WebKit::WebScopedUserGesture user_gesture;
-=======
     WebCore::UserGestureIndicator user_gesture(WebCore::DefinitelyProcessingUserGesture);
->>>>>>> 85c62b5... File chooser API implementation.
     return InternalCallDeprecated(&accessor, method_name, argc, argv,
                                   exception);
   }
@@ -421,11 +361,7 @@ PP_Var Construct(PP_Var var,
   }
 
   NPVariant result;
-<<<<<<< HEAD
-  if (!WebBindings::construct(NULL, accessor.object()->np_object(),
-=======
   if (!_NPN_Construct(NULL, accessor.object()->np_object(),
->>>>>>> 85c62b5... File chooser API implementation.
                               args.get(), argc, &result)) {
     // An exception may have been raised.
     accessor.SetException(kUnableToConstructException);
@@ -433,11 +369,7 @@ PP_Var Construct(PP_Var var,
   }
 
   PP_Var ret = NPVariantToPPVar(accessor.GetPluginInstance(), &result);
-<<<<<<< HEAD
-  WebBindings::releaseVariantValue(&result);
-=======
   _NPN_ReleaseVariantValue(&result);
->>>>>>> 85c62b5... File chooser API implementation.
   return ret;
 }
 
@@ -455,11 +387,7 @@ bool IsInstanceOfDeprecated(PP_Var var,
 PP_Var CreateObjectDeprecated(PP_Instance pp_instance,
                               const PPP_Class_Deprecated* ppp_class,
                               void* ppp_class_data) {
-<<<<<<< HEAD
-  PluginInstance* instance = HostGlobals::Get()->GetInstance(pp_instance);
-=======
   PluginInstance* instance = HostGlobals::Get()->getInstance(pp_instance);
->>>>>>> 85c62b5... File chooser API implementation.
   if (!instance) {
     DLOG(ERROR) << "Create object passed an invalid instance.";
     return PP_MakeNull();
@@ -470,17 +398,10 @@ PP_Var CreateObjectDeprecated(PP_Instance pp_instance,
 PP_Var CreateObjectWithModuleDeprecated(PP_Module pp_module,
                                         const PPP_Class_Deprecated* ppp_class,
                                         void* ppp_class_data) {
-<<<<<<< HEAD
-  PluginModule* module = HostGlobals::Get()->GetModule(pp_module);
-  if (!module)
-    return PP_MakeNull();
-  return PluginObject::Create(module->GetSomeInstance(),
-=======
   PluginModule* module = HostGlobals::Get()->getModule(pp_module);
   if (!module)
     return PP_MakeNull();
   return PluginObject::Create(module->getSomeInstance(),
->>>>>>> 85c62b5... File chooser API implementation.
                               ppp_class, ppp_class_data);
 }
 

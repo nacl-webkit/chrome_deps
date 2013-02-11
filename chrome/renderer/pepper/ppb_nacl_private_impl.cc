@@ -3,7 +3,8 @@
 // found in the LICENSE file.
 
 #include "chrome/renderer/pepper/ppb_nacl_private_impl.h"
-
+/*
+FIXME:
 #ifndef DISABLE_NACL
 
 #include "base/command_line.h"
@@ -288,3 +289,24 @@ const PPB_NaCl_Private* PPB_NaCl_Private_Impl::GetInterface() {
 }
 
 #endif  // DISABLE_NACL
+
+*/
+
+const PPB_NaCl_Private nacl_interface = {
+  0, // &LaunchSelLdr,
+  0, // &StartPpapiProxy,
+  0, // &UrandomFD,
+  0, // &Are3DInterfacesDisabled,
+  0, // &EnableBackgroundSelLdrLaunch,
+  0, // &BrokerDuplicateHandle,
+  0, // &GetReadonlyPnaclFD,
+  0, // &CreateTemporaryFile,
+  0, // &IsOffTheRecord,
+  0, // &IsPnaclEnabled,
+  0, // &ReportNaClError
+};
+
+const PPB_NaCl_Private* PPB_NaCl_Private_Impl::GetInterface() {
+  return &nacl_interface;
+}
+

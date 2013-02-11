@@ -47,6 +47,7 @@ class QuotaDispatcher : public IPC::Listener {
   void QueryStorageUsageAndQuota(const GURL& gurl,
                                  quota::StorageType type,
                                  Callback* callback);
+/* FIXME
   void RequestStorageQuota(int render_view_id,
                            const GURL& gurl,
                            quota::StorageType type,
@@ -56,14 +57,16 @@ class QuotaDispatcher : public IPC::Listener {
   // Creates a new Callback instance for WebStorageQuotaCallbacks.
   static Callback* CreateWebStorageQuotaCallbacksWrapper(
       WebKit::WebStorageQuotaCallbacks* callbacks);
-
+*/
  private:
   // Message handlers.
   void DidQueryStorageUsageAndQuota(int request_id,
                                     int64 current_usage,
                                     int64 current_quota);
+/* FIXME
   void DidGrantStorageQuota(int request_id,
                             int64 granted_quota);
+*/
   void DidFail(int request_id, quota::QuotaStatusCode error);
 
   IDMap<Callback, IDMapOwnPointer> pending_quota_callbacks_;

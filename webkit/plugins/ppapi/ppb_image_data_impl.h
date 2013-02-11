@@ -11,7 +11,7 @@
 #include "ppapi/shared_impl/ppb_image_data_shared.h"
 #include "ppapi/shared_impl/resource.h"
 #include "ppapi/thunk/ppb_image_data_api.h"
-#include "third_party/skia/include/core/SkCanvas.h"
+#include "WebCanvas.h"
 #include "webkit/plugins/ppapi/plugin_delegate.h"
 #include "webkit/plugins/webkit_plugins_export.h"
 

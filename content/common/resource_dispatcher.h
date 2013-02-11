@@ -18,7 +18,7 @@
 #include "content/common/content_export.h"
 #include "ipc/ipc_listener.h"
 #include "ipc/ipc_sender.h"
-#include "webkit/glue/resource_loader_bridge.h"
+//FIXME #include "webkit/glue/resource_loader_bridge.h"
 
 namespace content {
 class ResourceDispatcherDelegate;
@@ -31,7 +31,7 @@ class CONTENT_EXPORT ResourceDispatcher : public IPC::Listener {
  public:
   explicit ResourceDispatcher(IPC::Sender* sender);
   virtual ~ResourceDispatcher();
-
+/* FIXME
   // IPC::Listener implementation.
   virtual bool OnMessageReceived(const IPC::Message& message) OVERRIDE;
 
@@ -175,7 +175,7 @@ class CONTENT_EXPORT ResourceDispatcher : public IPC::Listener {
   base::WeakPtrFactory<ResourceDispatcher> weak_factory_;
 
   ResourceDispatcherDelegate* delegate_;
-
+*/
   DISALLOW_COPY_AND_ASSIGN(ResourceDispatcher);
 };
 

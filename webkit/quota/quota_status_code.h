@@ -5,18 +5,18 @@
 #ifndef WEBKIT_QUOTA_QUOTA_STATUS_CODE_H_
 #define WEBKIT_QUOTA_QUOTA_STATUS_CODE_H_
 
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebStorageQuotaError.h"
+//#include "third_party/WebKit/Source/WebKit/chromium/public/WebStorageQuotaError.h"
 #include "webkit/storage/webkit_storage_export.h"
 
 namespace quota {
 
 enum QuotaStatusCode {
   kQuotaStatusOk = 0,
-  kQuotaErrorNotSupported = WebKit::WebStorageQuotaErrorNotSupported,
+  kQuotaErrorNotSupported = /*WebKit::WebStorageQuotaErrorNotSupported*/ 9,
   kQuotaErrorInvalidModification =
-      WebKit::WebStorageQuotaErrorInvalidModification,
-  kQuotaErrorInvalidAccess = WebKit::WebStorageQuotaErrorInvalidAccess,
-  kQuotaErrorAbort = WebKit::WebStorageQuotaErrorAbort,
+      /*WebKit::WebStorageQuotaErrorInvalidModification*/ 13,
+  kQuotaErrorInvalidAccess = /*WebKit::WebStorageQuotaErrorInvalidAccess*/ 15,
+  kQuotaErrorAbort = /*WebKit::WebStorageQuotaErrorAbort*/ 20 ,
   kQuotaStatusUnknown = -1,
 };
 

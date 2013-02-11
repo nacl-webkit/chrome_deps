@@ -48,8 +48,8 @@ class CONTENT_EXPORT PepperGraphics2DHost
   virtual bool BindToInstance(
       webkit::ppapi::PluginInstance* new_instance) OVERRIDE;
   virtual void Paint(WebKit::WebCanvas* canvas,
-                     const gfx::Rect& plugin_rect,
-                     const gfx::Rect& paint_rect) OVERRIDE;
+                     const WebCore::IntRect& plugin_rect,
+                     const WebCore::IntRect& paint_rect) OVERRIDE;
   virtual void ViewWillInitiatePaint() OVERRIDE;
   virtual void ViewInitiatedPaint() OVERRIDE;
   virtual void ViewFlushedPaint() OVERRIDE;

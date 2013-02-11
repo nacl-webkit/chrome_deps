@@ -2,14 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "content/common/quota_dispatcher.h"
 
 #include "base/basictypes.h"
 #include "content/common/child_thread.h"
 #include "content/common/quota_messages.h"
-#include "googleurl/src/gurl.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebStorageQuotaCallbacks.h"
-#include "third_party/WebKit/Source/WebKit/chromium/public/WebStorageQuotaType.h"
+#include "gurl.h"
+//#include "third_party/WebKit/Source/WebKit/chromium/public/WebStorageQuotaCallbacks.h"
+//#include "third_party/WebKit/Source/WebKit/chromium/public/WebStorageQuotaType.h"
 
 using quota::QuotaStatusCode;
 using quota::StorageType;
@@ -20,7 +21,7 @@ using WebKit::WebStorageQuotaType;
 
 namespace content {
 namespace {
-
+/* FIXME
 // QuotaDispatcher::Callback implementation for WebStorageQuotaCallbacks.
 class WebStorageQuotaDispatcherCallback : public QuotaDispatcher::Callback {
  public:
@@ -43,7 +44,7 @@ class WebStorageQuotaDispatcherCallback : public QuotaDispatcher::Callback {
   // Not owned (self-destructed).
   WebKit::WebStorageQuotaCallbacks* callbacks_;
 };
-
+*/
 }  // namespace
 
 QuotaDispatcher::QuotaDispatcher() {
@@ -60,8 +61,11 @@ QuotaDispatcher::~QuotaDispatcher() {
 bool QuotaDispatcher::OnMessageReceived(const IPC::Message& msg) {
   bool handled = true;
   IPC_BEGIN_MESSAGE_MAP(QuotaDispatcher, msg)
+#if 0
+    FIXME
     IPC_MESSAGE_HANDLER(QuotaMsg_DidGrantStorageQuota,
                         DidGrantStorageQuota)
+#endif // 0
     IPC_MESSAGE_HANDLER(QuotaMsg_DidQueryStorageUsageAndQuota,
                         DidQueryStorageUsageAndQuota);
     IPC_MESSAGE_HANDLER(QuotaMsg_DidFail, DidFail);
@@ -126,7 +130,7 @@ void QuotaDispatcher::DidFail(
   callback->DidFail(error);
   pending_quota_callbacks_.Remove(request_id);
 }
-
+/* FIXME
 COMPILE_ASSERT(int(WebKit::WebStorageQuotaTypeTemporary) == \
                int(quota::kStorageTypeTemporary), mismatching_enums);
 COMPILE_ASSERT(int(WebKit::WebStorageQuotaTypePersistent) == \
@@ -136,5 +140,5 @@ COMPILE_ASSERT(int(WebKit::WebStorageQuotaErrorNotSupported) == \
                int(quota::kQuotaErrorNotSupported), mismatching_enums);
 COMPILE_ASSERT(int(WebKit::WebStorageQuotaErrorAbort) == \
                int(quota::kQuotaErrorAbort), mismatching_enums);
-
+*/
 }  // namespace content

@@ -5,7 +5,7 @@
 // Multiply-included file, hence no include guard.
 
 #include "content/common/child_process_messages.h"
-
+/* FIXME
 #include "content/common/accessibility_messages.h"
 #include "content/common/appcache_messages.h"
 #include "content/common/browser_plugin_messages.h"
@@ -20,7 +20,10 @@
 #include "content/common/drag_messages.h"
 #include "content/common/drag_traits.h"
 #include "content/common/file_utilities_messages.h"
+*/
 #include "content/common/fileapi/file_system_messages.h"
+#include "content/public/common/common_param_traits.h"
+/*FIXME
 #include "content/common/fileapi/webblob_messages.h"
 #include "content/common/gamepad_messages.h"
 #include "content/common/geolocation_messages.h"
@@ -47,3 +50,4 @@
 #include "content/common/utility_messages.h"
 #include "content/common/view_messages.h"
 #include "content/common/worker_messages.h"
+*/

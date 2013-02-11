@@ -8,6 +8,9 @@
 #include <string>
 #include <vector>
 
+#include <WebCore/KURL.h>
+#include <wtf/RefCounted.h>
+#include "ppapi/c/pp_instance.h"
 #include "base/callback.h"
 #include "base/memory/ref_counted.h"
 #include "base/message_loop_proxy.h"
@@ -16,9 +19,12 @@
 #include "base/shared_memory.h"
 #include "base/sync_socket.h"
 #include "base/time.h"
+/*
+FIXME:
 #include "googleurl/src/gurl.h"
 #include "media/video/capture/video_capture.h"
 #include "media/video/video_decode_accelerator.h"
+*/
 #include "ppapi/c/dev/pp_video_dev.h"
 #include "ppapi/c/dev/ppb_device_ref_dev.h"
 #include "ppapi/c/pp_completion_callback.h"
@@ -29,10 +35,11 @@
 #include "ppapi/c/private/ppb_flash.h"
 #include "ppapi/c/private/ppb_udp_socket_private.h"
 #include "ppapi/shared_impl/dir_contents.h"
-#include "ui/gfx/size.h"
-#include "webkit/fileapi/file_system_types.h"
-#include "webkit/glue/clipboard_client.h"
+#include <WebCore/IntRect.h>
+#include "FileSystemType.h"
+// FIXME: #include "webkit/glue/clipboard_client.h"
 #include "webkit/quota/quota_types.h"
+#include "gurl.h"
 
 class GURL;
 class SkBitmap;
@@ -79,7 +86,7 @@ class ResourceCreationAPI;
 namespace WebKit {
 typedef SkCanvas WebCanvas;
 class WebGamepads;
-class WebPlugin;
+class PepperPlugin;
 struct WebCompositionUnderline;
 struct WebCursorInfo;
 }
@@ -89,6 +96,22 @@ class ClipboardClient;
 class P2PTransport;
 class NetworkListObserver;
 }  // namespace webkit_glue
+//FIXME: temporary classes so that we can compile
+namespace media {
+class VideoDecodeAccelerator {
+public:
+    class Client {};
+};
+class VideoCapture {
+public:
+    class EventHandler {
+
+    };
+};
+}
+namespace WebCore {
+class FileSystemCallbackDispatcher;
+}
 
 namespace webkit {
 namespace ppapi {
@@ -188,8 +211,8 @@ class PluginDelegate {
 
     // Paints the current backing store to the web page.
     virtual void Paint(WebKit::WebCanvas* canvas,
-                       const gfx::Rect& plugin_rect,
-                       const gfx::Rect& paint_rect) = 0;
+                       const WebCore::IntRect& plugin_rect,
+                       const WebCore::IntRect& paint_rect) = 0;
 
     // Notifications about the view's progress painting.  See PluginInstance.
     // These messages are used to send Flush callbacks to the plugin.
@@ -216,7 +239,7 @@ class PluginDelegate {
     virtual unsigned GetBackingTextureId() = 0;
 
     // Returns the parent context that allocated the backing texture ID.
-    virtual WebKit::WebGraphicsContext3D* GetParentContext() = 0;
+//FIXME:    virtual WebKit::WebGraphicsContext3D* GetParentContext() = 0;
 
     // Returns true if the backing texture is always opaque.
     virtual bool IsOpaque() = 0;
@@ -391,7 +414,7 @@ class PluginDelegate {
 
   // Creates a replacement plug-in that is shown when the plug-in at |file_path|
   // couldn't be loaded.
-  virtual WebKit::WebPlugin* CreatePluginReplacement(
+  virtual WebKit::pEPPERPlugin* CreatePluginReplacement(
       const base::FilePath& file_path) = 0;
 
   // The caller will own the pointer returned from this.
@@ -483,7 +506,7 @@ class PluginDelegate {
 
   virtual bool OpenFileSystem(
       const GURL& origin_url,
-      fileapi::FileSystemType type,
+      WebCore::FileSystemType type,
       long long size,
       fileapi::FileSystemCallbackDispatcher* dispatcher) = 0;
   virtual bool MakeDirectory(
@@ -584,7 +607,7 @@ class PluginDelegate {
 
   // Gets the size of the screen. The fullscreen window will be created at that
   // size.
-  virtual gfx::Size GetScreenSize() = 0;
+  virtual WebCore::IntSize GetScreenSize() = 0;
 
   // Returns a string with the name of the default 8-bit char encoding.
   virtual std::string GetDefaultEncoding() = 0;
@@ -644,11 +667,12 @@ class PluginDelegate {
 
   // Returns true if the containing page is visible.
   virtual bool IsPageVisible() const = 0;
-
+/*
+FIXME
   typedef base::Callback<
-      void (int /* request_id */,
-            bool /* succeeded */,
-            const std::vector< ::ppapi::DeviceRefData>& /* devices */)>
+      void (int / * request_id * /,
+            bool / * succeeded * /,
+            const std::vector< ::ppapi::DeviceRefData>& / * devices * /)>
       EnumerateDevicesCallback;
 
   // Enumerates devices of the specified type. The request ID passed into the
@@ -658,6 +682,7 @@ class PluginDelegate {
   // Stop enumerating devices of the specified |request_id|. The |request_id|
   // is the return value of EnumerateDevicesCallback.
   virtual void StopEnumerateDevices(int request_id) = 0;
+*/
 };
 
 }  // namespace ppapi

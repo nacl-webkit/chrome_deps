@@ -10,7 +10,7 @@
 #include "base/files/file_util_proxy.h"
 #include "base/memory/weak_ptr.h"
 #include "base/platform_file.h"
-#include "googleurl/src/gurl.h"
+#include "gurl.h"
 #include "ppapi/c/pp_file_info.h"
 #include "ppapi/c/pp_instance.h"
 #include "webkit/plugins/webkit_plugins_export.h"

@@ -440,7 +440,7 @@ void ParamTraits<ppapi::proxy::PPBURLLoader_UpdateProgress_Params>::Log(
     const param_type& p,
     std::string* l) {
 }
-
+/* FIXME
 #if !defined(OS_NACL) && !defined(NACL_WIN64)
 // PPBFlash_DrawGlyphs_Params --------------------------------------------------
 // static
@@ -500,7 +500,7 @@ void ParamTraits<ppapi::proxy::PPBFlash_DrawGlyphs_Params>::Log(
     const param_type& p,
     std::string* l) {
 }
-
+*/
 // SerializedDirEntry ----------------------------------------------------------
 
 // static
@@ -522,7 +522,7 @@ bool ParamTraits<ppapi::proxy::SerializedDirEntry>::Read(const Message* m,
 void ParamTraits<ppapi::proxy::SerializedDirEntry>::Log(const param_type& p,
                                                         std::string* l) {
 }
-
+/* FIXME
 // ppapi::proxy::SerializedFontDescription -------------------------------------
 
 // static
@@ -560,7 +560,7 @@ void ParamTraits<ppapi::proxy::SerializedFontDescription>::Log(
     const param_type& p,
     std::string* l) {
 }
-
+*/
 // ppapi::PepperFilePath -------------------------------------------------------
 
 // static
@@ -595,7 +595,7 @@ void ParamTraits<ppapi::PepperFilePath>::Log(const param_type& p,
   LogParam(p.path(), l);
   l->append(")");
 }
-
+/* FIXME
 // SerializedFlashMenu ---------------------------------------------------------
 
 // static
@@ -617,6 +617,7 @@ void ParamTraits<ppapi::proxy::SerializedFlashMenu>::Log(const param_type& p,
                                                          std::string* l) {
 }
 #endif  // !defined(OS_NACL) && !defined(NACL_WIN64)
+*/
 
 // PPB_X509Certificate_Fields --------------------------------------------------
 

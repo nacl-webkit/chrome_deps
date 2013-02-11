@@ -28,9 +28,10 @@
 
 typedef void* NPIdentifier;
 
-namespace base {
-class FilePath;
-}
+namespace WebKit {
+class PepperPluginContainer;
+class Module;
+}// namespace WebKit
 
 namespace ppapi {
 class CallbackTracker;
@@ -86,7 +87,7 @@ class WEBKIT_PLUGINS_EXPORT PluginModule :
   // all plugin modules. In practice it will be a global singleton that
   // tracks which modules are alive.
   PluginModule(const std::string& name,
-               const base::FilePath& path,
+               const WTF::String& path,
                PluginDelegate::ModuleLifetime* lifetime_delegate,
                const ::ppapi::PpapiPermissions& perms);
 
@@ -107,7 +108,7 @@ class WEBKIT_PLUGINS_EXPORT PluginModule :
 
   // Initializes this module using the given library path as the plugin.
   // Returns true on success. False means that the plugin can not be used.
-  bool InitAsLibrary(const base::FilePath& path);
+  bool InitAsLibrary(const WTF::String& path);
 
   // Initializes this module for the given out of process proxy. This takes
   // ownership of the given pointer, even in the failure case.
@@ -243,8 +244,8 @@ class WEBKIT_PLUGINS_EXPORT PluginModule :
   EntryPoints entry_points_;
 
   // The name and file location of the module.
-  const std::string name_;
-  const base::FilePath path_;
+    const WTF::String m_name;
+    const WTF::String m_path;
 
   ::ppapi::PpapiPermissions permissions_;
 

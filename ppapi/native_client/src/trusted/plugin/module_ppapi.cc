@@ -3,12 +3,14 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
+/*
+FIXME:
 #include "native_client/src/shared/imc/nacl_imc_c.h"
 #include "native_client/src/shared/platform/nacl_time.h"
 #include "native_client/src/trusted/desc/nrd_all_modules.h"
 #include "native_client/src/trusted/plugin/nacl_entry_points.h"
 #include "native_client/src/trusted/plugin/plugin.h"
+*/
 
 #include "ppapi/c/private/ppb_nacl_private.h"
 #include "ppapi/cpp/module.h"
@@ -20,17 +22,17 @@ class ModulePpapi : public pp::Module {
   ModulePpapi() : pp::Module(),
                   init_was_successful_(false),
                   private_interface_(NULL) {
-    MODULE_PRINTF(("ModulePpapi::ModulePpapi (this=%p)\n",
-                   static_cast<void*>(this)));
+//FIXME:    MODULE_PRINTF(("ModulePpapi::ModulePpapi (this=%p)\n",
+//FIXME:                   static_cast<void*>(this)));
   }
 
   virtual ~ModulePpapi() {
     if (init_was_successful_) {
-      NaClSrpcModuleFini();
-      NaClNrdAllModulesFini();
+//FIXME:      NaClSrpcModuleFini();
+//FIXME:      NaClNrdAllModulesFini();
     }
-    MODULE_PRINTF(("ModulePpapi::~ModulePpapi (this=%p)\n",
-                   static_cast<void*>(this)));
+//FIXME:    MODULE_PRINTF(("ModulePpapi::~ModulePpapi (this=%p)\n",
+//FIXME:                   static_cast<void*>(this)));
   }
 
   virtual bool Init() {
@@ -39,11 +41,12 @@ class ModulePpapi : public pp::Module {
         GetBrowserInterface(PPB_NACL_PRIVATE_INTERFACE));
 
     if (NULL == private_interface_) {
-      MODULE_PRINTF(("ModulePpapi::Init failed: "
-                     "GetBrowserInterface returned NULL\n"));
+//FIXME:      MODULE_PRINTF(("ModulePpapi::Init failed: "
+//FIXME:                     "GetBrowserInterface returned NULL\n"));
       return false;
     }
-
+/*
+//FIXME:
     launch_nacl_process = reinterpret_cast<LaunchNaClProcessFunc>(
         private_interface_->LaunchSelLdr);
 
@@ -60,24 +63,24 @@ class ModulePpapi : public pp::Module {
     NaClNrdAllModulesInit();
     NaClSrpcModuleInit();
 
-#if NACL_WINDOWS
+#if NACL_WINDOWS && !defined(NACL_STANDALONE)
     NaClSetBrokerDuplicateHandleFunc(private_interface_->BrokerDuplicateHandle);
 #endif
-
+*/
     init_was_successful_ = true;
     return true;
   }
 
   virtual pp::Instance* CreateInstance(PP_Instance pp_instance) {
-    MODULE_PRINTF(("ModulePpapi::CreateInstance (pp_instance=%"NACL_PRId32")\n",
-                   pp_instance));
+//FIXME:    MODULE_PRINTF(("ModulePpapi::CreateInstance (pp_instance=%"NACL_PRId32")\n",
+//FIXME:                   pp_instance));
     // This must be called from here rather than Init, as it relies on
     // chrome state that is not set at the time Init runs.
-    private_interface_->EnableBackgroundSelLdrLaunch();
-    Plugin* plugin = Plugin::New(pp_instance);
-    MODULE_PRINTF(("ModulePpapi::CreateInstance (return %p)\n",
-                   static_cast<void* >(plugin)));
-    return plugin;
+//FIXME:    private_interface_->EnableBackgroundSelLdrLaunch();
+//FIXME:    Plugin* plugin = Plugin::New(pp_instance);
+//FIXME:    MODULE_PRINTF(("ModulePpapi::CreateInstance (return %p)\n",
+//FIXME:                   static_cast<void* >(plugin)));
+//FIXME:    return plugin;
   }
 
  private:
@@ -91,7 +94,7 @@ class ModulePpapi : public pp::Module {
 namespace pp {
 
 Module* CreateModule() {
-  MODULE_PRINTF(("CreateModule ()\n"));
+//FIXME:  MODULE_PRINTF(("CreateModule ()\n"));
   return new plugin::ModulePpapi();
 }
 

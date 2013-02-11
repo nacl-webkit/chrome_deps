@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "content/renderer/pepper/pepper_graphics_2d_host.h"
 
 #include "content/public/renderer/renderer_ppapi_host.h"
@@ -91,8 +92,8 @@ bool PepperGraphics2DHost::BindToInstance(
 }
 
 void PepperGraphics2DHost::Paint(WebKit::WebCanvas* canvas,
-                                 const gfx::Rect& plugin_rect,
-                                 const gfx::Rect& paint_rect) {
+                                 const WebCore::IntRect& plugin_rect,
+                                 const WebCore::IntRect& paint_rect) {
   graphics_2d_->Paint(canvas, plugin_rect, paint_rect);
 }
 

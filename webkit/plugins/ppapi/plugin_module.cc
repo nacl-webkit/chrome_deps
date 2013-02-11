@@ -2,7 +2,19 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "webkit/plugins/ppapi/plugin_module.h"
+#include "webkit/plugins/ppapi/host_globals.h"
+//#include "Logging.h"
+#include "Module.h"
+#include "webkit/plugins/ppapi/common.h"
+#include "chrome/renderer/pepper/ppb_nacl_private_impl.h"
+
+#include "ppapi/c/pp_point.h"
+#include "ppapi/c/pp_var.h"
+
+#include "ppapi/c/dev/ppb_testing_dev.h"
+#include "ppapi/c/dev/ppb_url_util_dev.h"
 
 #include <set>
 
@@ -99,7 +111,7 @@
 #include "ppapi/c/trusted/ppb_url_loader_trusted.h"
 #include "ppapi/shared_impl/callback_tracker.h"
 #include "ppapi/shared_impl/ppapi_switches.h"
-#include "ppapi/shared_impl/ppb_input_event_shared.h"
+//FIXME:#include "ppapi/shared_impl/ppb_input_event_shared.h"
 #include "ppapi/shared_impl/ppb_opengles2_shared.h"
 #include "ppapi/shared_impl/ppb_var_shared.h"
 #include "ppapi/shared_impl/time_conversion.h"
@@ -111,20 +123,16 @@
 #include "webkit/plugins/ppapi/ppapi_interface_factory.h"
 #include "webkit/plugins/ppapi/ppapi_plugin_instance.h"
 #include "webkit/plugins/ppapi/ppb_directory_reader_impl.h"
+/* FIXME:
 #include "webkit/plugins/ppapi/ppb_gpu_blacklist_private_impl.h"
 #include "webkit/plugins/ppapi/ppb_graphics_2d_impl.h"
 #include "webkit/plugins/ppapi/ppb_image_data_impl.h"
 #include "webkit/plugins/ppapi/ppb_proxy_impl.h"
 #include "webkit/plugins/ppapi/ppb_scrollbar_impl.h"
 #include "webkit/plugins/ppapi/ppb_uma_private_impl.h"
-<<<<<<< HEAD
-#include "webkit/plugins/ppapi/ppb_var_deprecated_impl.h"
-#include "webkit/plugins/ppapi/ppb_video_decoder_impl.h"
-=======
 */
 #include "webkit/plugins/ppapi/ppb_var_deprecated_impl.h"
 //FIXME #include "webkit/plugins/ppapi/ppb_video_decoder_impl.h"
->>>>>>> 85c62b5... File chooser API implementation.
 
 using ppapi::InputEventData;
 using ppapi::PpapiGlobals;
@@ -133,6 +141,8 @@ using ppapi::TimeToPPTime;
 using ppapi::thunk::EnterResource;
 using ppapi::thunk::PPB_Graphics2D_API;
 using ppapi::thunk::PPB_InputEvent_API;
+
+using namespace WebKit;
 
 namespace webkit {
 namespace ppapi {
@@ -242,10 +252,12 @@ void SimulateInputEvent(PP_Instance instance, PP_Resource input_event) {
 }
 
 PP_Var GetDocumentURL(PP_Instance instance, PP_URLComponents_Dev* components) {
+/* FIXME
   PluginInstance* plugin_instance = host_globals->GetInstance(instance);
   if (!plugin_instance)
     return PP_MakeUndefined();
   return plugin_instance->GetDocumentURL(instance, components);
+*/
 }
 
 uint32_t GetLiveVars(PP_Var live_vars[], uint32_t array_size) {
@@ -272,12 +284,16 @@ const PPB_Testing_Dev testing_interface = {
 // GetInterface ----------------------------------------------------------------
 
 const void* InternalGetInterface(const char* name) {
+    if (strcmp(name, PPB_NACL_PRIVATE_INTERFACE_1_0) == 0)
+        return PPB_NaCl_Private_Impl::GetInterface();
+
+/*   FIXME:
   // Allow custom interface factories first stab at the GetInterface call.
   const void* custom_interface =
       PpapiInterfaceFactoryManager::GetInstance()->GetInterface(name);
   if (custom_interface)
     return custom_interface;
-
+*/
   // TODO(brettw) put these in a hash map for better performance.
   #define UNPROXIED_IFACE(api_name, iface_str, iface_struct) \
       if (strcmp(name, iface_str) == 0) \
@@ -291,18 +307,21 @@ const void* InternalGetInterface(const char* name) {
   #include "ppapi/thunk/interfaces_ppb_private.h"
   #include "ppapi/thunk/interfaces_ppb_private_no_permissions.h"
   #include "ppapi/thunk/interfaces_ppb_private_flash.h"
-
+*/
   #undef UNPROXIED_API
   #undef PROXIED_IFACE
 
+/* FIXME
   // Please keep alphabetized by interface macro name with "special" stuff at
   // the bottom.
   if (strcmp(name, PPB_AUDIO_TRUSTED_INTERFACE_0_6) == 0)
     return ::ppapi::thunk::GetPPB_AudioTrusted_0_6_Thunk();
   if (strcmp(name, PPB_BUFFER_TRUSTED_INTERFACE_0_1) == 0)
     return ::ppapi::thunk::GetPPB_BufferTrusted_0_1_Thunk();
+    */
   if (strcmp(name, PPB_CORE_INTERFACE_1_0) == 0)
     return &core_interface;
+/*   FIXME:
   if (strcmp(name, PPB_GPUBLACKLIST_PRIVATE_INTERFACE) == 0)
     return PPB_GpuBlacklist_Private_Impl::GetInterface();
   if (strcmp(name, PPB_GRAPHICS_3D_TRUSTED_INTERFACE_1_0) == 0)
@@ -335,6 +354,7 @@ const void* InternalGetInterface(const char* name) {
     return PPB_Proxy_Impl::GetInterface();
   if (strcmp(name, PPB_UMA_PRIVATE_INTERFACE) == 0)
     return PPB_UMA_Private_Impl::GetInterface();
+    */
   if (strcmp(name, PPB_URLLOADERTRUSTED_INTERFACE_0_3) == 0)
     return ::ppapi::thunk::GetPPB_URLLoaderTrusted_0_3_Thunk();
   if (strcmp(name, PPB_VAR_DEPRECATED_INTERFACE) == 0)
@@ -343,6 +363,7 @@ const void* InternalGetInterface(const char* name) {
     return ::ppapi::PPB_Var_Shared::GetVarInterface1_0();
   if (strcmp(name, PPB_VAR_INTERFACE_1_1) == 0)
     return ::ppapi::PPB_Var_Shared::GetVarInterface1_1();
+  /* FIXME
   if (strcmp(name, PPB_VAR_ARRAY_BUFFER_INTERFACE_1_0) == 0)
     return ::ppapi::PPB_Var_Shared::GetVarArrayBufferInterface1_0();
 
@@ -356,6 +377,7 @@ const void* InternalGetInterface(const char* name) {
       return &testing_interface;
     }
   }
+*/
   return NULL;
 }
 
@@ -408,8 +430,8 @@ PluginModule::EntryPoints::EntryPoints()
 
 // PluginModule ----------------------------------------------------------------
 
-PluginModule::PluginModule(const std::string& name,
-                           const base::FilePath& path,
+PluginModule::PluginModule(const WTF::String& name,
+                           const WTF::String& path,
                            PluginDelegate::ModuleLifetime* lifetime_delegate,
                            const ::ppapi::PpapiPermissions& perms)
     : lifetime_delegate_(lifetime_delegate),
@@ -520,6 +542,7 @@ scoped_refptr<PluginModule> PluginModule::CreateModuleForNaClInstance() {
 }
 
 PP_NaClResult PluginModule::InitAsProxiedNaCl(PluginInstance* instance) {
+/* FIXME
   DCHECK(out_of_process_proxy_.get());
   // InitAsProxied (for the trusted/out-of-process case) initializes only the
   // module, and one or more instances are added later. In this case, the
@@ -530,6 +553,7 @@ PP_NaClResult PluginModule::InitAsProxiedNaCl(PluginInstance* instance) {
   // clear cached interface pointers and send DidCreate (etc) to the plugin
   // side of the proxy.
   return instance->ResetAsProxied(this);
+*/
 }
 
 bool PluginModule::IsProxied() const {
@@ -580,9 +604,10 @@ PluginInstance* PluginModule::GetSomeInstance() const {
 }
 
 const void* PluginModule::GetPluginInterface(const char* name) const {
+/* FIXME:
   if (out_of_process_proxy_.get())
     return out_of_process_proxy_->GetProxiedInterface(name);
-
+*/
   // In-process plugins.
   if (!entry_points_.get_interface)
     return NULL;
@@ -629,6 +654,7 @@ bool PluginModule::ReserveInstanceID(PP_Instance instance) {
 }
 
 void PluginModule::SetBroker(PluginDelegate::Broker* broker) {
+/*   FIXME:
   DCHECK(!broker_ || !broker);
   broker_ = broker;
 }
@@ -636,7 +662,7 @@ void PluginModule::SetBroker(PluginDelegate::Broker* broker) {
 PluginDelegate::Broker* PluginModule::GetBroker() {
   return broker_;
 }
-
+*/
 bool PluginModule::InitializeModule(const EntryPoints& entry_points) {
   DCHECK(!out_of_process_proxy_.get()) << "Don't call for proxied modules.";
   DCHECK(entry_points.initialize_module != NULL);

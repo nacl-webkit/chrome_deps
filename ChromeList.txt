@@ -1,0 +1,280 @@
+LIST(APPEND WebKit2_SOURCES
+    ${CHROME_DEPS_DIR}/base/at_exit.cc
+    ${CHROME_DEPS_DIR}/base/atomicops_internals_x86_gcc.cc
+#    ${CHROME_DEPS_DIR}/base/base64.cc
+#    ${CHROME_DEPS_DIR}/base/base_paths.cc
+#    ${CHROME_DEPS_DIR}/base/base_paths_posix.cc
+    ${CHROME_DEPS_DIR}/base/base_switches.cc
+#    ${CHROME_DEPS_DIR}/base/bind_helpers.cc
+    ${CHROME_DEPS_DIR}/base/build_time.cc
+    ${CHROME_DEPS_DIR}/base/callback_internal.cc
+#    ${CHROME_DEPS_DIR}/base/check_example.cc
+    ${CHROME_DEPS_DIR}/base/command_line.cc
+#    ${CHROME_DEPS_DIR}/base/cpu.cc
+#    ${CHROME_DEPS_DIR}/base/debug_message.cc
+#    ${CHROME_DEPS_DIR}/base/environment.cc
+#    ${CHROME_DEPS_DIR}/base/event_recorder_stubs.cc
+    ${CHROME_DEPS_DIR}/base/file_path.cc
+    ${CHROME_DEPS_DIR}/base/file_util.cc
+    ${CHROME_DEPS_DIR}/base/file_util_linux.cc
+    ${CHROME_DEPS_DIR}/base/file_util_posix.cc
+    ${CHROME_DEPS_DIR}/base/file_util_proxy.cc
+#    ${CHROME_DEPS_DIR}/base/guid.cc
+#    ${CHROME_DEPS_DIR}/base/guid_posix.cc
+#    ${CHROME_DEPS_DIR}/base/hash.cc
+#    ${CHROME_DEPS_DIR}/base/hi_res_timer_manager_posix.cc
+    ${CHROME_DEPS_DIR}/base/lazy_instance.cc
+#    ${CHROME_DEPS_DIR}/base/linux_util.cc
+    ${CHROME_DEPS_DIR}/base/location.cc
+    ${CHROME_DEPS_DIR}/base/logging.cc
+#    ${CHROME_DEPS_DIR}/base/md5.cc
+    ${CHROME_DEPS_DIR}/base/message_loop.cc
+    ${CHROME_DEPS_DIR}/base/message_loop_proxy.cc
+    ${CHROME_DEPS_DIR}/base/message_loop_proxy_impl.cc
+    ${CHROME_DEPS_DIR}/base/message_pump.cc
+#    ${CHROME_DEPS_DIR}/base/message_pump_aurax11.cc
+#    ${CHROME_DEPS_DIR}/base/message_pump_default.cc
+#    ${CHROME_DEPS_DIR}/base/message_pump_glib.cc
+#    ${CHROME_DEPS_DIR}/base/message_pump_gtk.cc
+    ${CHROME_DEPS_DIR}/base/message_pump_libevent.cc
+    ${CHROME_DEPS_DIR}/base/message_pump_webkit.cc
+#    ${CHROME_DEPS_DIR}/base/native_library_posix.cc
+#    ${CHROME_DEPS_DIR}/base/os_compat_nacl.cc
+#    ${CHROME_DEPS_DIR}/base/path_service.cc
+    ${CHROME_DEPS_DIR}/base/pending_task.cc
+#    ${CHROME_DEPS_DIR}/base/perftimer.cc
+    ${CHROME_DEPS_DIR}/base/pickle.cc
+    ${CHROME_DEPS_DIR}/base/platform_file.cc
+    ${CHROME_DEPS_DIR}/base/platform_file_posix.cc
+    ${CHROME_DEPS_DIR}/base/process_linux.cc
+    ${CHROME_DEPS_DIR}/base/process_posix.cc
+    ${CHROME_DEPS_DIR}/base/process_util.cc
+    ${CHROME_DEPS_DIR}/base/process_util_linux.cc
+    ${CHROME_DEPS_DIR}/base/process_util_posix.cc
+    ${CHROME_DEPS_DIR}/base/rand_util.cc
+#    ${CHROME_DEPS_DIR}/base/rand_util_nacl.cc
+    ${CHROME_DEPS_DIR}/base/rand_util_posix.cc
+    ${CHROME_DEPS_DIR}/base/run_loop.cc
+    ${CHROME_DEPS_DIR}/base/safe_strerror_posix.cc
+#    ${CHROME_DEPS_DIR}/base/scoped_native_library.cc
+#    ${CHROME_DEPS_DIR}/base/sequence_checker_impl.cc
+#    ${CHROME_DEPS_DIR}/base/sequenced_task_runner.cc
+#    ${CHROME_DEPS_DIR}/base/sha1_portable.cc
+#    ${CHROME_DEPS_DIR}/base/shared_memory_nacl.cc
+    ${CHROME_DEPS_DIR}/base/shared_memory_posix.cc
+    ${CHROME_DEPS_DIR}/base/string16.cc
+    ${CHROME_DEPS_DIR}/base/string_number_conversions.cc
+    ${CHROME_DEPS_DIR}/base/string_piece.cc
+    ${CHROME_DEPS_DIR}/base/stringprintf.cc
+    ${CHROME_DEPS_DIR}/base/string_split.cc
+    ${CHROME_DEPS_DIR}/base/string_util.cc
+#    ${CHROME_DEPS_DIR}/base/supports_user_data.cc
+#    ${CHROME_DEPS_DIR}/base/sync_socket_nacl.cc
+    ${CHROME_DEPS_DIR}/base/sync_socket_posix.cc
+#    ${CHROME_DEPS_DIR}/base/sys_info.cc
+#    ${CHROME_DEPS_DIR}/base/sys_info_linux.cc
+    ${CHROME_DEPS_DIR}/base/sys_info_posix.cc
+    ${CHROME_DEPS_DIR}/base/sys_string_conversions_posix.cc
+    ${CHROME_DEPS_DIR}/base/task_runner.cc
+    ${CHROME_DEPS_DIR}/base/thread_task_runner_handle.cc
+    ${CHROME_DEPS_DIR}/base/time.cc
+    ${CHROME_DEPS_DIR}/base/time_posix.cc
+#    ${CHROME_DEPS_DIR}/base/timer.cc
+    ${CHROME_DEPS_DIR}/base/tracked_objects.cc
+    ${CHROME_DEPS_DIR}/base/tracking_info.cc
+    ${CHROME_DEPS_DIR}/base/utf_offset_string_conversions.cc
+    ${CHROME_DEPS_DIR}/base/utf_string_conversions.cc
+    ${CHROME_DEPS_DIR}/base/utf_string_conversion_utils.cc
+#    ${CHROME_DEPS_DIR}/base/value_conversions.cc
+    ${CHROME_DEPS_DIR}/base/values.cc
+#    ${CHROME_DEPS_DIR}/base/version.cc
+    ${CHROME_DEPS_DIR}/base/vlog.cc
+
+#    ${CHROME_DEPS_DIR}/base/allocator/allocator_extension.cc
+#    ${CHROME_DEPS_DIR}/base/allocator/allocator_extension_thunks.cc
+#    ${CHROME_DEPS_DIR}/base/allocator/allocator_shim.cc
+#    ${CHROME_DEPS_DIR}/base/allocator/debugallocation_shim.cc
+#    ${CHROME_DEPS_DIR}/base/allocator/generic_allocators.cc
+    ${CHROME_DEPS_DIR}/base/allocator/type_profiler.cc
+    ${CHROME_DEPS_DIR}/base/allocator/type_profiler_control.cc
+#    ${CHROME_DEPS_DIR}/base/allocator/type_profiler_tcmalloc.cc
+#    ${CHROME_DEPS_DIR}/base/allocator/unittest_utils.cc
+
+    ${CHROME_DEPS_DIR}/base/debug/alias.cc
+#    ${CHROME_DEPS_DIR}/base/debug/debugger.cc
+    ${CHROME_DEPS_DIR}/base/debug/debugger_posix.cc
+#    ${CHROME_DEPS_DIR}/base/debug/profiler.cc
+    ${CHROME_DEPS_DIR}/base/debug/stack_trace.cc
+    ${CHROME_DEPS_DIR}/base/debug/stack_trace_posix.cc
+    ${CHROME_DEPS_DIR}/base/debug/trace_event.cc
+    ${CHROME_DEPS_DIR}/base/debug/trace_event_impl.cc
+
+#    ${CHROME_DEPS_DIR}/base/files/file_path_watcher.cc
+#    ${CHROME_DEPS_DIR}/base/files/file_path_watcher_kqueue.cc
+#    ${CHROME_DEPS_DIR}/base/files/file_path_watcher_linux.cc
+#    ${CHROME_DEPS_DIR}/base/files/file_path_watcher_stub.cc
+#    ${CHROME_DEPS_DIR}/base/files/important_file_writer.cc
+#    ${CHROME_DEPS_DIR}/base/files/scoped_temp_dir.cc
+
+    ${CHROME_DEPS_DIR}/base/json/json_file_value_serializer.cc
+    ${CHROME_DEPS_DIR}/base/json/json_parser.cc
+    ${CHROME_DEPS_DIR}/base/json/json_reader.cc
+    ${CHROME_DEPS_DIR}/base/json/json_string_value_serializer.cc
+    ${CHROME_DEPS_DIR}/base/json/json_writer.cc
+    ${CHROME_DEPS_DIR}/base/json/string_escape.cc
+
+    ${CHROME_DEPS_DIR}/base/memory/aligned_memory.cc
+    ${CHROME_DEPS_DIR}/base/memory/ref_counted.cc
+    ${CHROME_DEPS_DIR}/base/memory/ref_counted_memory.cc
+    ${CHROME_DEPS_DIR}/base/memory/singleton.cc
+    ${CHROME_DEPS_DIR}/base/memory/weak_ptr.cc
+
+    ${CHROME_DEPS_DIR}/base/metrics/bucket_ranges.cc
+    ${CHROME_DEPS_DIR}/base/metrics/field_trial.cc
+    ${CHROME_DEPS_DIR}/base/metrics/histogram.cc
+    ${CHROME_DEPS_DIR}/base/metrics/histogram_base.cc
+    ${CHROME_DEPS_DIR}/base/metrics/histogram_samples.cc
+    ${CHROME_DEPS_DIR}/base/metrics/histogram_snapshot_manager.cc
+    ${CHROME_DEPS_DIR}/base/metrics/sample_map.cc
+    ${CHROME_DEPS_DIR}/base/metrics/sample_vector.cc
+    ${CHROME_DEPS_DIR}/base/metrics/sparse_histogram.cc
+    ${CHROME_DEPS_DIR}/base/metrics/statistics_recorder.cc
+    ${CHROME_DEPS_DIR}/base/metrics/stats_counters.cc
+    ${CHROME_DEPS_DIR}/base/metrics/stats_table.cc
+
+    ${CHROME_DEPS_DIR}/base/posix/file_descriptor_shuffle.cc
+    ${CHROME_DEPS_DIR}/base/posix/global_descriptors.cc
+    ${CHROME_DEPS_DIR}/base/posix/unix_domain_socket.cc
+
+    ${CHROME_DEPS_DIR}/base/profiler/alternate_timer.cc
+    ${CHROME_DEPS_DIR}/base/profiler/scoped_profile.cc
+    ${CHROME_DEPS_DIR}/base/profiler/tracked_time.cc
+
+#    ${CHROME_DEPS_DIR}/base/synchronization/cancellation_flag.cc
+    ${CHROME_DEPS_DIR}/base/synchronization/condition_variable_posix.cc
+    ${CHROME_DEPS_DIR}/base/synchronization/lock.cc
+    ${CHROME_DEPS_DIR}/base/synchronization/lock_impl_posix.cc
+    ${CHROME_DEPS_DIR}/base/synchronization/waitable_event_posix.cc
+    ${CHROME_DEPS_DIR}/base/synchronization/waitable_event_watcher_posix.cc
+
+    ${CHROME_DEPS_DIR}/base/third_party/dmg_fp/dtoa.cc
+#    ${CHROME_DEPS_DIR}/base/third_party/dmg_fp/dtoa_wrapper.cc
+    ${CHROME_DEPS_DIR}/base/third_party/dmg_fp/g_fmt.cc
+
+    ${CHROME_DEPS_DIR}/base/third_party/icu/icu_utf.cc
+
+    ${CHROME_DEPS_DIR}/base/third_party/nspr/prtime.cc
+
+    ${CHROME_DEPS_DIR}/base/threading/non_thread_safe_impl.cc
+    ${CHROME_DEPS_DIR}/base/threading/platform_thread_posix.cc
+    ${CHROME_DEPS_DIR}/base/threading/post_task_and_reply_impl.cc
+#    ${CHROME_DEPS_DIR}/base/threading/sequenced_worker_pool.cc
+    ${CHROME_DEPS_DIR}/base/threading/simple_thread.cc
+    ${CHROME_DEPS_DIR}/base/threading/thread.cc
+    ${CHROME_DEPS_DIR}/base/threading/thread_checker_impl.cc
+    ${CHROME_DEPS_DIR}/base/threading/thread_collision_warner.cc
+    ${CHROME_DEPS_DIR}/base/threading/thread_local_posix.cc
+    ${CHROME_DEPS_DIR}/base/threading/thread_local_storage_posix.cc
+    ${CHROME_DEPS_DIR}/base/threading/thread_restrictions.cc
+#    ${CHROME_DEPS_DIR}/base/threading/watchdog.cc
+#    ${CHROME_DEPS_DIR}/base/threading/worker_pool.cc
+#    ${CHROME_DEPS_DIR}/base/threading/worker_pool_posix.cc
+
+    ${CHROME_DEPS_DIR}/content/common/child_process.cc
+    ${CHROME_DEPS_DIR}/content/common/child_thread.cc
+    ${CHROME_DEPS_DIR}/content/common/content_message_generator.cc
+#    ${CHROME_DEPS_DIR}/content/common/content_param_traits.cc
+    ${CHROME_DEPS_DIR}/content/common/pepper_plugin_registry.cc
+#    ${CHROME_DEPS_DIR}/content/common/quota_dispatcher.cc
+
+    ${CHROME_DEPS_DIR}/content/common/fileapi/file_system_dispatcher.cc
+
+    ${CHROME_DEPS_DIR}/content/renderer/render_thread_impl.cc
+
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/content_renderer_pepper_host_factory.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_file_chooser_host.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_graphics_2d_host.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_in_process_resource_creation.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_in_process_router.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_platform_image_2d_impl.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_plugin_delegate_impl.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/renderer_ppapi_host_impl.cc
+
+    ${CHROME_DEPS_DIR}/content/public/common/common_param_traits.cc
+    ${CHROME_DEPS_DIR}/content/public/common/content_constants.cc
+    ${CHROME_DEPS_DIR}/content/public/common/content_switches.cc
+
+    ${CHROME_DEPS_DIR}/content/public/renderer/render_thread.cc
+
+    ${CHROME_DEPS_DIR}/ipc/file_descriptor_set_posix.cc
+    ${CHROME_DEPS_DIR}/ipc/ipc_channel.cc
+#    ${CHROME_DEPS_DIR}/ipc/ipc_channel_nacl.cc
+    ${CHROME_DEPS_DIR}/ipc/ipc_channel_posix.cc
+    ${CHROME_DEPS_DIR}/ipc/ipc_channel_proxy.cc
+    ${CHROME_DEPS_DIR}/ipc/ipc_channel_reader.cc
+    ${CHROME_DEPS_DIR}/ipc/ipc_forwarding_message_filter.cc
+    ${CHROME_DEPS_DIR}/ipc/ipc_logging.cc
+    ${CHROME_DEPS_DIR}/ipc/ipc_message.cc
+    ${CHROME_DEPS_DIR}/ipc/ipc_message_utils.cc
+    ${CHROME_DEPS_DIR}/ipc/ipc_platform_file.cc
+    ${CHROME_DEPS_DIR}/ipc/ipc_switches.cc
+    ${CHROME_DEPS_DIR}/ipc/ipc_sync_channel.cc
+    ${CHROME_DEPS_DIR}/ipc/ipc_sync_message.cc
+    ${CHROME_DEPS_DIR}/ipc/ipc_sync_message_filter.cc
+
+    ${CHROME_DEPS_DIR}/chrome/renderer/pepper/ppb_nacl_private_impl.cc
+
+    ${CHROME_DEPS_DIR}/third_party/libevent/buffer.c
+    ${CHROME_DEPS_DIR}/third_party/libevent/epoll.c
+    ${CHROME_DEPS_DIR}/third_party/libevent/evbuffer.c
+    ${CHROME_DEPS_DIR}/third_party/libevent/evdns.c
+    ${CHROME_DEPS_DIR}/third_party/libevent/event.c
+    ${CHROME_DEPS_DIR}/third_party/libevent/event_tagging.c
+    ${CHROME_DEPS_DIR}/third_party/libevent/evrpc.c
+    ${CHROME_DEPS_DIR}/third_party/libevent/evutil.c
+    ${CHROME_DEPS_DIR}/third_party/libevent/http.c
+    ${CHROME_DEPS_DIR}/third_party/libevent/log.c
+    ${CHROME_DEPS_DIR}/third_party/libevent/poll.c
+    ${CHROME_DEPS_DIR}/third_party/libevent/select.c
+    ${CHROME_DEPS_DIR}/third_party/libevent/signal.c
+    ${CHROME_DEPS_DIR}/third_party/libevent/strlcpy.c
+    
+    ${CHROME_DEPS_DIR}/webkit/fileapi/file_system_callback_dispatcher.cc
+
+    ${CHROME_DEPS_DIR}/webkit/plugins/plugin_constants.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/plugin_switches.cc
+
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/file_callbacks.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/host_array_buffer_var.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/host_globals.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/host_var_tracker.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/interface_factory.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/message_channel.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/npapi_glue.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/npobject_var.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/plugin_module.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/plugin_object.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppapi_plugin_instance.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_directory_reader_impl.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_file_io_impl.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_file_ref_impl.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_file_system_impl.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_graphics_2d_impl.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_image_data_impl.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_url_loader_impl.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_var_deprecated_impl.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/quota_file_io.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/resource_creation_impl.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/resource_helper.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/url_request_info_util.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/url_response_info_util.cc
+
+#    ${CHROME_DEPS_DIR}/webkit/quota/quota_database.cc
+#    ${CHROME_DEPS_DIR}/webkit/quota/quota_manager.cc
+#    ${CHROME_DEPS_DIR}/webkit/quota/quota_task.cc
+#    ${CHROME_DEPS_DIR}/webkit/quota/special_storage_policy.cc
+)
+
+LIST(APPEND WebKit2_INCLUDE_DIRECTORIES
+    "${CHROME_DEPS_DIR}/third_party/libevent/compat"
+)

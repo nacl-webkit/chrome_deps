@@ -86,7 +86,7 @@ class WEBKIT_PLUGINS_EXPORT PluginModule :
   // The module lifetime delegate is a non-owning pointer that must outlive
   // all plugin modules. In practice it will be a global singleton that
   // tracks which modules are alive.
-  PluginModule(const std::string& name,
+  PluginModule(const WTF::String& name,
                const WTF::String& path,
                PluginDelegate::ModuleLifetime* lifetime_delegate,
                const ::ppapi::PpapiPermissions& perms);
@@ -147,13 +147,13 @@ class WEBKIT_PLUGINS_EXPORT PluginModule :
   // proxy needs this information to set itself up properly).
   PP_Module pp_module() const { return pp_module_; }
 
-  const std::string& name() const { return name_; }
-  const base::FilePath& path() const { return path_; }
+  const WTF::String& name() const { return name_; }
+  const WTF::String& path() const { return path_; }
   const ::ppapi::PpapiPermissions& permissions() const { return permissions_; }
 
   PluginInstance* CreateInstance(PluginDelegate* delegate,
-                                 WebKit::WebPluginContainer* container,
-                                 const GURL& plugin_url);
+                                 WebKit::PepperPluginContainer* container,
+                                 const WebCore::KURL& plugin_url);
 
   // Returns "some" plugin instance associated with this module. This is not
   // guaranteed to be any one in particular. This is normally used to execute
@@ -230,13 +230,13 @@ class WEBKIT_PLUGINS_EXPORT PluginModule :
 
   // Non-owning pointer to the broker for this plugin module, if one exists.
   // It is populated and cleared in the main thread.
-  PluginDelegate::Broker* broker_;
+//FIXME  PluginDelegate::Broker* broker_;
 
   // Holds a reference to the base::NativeLibrary handle if this PluginModule
   // instance wraps functions loaded from a library.  Can be NULL.  If
   // |library_| is non-NULL, PluginModule will attempt to unload the library
   // during destruction.
-  base::NativeLibrary library_;
+  WebKit::Module* library_;
 
   // Contains pointers to the entry points of the actual plugin implementation.
   // These will be NULL for out-of-process plugins, which is indicated by the
@@ -244,8 +244,8 @@ class WEBKIT_PLUGINS_EXPORT PluginModule :
   EntryPoints entry_points_;
 
   // The name and file location of the module.
-    const WTF::String m_name;
-    const WTF::String m_path;
+    const WTF::String name_;
+    const WTF::String path_;
 
   ::ppapi::PpapiPermissions permissions_;
 

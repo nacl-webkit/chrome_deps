@@ -18,7 +18,7 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/base/file_util.cc
     ${CHROME_DEPS_DIR}/base/file_util_linux.cc
     ${CHROME_DEPS_DIR}/base/file_util_posix.cc
-    ${CHROME_DEPS_DIR}/base/file_util_proxy.cc
+    ${CHROME_DEPS_DIR}/base/files/file_util_proxy.cc
 #    ${CHROME_DEPS_DIR}/base/guid.cc
 #    ${CHROME_DEPS_DIR}/base/guid_posix.cc
 #    ${CHROME_DEPS_DIR}/base/hash.cc
@@ -106,7 +106,6 @@ LIST(APPEND WebKit2_SOURCES
 #    ${CHROME_DEPS_DIR}/base/debug/profiler.cc
     ${CHROME_DEPS_DIR}/base/debug/stack_trace.cc
     ${CHROME_DEPS_DIR}/base/debug/stack_trace_posix.cc
-    ${CHROME_DEPS_DIR}/base/debug/trace_event.cc
     ${CHROME_DEPS_DIR}/base/debug/trace_event_impl.cc
 
 #    ${CHROME_DEPS_DIR}/base/files/file_path_watcher.cc
@@ -144,7 +143,7 @@ LIST(APPEND WebKit2_SOURCES
 
     ${CHROME_DEPS_DIR}/base/posix/file_descriptor_shuffle.cc
     ${CHROME_DEPS_DIR}/base/posix/global_descriptors.cc
-    ${CHROME_DEPS_DIR}/base/posix/unix_domain_socket.cc
+    ${CHROME_DEPS_DIR}/base/posix/unix_domain_socket_linux.cc
 
     ${CHROME_DEPS_DIR}/base/profiler/alternate_timer.cc
     ${CHROME_DEPS_DIR}/base/profiler/scoped_profile.cc
@@ -173,6 +172,7 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/base/threading/thread.cc
     ${CHROME_DEPS_DIR}/base/threading/thread_checker_impl.cc
     ${CHROME_DEPS_DIR}/base/threading/thread_collision_warner.cc
+    ${CHROME_DEPS_DIR}/base/threading/thread_id_name_manager.cc
     ${CHROME_DEPS_DIR}/base/threading/thread_local_posix.cc
     ${CHROME_DEPS_DIR}/base/threading/thread_local_storage_posix.cc
     ${CHROME_DEPS_DIR}/base/threading/thread_restrictions.cc
@@ -248,7 +248,7 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/host_array_buffer_var.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/host_globals.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/host_var_tracker.cc
-    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/interface_factory.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppapi_interface_factory.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/message_channel.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/npapi_glue.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/npobject_var.cc
@@ -256,7 +256,7 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/plugin_object.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppapi_plugin_instance.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_directory_reader_impl.cc
-    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_file_io_impl.cc
+    ##${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_file_io_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_file_ref_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_file_system_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_graphics_2d_impl.cc

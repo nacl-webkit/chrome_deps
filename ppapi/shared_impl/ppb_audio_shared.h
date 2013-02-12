@@ -105,7 +105,7 @@ class PPAPI_SHARED_EXPORT PPB_Audio_Shared
   void* user_data_;
 
   // AudioBus for shuttling data across the shared memory.
-  scoped_ptr<media::AudioBus> audio_bus_;
+//FIXME  scoped_ptr<media::AudioBus> audio_bus_;
 
   // Internal buffer for client's integer audio data.
   int client_buffer_size_bytes_;

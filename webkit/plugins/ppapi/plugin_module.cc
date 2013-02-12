@@ -117,6 +117,8 @@
 #include "ppapi/shared_impl/time_conversion.h"
 #include "ppapi/thunk/enter.h"
 #include "ppapi/thunk/thunk.h"
+#include "ppb_graphics_2d_impl.h"
+#include "ppb_image_data_impl.h"
 #include "webkit/plugins/plugin_switches.h"
 #include "webkit/plugins/ppapi/common.h"
 #include "webkit/plugins/ppapi/host_globals.h"
@@ -162,7 +164,7 @@ webkit::ppapi::HostGlobals* host_globals = NULL;
 typedef std::set<PluginModule*> PluginModuleSet;
 
 PluginModuleSet* GetLivePluginSet() {
-  CR_DEFINE_STATIC_LOCAL(PluginModuleSet, live_plugin_libs, ());
+  DEFINE_STATIC_LOCAL(PluginModuleSet, live_plugin_libs, ());
   return &live_plugin_libs;
 }
 
@@ -237,7 +239,7 @@ uint32_t GetLiveObjectsForInstance(PP_Instance instance_id) {
 PP_Bool IsOutOfProcess() {
   return PP_FALSE;
 }
-
+/* FIXME
 void SimulateInputEvent(PP_Instance instance, PP_Resource input_event) {
   PluginInstance* plugin_instance = host_globals->GetInstance(instance);
   if (!plugin_instance)
@@ -250,6 +252,7 @@ void SimulateInputEvent(PP_Instance instance, PP_Resource input_event) {
   const InputEventData& input_event_data = enter.object()->GetInputEventData();
   plugin_instance->SimulateInputEvent(input_event_data);
 }
+*/
 
 PP_Var GetDocumentURL(PP_Instance instance, PP_URLComponents_Dev* components) {
 /* FIXME
@@ -276,7 +279,7 @@ const PPB_Testing_Dev testing_interface = {
   &QuitMessageLoop,
   &GetLiveObjectsForInstance,
   &IsOutOfProcess,
-  &SimulateInputEvent,
+  0, // FIXME &SimulateInputEvent,
   &GetDocumentURL,
   &GetLiveVars
 };
@@ -390,21 +393,17 @@ const void* GetInterface(const char* name) {
 
 // Gets the PPAPI entry points from the given library and places them into the
 // given structure. Returns true on success.
-bool LoadEntryPointsFromLibrary(const base::NativeLibrary& library,
+bool LoadEntryPointsFromLibrary(const WebKit::Module* library,
                                 PluginModule::EntryPoints* entry_points) {
-  entry_points->get_interface =
-      reinterpret_cast<PluginModule::GetInterfaceFunc>(
-          base::GetFunctionPointerFromNativeLibrary(library,
-                                                    "PPP_GetInterface"));
+  entry_points->get_interface = library->functionPointer<PluginModule::GetInterfaceFunc>(reinterpret_cast<const char*>("PPP_GetInterface"));
+
   if (!entry_points->get_interface) {
     LOG(WARNING) << "No PPP_GetInterface in plugin library";
     return false;
   }
 
-  entry_points->initialize_module =
-      reinterpret_cast<PluginModule::PPP_InitializeModuleFunc>(
-          base::GetFunctionPointerFromNativeLibrary(library,
-                                                    "PPP_InitializeModule"));
+  entry_points->initialize_module = library->functionPointer<PluginModule::PPP_InitializeModuleFunc>(reinterpret_cast<const char*>("PPP_InitializeModule"));
+
   if (!entry_points->initialize_module) {
     LOG(WARNING) << "No PPP_InitializeModule in plugin library";
     return false;
@@ -412,10 +411,7 @@ bool LoadEntryPointsFromLibrary(const base::NativeLibrary& library,
 
   // It's okay for PPP_ShutdownModule to not be defined and shutdown_module to
   // be NULL.
-  entry_points->shutdown_module =
-      reinterpret_cast<PluginModule::PPP_ShutdownModuleFunc>(
-          base::GetFunctionPointerFromNativeLibrary(library,
-                                                    "PPP_ShutdownModule"));
+  entry_points->shutdown_module = library->functionPointer<PluginModule::PPP_ShutdownModuleFunc>(reinterpret_cast<const char*>("PPP_ShutdownModule"));
 
   return true;
 }
@@ -438,7 +434,7 @@ PluginModule::PluginModule(const WTF::String& name,
       callback_tracker_(new ::ppapi::CallbackTracker),
       is_in_destructor_(false),
       is_crashed_(false),
-      broker_(NULL),
+//FIXME      broker_(NULL),
       library_(NULL),
       name_(name),
       path_(path),
@@ -475,7 +471,7 @@ PluginModule::~PluginModule() {
     entry_points_.shutdown_module();
 
   if (library_)
-    base::UnloadNativeLibrary(library_);
+    library_->unload();
 
   // Notifications that we've been deleted should be last.
   HostGlobals::Get()->ModuleDeleted(pp_module_);
@@ -507,16 +503,16 @@ bool PluginModule::InitAsInternalPlugin(const EntryPoints& entry_points) {
   return false;
 }
 
-bool PluginModule::InitAsLibrary(const base::FilePath& path) {
-  base::NativeLibrary library = base::LoadNativeLibrary(path, NULL);
-  if (!library)
+bool PluginModule::InitAsLibrary(const WTF::String& path) {
+  Module* library = new Module(path);
+  if (!library->load())
     return false;
 
   EntryPoints entry_points;
 
   if (!LoadEntryPointsFromLibrary(library, &entry_points) ||
-      !InitializeModule(entry_points)) {
-    base::UnloadNativeLibrary(library);
+    !InitializeModule(entry_points)) {
+    library->unload();
     return false;
   }
   entry_points_ = entry_points;
@@ -583,8 +579,8 @@ bool PluginModule::SupportsInterface(const char* name) {
 
 PluginInstance* PluginModule::CreateInstance(
     PluginDelegate* delegate,
-    WebKit::WebPluginContainer* container,
-    const GURL& plugin_url) {
+    WebKit::PepperPluginContainer* container,
+    const WebCore::KURL& plugin_url) {
   PluginInstance* instance = PluginInstance::Create(delegate, this, container,
                                                     plugin_url);
   if (!instance) {
@@ -653,8 +649,8 @@ bool PluginModule::ReserveInstanceID(PP_Instance instance) {
   return true;  // Instance ID is usable.
 }
 
-void PluginModule::SetBroker(PluginDelegate::Broker* broker) {
 /*   FIXME:
+void PluginModule::SetBroker(PluginDelegate::Broker* broker) {
   DCHECK(!broker_ || !broker);
   broker_ = broker;
 }

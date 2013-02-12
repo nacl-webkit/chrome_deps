@@ -69,7 +69,7 @@ InterfaceProxy* ResourceCreationProxy::Create(Dispatcher* dispatcher) {
 }
 
 PP_Resource ResourceCreationProxy::CreateFileIO(PP_Instance instance) {
-  return (new FileIOResource(GetConnection(), instance))->GetReference();
+//FIXME  return (new FileIOResource(GetConnection(), instance))->GetReference();
 }
 
 PP_Resource ResourceCreationProxy::CreateFileRef(PP_Resource file_system,
@@ -294,7 +294,7 @@ PP_Resource ResourceCreationProxy::CreateX509CertificatePrivate(
 */
 PP_Resource ResourceCreationProxy::CreateAudioInput(
     PP_Instance instance) {
-  return (new AudioInputResource(GetConnection(), instance))->GetReference();
+//FIXME  return (new AudioInputResource(GetConnection(), instance))->GetReference();
 }
 
 PP_Resource ResourceCreationProxy::CreateBroker(PP_Instance instance) {

@@ -119,7 +119,7 @@ class ObjectAccessorTryCatch : public TryCatch {
   NPObjectVar* object() { return object_.get(); }
 
   PluginInstance* GetPluginInstance() {
-    return HostGlobals::Get()->getInstance(object()->pp_instance());
+    return HostGlobals::Get()->GetInstance(object()->pp_instance());
   }
 
  protected:
@@ -387,7 +387,7 @@ bool IsInstanceOfDeprecated(PP_Var var,
 PP_Var CreateObjectDeprecated(PP_Instance pp_instance,
                               const PPP_Class_Deprecated* ppp_class,
                               void* ppp_class_data) {
-  PluginInstance* instance = HostGlobals::Get()->getInstance(pp_instance);
+  PluginInstance* instance = HostGlobals::Get()->GetInstance(pp_instance);
   if (!instance) {
     DLOG(ERROR) << "Create object passed an invalid instance.";
     return PP_MakeNull();
@@ -398,10 +398,10 @@ PP_Var CreateObjectDeprecated(PP_Instance pp_instance,
 PP_Var CreateObjectWithModuleDeprecated(PP_Module pp_module,
                                         const PPP_Class_Deprecated* ppp_class,
                                         void* ppp_class_data) {
-  PluginModule* module = HostGlobals::Get()->getModule(pp_module);
+  PluginModule* module = HostGlobals::Get()->GetModule(pp_module);
   if (!module)
     return PP_MakeNull();
-  return PluginObject::Create(module->getSomeInstance(),
+  return PluginObject::Create(module->GetSomeInstance(),
                               ppp_class, ppp_class_data);
 }
 

@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 #include "config.h"
-#if ENABLE(PEPPER_PLUGIN_API)
 #include "webkit/plugins/ppapi/ppb_url_loader_impl.h"
 
 #include "base/logging.h"
@@ -399,8 +398,7 @@ void PPB_URLLoader_Impl::didReceiveData(NetscapePlugInStreamLoader* loader,
   }
 }
 
-void PPB_URLLoader_Impl::didFinishLoading(NetscapePlugInStreamLoader* loader,
-                                          double finish_time) {
+void PPB_URLLoader_Impl::didFinishLoading(NetscapePlugInStreamLoader* loader) {
   FinishLoading(PP_OK);
 }
 

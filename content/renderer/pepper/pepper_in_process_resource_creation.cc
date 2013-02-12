@@ -12,7 +12,7 @@
 #include "WebPage.h"
 #include "content/renderer/pepper/pepper_in_process_router.h"
 #include "content/renderer/pepper/renderer_ppapi_host_impl.h"
-#include "content/renderer/render_view_impl.h"
+// FIXME #include "content/renderer/render_view_impl.h"
 #include "ipc/ipc_message.h"
 #include "ipc/ipc_message_macros.h"
 #include "ppapi/host/ppapi_host.h"
@@ -76,9 +76,11 @@ PP_Resource PepperInProcessResourceCreation::CreateFileChooser(
 
 PP_Resource PepperInProcessResourceCreation::CreateFileIO(
     PP_Instance instance) {
+/* FIXME
   return (new ppapi::proxy::FileIOResource(
       host_impl_->in_process_router()->GetPluginConnection(),
       instance))->GetReference();
+*/
 }
 
 PP_Resource PepperInProcessResourceCreation::CreateGraphics2D(
@@ -96,13 +98,13 @@ PP_Resource PepperInProcessResourceCreation::CreatePrinting(
   return (new ppapi::proxy::PrintingResource(
       host_impl_->in_process_router()->GetPluginConnection(),
       instance))->GetReference();
+*/
 }
 
 PP_Resource PepperInProcessResourceCreation::CreateUDPSocketPrivate(
     PP_Instance instance) {
   NOTIMPLEMENTED();
   return 0;
-*/
 }
 
 PP_Resource PepperInProcessResourceCreation::CreateURLRequestInfo(

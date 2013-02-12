@@ -54,8 +54,8 @@
 #include "ui/gfx/rect.h"
 #include "webkit/plugins/ppapi/plugin_delegate.h"
 #include "webkit/plugins/ppapi/ppp_pdf.h"
-#include "webkit/plugins/webkit_plugins_export.h"
 */
+#include "webkit/plugins/webkit_plugins_export.h"
 
 #include <WebCore/IntRect.h>
 #include <WebCore/KURL.h>
@@ -110,8 +110,8 @@ class PPB_URLLoader_Impl;
 class WEBKIT_PLUGINS_EXPORT PluginInstance :
     public base::RefCounted<PluginInstance>,
     public base::SupportsWeakPtr<PluginInstance>,
-    public ::ppapi::PPB_Instance_Shared,
-    public NON_EXPORTED_BASE(cc::TextureLayerClient) {
+    public ::ppapi::PPB_Instance_Shared/* FIXME,
+    public NON_EXPORTED_BASE(cc::TextureLayerClient */ {
  public:
   // Create and return a PluginInstance object which supports the most recent
   // version of PPP_Instance possible by querying the given get_plugin_interface
@@ -632,7 +632,7 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   base::WeakPtrFactory<PluginInstance> view_change_weak_ptr_factory_;
 
   // The current device context for painting in 2D and 3D.
-  scoped_refptr<PPB_Graphics3D_Impl> bound_graphics_3d_;
+//FIXME:  scoped_refptr<PPB_Graphics3D_Impl> bound_graphics_3d_;
   PluginDelegate::PlatformGraphics2D* bound_graphics_2d_platform_;
 
   // We track two types of focus, one from WebKit, which is the focus among
@@ -654,7 +654,7 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   const PPP_InputEvent* plugin_input_event_interface_;
   const PPP_Messaging* plugin_messaging_interface_;
   const PPP_MouseLock* plugin_mouse_lock_interface_;
-  const PPP_Pdf* plugin_pdf_interface_;
+  // FIXME const PPP_Pdf* plugin_pdf_interface_;
   const PPP_Instance_Private* plugin_private_interface_;
   const PPP_Selection_Dev* plugin_selection_interface_;
   const PPP_TextInput_Dev* plugin_textinput_interface_;
@@ -708,7 +708,7 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   // Even if |always_on_top_| is true, the plugin is not fully visible if there
   // are some cut-out areas (occupied by iframes higher in the stacking order).
   // This information is used in the optimized painting path.
-  std::vector<gfx::Rect> cut_outs_rects_;
+  std::vector<WebCore::IntRect> cut_outs_rects_;
 
   // Implementation of PPB_FlashFullscreen.
 

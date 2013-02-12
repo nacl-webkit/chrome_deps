@@ -15,7 +15,6 @@ LIST(APPEND WebKit2_SOURCES
     ${ppapi_DIR}/shared_impl/ppb_audio_shared.cc
 #    ${ppapi_DIR}/shared_impl/ppb_crypto_shared.cc
     ${ppapi_DIR}/shared_impl/ppb_device_ref_shared.cc
-    ${ppapi_DIR}/shared_impl/ppb_file_io_shared.cc
     ${ppapi_DIR}/shared_impl/ppb_file_ref_shared.cc
 #    ${ppapi_DIR}/shared_impl/ppb_gamepad_shared.cc
 #    ${ppapi_DIR}/shared_impl/ppb_graphics_3d_shared.cc
@@ -37,6 +36,7 @@ LIST(APPEND WebKit2_SOURCES
     ${ppapi_DIR}/shared_impl/resource_tracker.cc
     ${ppapi_DIR}/shared_impl/scoped_pp_resource.cc
     ${ppapi_DIR}/shared_impl/scoped_pp_var.cc
+#    ${ppapi_DIR}/shared_impl/thread_aware_callback.cc
     ${ppapi_DIR}/shared_impl/time_conversion.cc
     ${ppapi_DIR}/shared_impl/tracked_callback.cc
     ${ppapi_DIR}/shared_impl/url_request_info_data.cc

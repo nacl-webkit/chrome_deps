@@ -23,6 +23,7 @@
 #include "webkit/plugins/ppapi/ppb_host_resolver_private_impl.h"
 */
 #include "webkit/plugins/ppapi/ppb_image_data_impl.h"
+/* FIXME
 #include "webkit/plugins/ppapi/ppb_network_monitor_private_impl.h"
 #include "webkit/plugins/ppapi/ppb_scrollbar_impl.h"
 #include "webkit/plugins/ppapi/ppb_tcp_server_socket_private_impl.h"

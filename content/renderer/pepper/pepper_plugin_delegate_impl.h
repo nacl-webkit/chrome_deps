@@ -63,14 +63,14 @@ struct WebCompositionUnderline;
 class WebFrame;
 class WebPage;
 class PepperPlugin;
+struct PepperPluginInfo;
 }
 
 namespace webkit {
-struct PepperPluginInfo;
-
 namespace ppapi {
 class PluginInstance;
 class PluginModule;
+}
 }
 
 namespace content {
@@ -82,20 +82,21 @@ class RenderViewImpl;
 class PepperPluginDelegateImpl
     : public webkit::ppapi::PluginDelegate,
 //      public RenderViewPepperHelper,
-//      public base::SupportsWeakPtr<PepperPluginDelegateImpl>,
+      public base::SupportsWeakPtr<PepperPluginDelegateImpl>
 //      public PepperParentContextProvider,
 //      public RenderViewObserver
  {
  public:
   virtual ~PepperPluginDelegateImpl();
-  PassRefPtr<WebKit::PepperPlugin> createPepperPlugin(WebKit::WebFrame* frame, WebKit::Plugin::Parameters& params);
-  bool getPluginInfo(const WTF::String& url, const WTF::String& pageUrl, const WTF::String& mimeType, PepperPluginInfo& pluginInfo, WTF::String& actualMimeType);
+  PassRefPtr<WebKit::PepperPlugin> CreatePepperPlugin(WebKit::WebFrame* frame, WebKit::Plugin::Parameters& params);
+  bool GetPluginInfo(const WTF::String& url, const WTF::String& pageUrl, const WTF::String& mimeType, WebKit::PepperPluginInfo& pluginInfo, WTF::String& actualMimeType);
   PepperPluginDelegateImpl(WebKit::WebPage* page);
 
-  WebKit::WebPage* page() { return render_view_; }
+  WebKit::WebPage* render_view() { return render_view_; }
 
   // Sets up the renderer host and out-of-process proxy for an external plugin
   // module. Returns the renderer host, or NULL if it couldn't be created.
+  /* FIXME
   RendererPpapiHost* CreateExternalPluginModule(
       scoped_refptr<webkit::ppapi::PluginModule> module,
       const base::FilePath& path,
@@ -104,6 +105,7 @@ class PepperPluginDelegateImpl
       base::ProcessId plugin_pid,
       int plugin_child_id);
 
+  */
   // Removes broker from pending_connect_broker_ if present. Returns true if so.
   bool StopWaitingForBrokerConnection(PepperBrokerImpl* broker);
 
@@ -398,7 +400,7 @@ FIXME
   // not fall back on any other plugin types.
   scoped_refptr<webkit::ppapi::PluginModule>
   CreatePepperPluginModule(
-      const PepperPluginInfo& webplugin_info,
+      const WebKit::PepperPluginInfo& webplugin_info,
       bool* pepper_plugin_was_registered);
 
 /*

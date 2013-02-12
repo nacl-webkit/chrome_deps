@@ -1,6 +1,5 @@
 LIST(APPEND WebKit2_SOURCES
     ${ppapi_DIR}/host/host_message_context.cc
-    ${ppapi_DIR}/host/instance_message_filter.cc
     ${ppapi_DIR}/host/message_filter_host.cc
     ${ppapi_DIR}/host/ppapi_host.cc
     ${ppapi_DIR}/host/resource_host.cc

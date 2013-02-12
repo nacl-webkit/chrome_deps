@@ -27,7 +27,7 @@ using webkit::ppapi::HostGlobals;
 using webkit::ppapi::PluginInstance;
 using webkit::ppapi::PluginModule;
 using WebKit::WebPage;
-using webkit::PepperPluginDelegate;
+using content::PepperPluginDelegateImpl;
 
 namespace content {
 /*
@@ -218,17 +218,19 @@ int RendererPpapiHostImpl::GetRoutingIDForWidget(PP_Instance instance) const {
       GetAndValidateInstance(instance);
   if (!plugin_instance)
     return 0;
+/* FIXME
   if (plugin_instance->flash_fullscreen()) {
     webkit::ppapi::FullscreenContainer* container =
         plugin_instance->fullscreen_container();
     return static_cast<RenderWidgetFullscreenPepper*>(container)->routing_id();
   }
   return GetRenderViewForInstance(instance)->GetRoutingID();
+*/
 }
 
-gfx::Point RendererPpapiHostImpl::PluginPointToRenderView(
+WebCore::IntPoint RendererPpapiHostImpl::PluginPointToRenderView(
     PP_Instance instance,
-    const gfx::Point& pt) const {
+    const WebCore::IntPoint& pt) const {
   webkit::ppapi::PluginInstance* plugin_instance =
       GetAndValidateInstance(instance);
   if (!plugin_instance)

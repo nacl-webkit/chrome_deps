@@ -1,10 +1,10 @@
 LIST(APPEND WebKit2_SOURCES
-    ${ppapi_DIR}/proxy/audio_input_resource.cc
+#    ${ppapi_DIR}/proxy/audio_input_resource.cc
 #    ${ppapi_DIR}/proxy/broker_dispatcher.cc
 #    ${ppapi_DIR}/proxy/broker_resource.cc
 #    ${ppapi_DIR}/proxy/browser_font_resource_trusted.cc
 #    ${ppapi_DIR}/proxy/browser_font_singleton_resource.cc
-    ${ppapi_DIR}/proxy/device_enumeration_resource_helper.cc
+#    ${ppapi_DIR}/proxy/device_enumeration_resource_helper.cc
     ${ppapi_DIR}/proxy/dispatcher.cc
     ${ppapi_DIR}/proxy/file_chooser_resource.cc
 #    ${ppapi_DIR}/proxy/flash_clipboard_resource.cc
@@ -36,7 +36,6 @@ LIST(APPEND WebKit2_SOURCES
     ${ppapi_DIR}/proxy/ppb_broker_proxy.cc
 #    ${ppapi_DIR}/proxy/ppb_buffer_proxy.cc
 #    ${ppapi_DIR}/proxy/ppb_core_proxy.cc
-    ${ppapi_DIR}/proxy/ppb_file_io_proxy.cc
     ${ppapi_DIR}/proxy/ppb_file_ref_proxy.cc
     ${ppapi_DIR}/proxy/ppb_file_system_proxy.cc
 #    ${ppapi_DIR}/proxy/ppb_flash_message_loop_proxy.cc
@@ -73,6 +72,7 @@ LIST(APPEND WebKit2_SOURCES
     ${ppapi_DIR}/proxy/resource_creation_proxy.cc
     ${ppapi_DIR}/proxy/resource_message_params.cc
 #    ${ppapi_DIR}/proxy/serialized_flash_menu.cc
+    ${ppapi_DIR}/proxy/serialized_handle.cc
     ${ppapi_DIR}/proxy/serialized_structs.cc
     ${ppapi_DIR}/proxy/serialized_var.cc
 #    ${ppapi_DIR}/proxy/talk_resource.cc

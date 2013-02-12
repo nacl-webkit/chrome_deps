@@ -15,6 +15,7 @@
 #include "ppapi/shared_impl/tracked_callback.h"
 #include "ppapi/thunk/ppb_graphics_2d_api.h"
 #include "WebCanvas.h"
+#include "webkit/plugins/webkit_plugins_export.h"
 
 namespace WebCore {
 class IntPoint;

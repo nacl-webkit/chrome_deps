@@ -21,7 +21,6 @@ class PluginModule;
 
 class HostGlobals : public ::ppapi::PpapiGlobals {
  public:
-  HostGlobals();
   explicit HostGlobals();
   virtual ~HostGlobals();
 

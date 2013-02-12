@@ -414,7 +414,7 @@ class PluginDelegate {
 
   // Creates a replacement plug-in that is shown when the plug-in at |file_path|
   // couldn't be loaded.
-  virtual WebKit::pEPPERPlugin* CreatePluginReplacement(
+  virtual WebKit::PepperPlugin* CreatePluginReplacement(
       const base::FilePath& file_path) = 0;
 
   // The caller will own the pointer returned from this.

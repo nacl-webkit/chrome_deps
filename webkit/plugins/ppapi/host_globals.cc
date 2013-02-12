@@ -78,12 +78,6 @@ HostGlobals::HostGlobals() : ::ppapi::PpapiGlobals() {
   host_globals_ = this;
 }
 
-HostGlobals::HostGlobals(
-    ::ppapi::PpapiGlobals::PerThreadForTest per_thread_for_test)
-    : ::ppapi::PpapiGlobals(per_thread_for_test) {
-  DCHECK(!host_globals_);
-}
-
 HostGlobals::~HostGlobals() {
   DCHECK(host_globals_ == this || !host_globals_);
   host_globals_ = NULL;

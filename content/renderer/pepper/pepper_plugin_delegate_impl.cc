@@ -93,13 +93,18 @@ FIXME
 #include "ui/gfx/size.h"
 #include "webkit/fileapi/file_system_callback_dispatcher.h"
 #include "webkit/plugins/npapi/webplugin.h"
+*/
 #include "webkit/plugins/ppapi/plugin_module.h"
 #include "webkit/plugins/ppapi/ppapi_plugin_instance.h"
+/*FIXME
 #include "webkit/plugins/ppapi/ppapi_webplugin_impl.h"
+#include "webkit/plugins/ppapi/ppb_file_io_impl.h"
 #include "webkit/plugins/ppapi/ppb_tcp_server_socket_private_impl.h"
 #include "webkit/plugins/ppapi/ppb_tcp_socket_private_impl.h"
+*/
 #include "webkit/plugins/ppapi/resource_helper.h"
-#include "webkit/plugins/webplugininfo.h"
+#include "content/renderer/pepper/renderer_ppapi_host_impl.h"
+//#include "webkit/plugins/webplugininfo.h"
 
 #include "Connection.h"
 #include "PepperPlugin.h"
@@ -119,8 +124,9 @@ FIXME
 #include "pepper_platform_image_2d_impl.h"
 #include "WebCanvas.h"
 
-using WebKit::WebView;
-using WebKit::WebFrame;
+using namespace WTF;
+using namespace content;
+using namespace WebKit;
 
 namespace content {
 
@@ -242,7 +248,7 @@ class HostDispatcherWrapper
   scoped_ptr<ppapi::proxy::HostDispatcher> dispatcher_;
   scoped_ptr<ppapi::proxy::ProxyChannel::Delegate> dispatcher_delegate_;
 };
-*/
+* /
 class QuotaCallbackTranslator : public QuotaDispatcher::Callback {
  public:
   typedef webkit::ppapi::PluginDelegate::AvailableSpaceCallback PluginCallback;
@@ -357,18 +363,18 @@ void CreateHostForInProcessModule(WebPage* page,
 
   ppapi::PpapiPermissions perms(
       PepperPluginRegistry::GetInstance()->GetInfoForPlugin(
-          webplugin_info)->permissions);
+          webplugin_info)->pepperPermissions);
   RendererPpapiHostImpl* host_impl =
       RendererPpapiHostImpl::CreateOnModuleForInProcess(
           module, perms);
-  render_view->PpapiPluginCreated(host_impl);
+// FIXME  render_view->PpapiPluginCreated(host_impl);
 }
 
 }  // namespace
 
-PepperPluginDelegateImpl::PepperPluginDelegateImpl(RenderViewImpl* render_view)
+PepperPluginDelegateImpl::PepperPluginDelegateImpl(WebPage* page)
     : //FIXME RenderViewObserver(render_view),
-      m_page(page),
+      render_view_(page),
       focused_plugin_(NULL)
 //FIXME      last_mouse_event_target_(NULL),
 //FIXME      device_enumeration_event_handler_(
@@ -376,7 +382,7 @@ PepperPluginDelegateImpl::PepperPluginDelegateImpl(RenderViewImpl* render_view)
 {
 }
 
-PepperPluginDelegate::~PepperPluginDelegate() {
+PepperPluginDelegateImpl::~PepperPluginDelegateImpl() {
 //FIXME  DCHECK(mouse_lock_instances_.empty());
 }
 
@@ -403,7 +409,7 @@ PassRefPtr<PepperPlugin> PepperPluginDelegateImpl::CreatePepperPlugin(WebFrame* 
 {
     PepperPluginInfo info;
     String mimeType;
-    bool found = getPluginInfo(params.url.string(), m_page->corePage()->mainFrame()->tree()->top()->document()->url().string(), params.mimeType, info, mimeType);
+    bool found = GetPluginInfo(params.url.string(), render_view_->corePage()->mainFrame()->tree()->top()->document()->url().string(), params.mimeType, info, mimeType);
     if (!found)
         return 0;
 
@@ -411,21 +417,21 @@ PassRefPtr<PepperPlugin> PepperPluginDelegateImpl::CreatePepperPlugin(WebFrame* 
 
     bool pepperPluginWasRegistered = false;
 
-    scoped_refptr<ppapi::PluginModule> pepperModule(CreatePepperPluginModule(info, &pepperPluginWasRegistered));
+    scoped_refptr<webkit::ppapi::PluginModule> pepperModule(CreatePepperPluginModule(info, &pepperPluginWasRegistered));
 
     if (pepperPluginWasRegistered) {
         if (!pepperModule)
             return 0;
 
-        return adoptRef(new ppapi::PepperPluginImpl(pepperModule.get(), params, this));
+        return adoptRef(new webkit::ppapi::PepperPluginImpl(pepperModule.get(), params, this));
     }
     return 0;
 }
 
-bool PepperPluginDelegateImpl::getPluginInfo(const WTF::String& url, const WTF::String& pageUrl, const WTF::String& mimeType, PepperPluginInfo& pluginInfo, WTF::String& actualMimeType)
+bool PepperPluginDelegateImpl::GetPluginInfo(const WTF::String& url, const WTF::String& pageUrl, const WTF::String& mimeType, PepperPluginInfo& pluginInfo, WTF::String& actualMimeType)
 {
     bool found = false;
-    if (!m_page->connection()->sendSync(Messages::WebProcessProxy::GetPluginInfo(url, pageUrl, mimeType), Messages::WebProcessProxy::GetPluginInfo::Reply(found, pluginInfo, actualMimeType), 0))
+    if (!render_view_->connection()->sendSync(Messages::WebProcessProxy::GetPluginInfo(url, pageUrl, mimeType), Messages::WebProcessProxy::GetPluginInfo::Reply(found, pluginInfo, actualMimeType), 0))
         return 0;
 
     return found;
@@ -500,6 +506,7 @@ PepperPluginDelegateImpl::CreatePepperPluginModule(
   return module;
 }
 
+/* FIXME
 RendererPpapiHost* PepperPluginDelegateImpl::CreateExternalPluginModule(
     scoped_refptr<webkit::ppapi::PluginModule> module,
     const FilePath& path,
@@ -507,7 +514,6 @@ RendererPpapiHost* PepperPluginDelegateImpl::CreateExternalPluginModule(
     const IPC::ChannelHandle& channel_handle,
     base::ProcessId peer_pid,
     int plugin_child_id) {
-  /* FIXME
   // We don't call PepperPluginRegistry::AddLiveModule, as this module is
   // managed externally.
   return CreateOutOfProcessModule(module,
@@ -517,7 +523,6 @@ RendererPpapiHost* PepperPluginDelegateImpl::CreateExternalPluginModule(
                                   peer_pid,
                                   plugin_child_id,
                                   true);  // is_external = true
-  */
 }
 
 scoped_refptr<PepperBrokerImpl> PepperPluginDelegateImpl::CreateBroker(
@@ -546,6 +551,7 @@ scoped_refptr<PepperBrokerImpl> PepperPluginDelegateImpl::CreateBroker(
 
   return broker;
 }
+  */
 
 RendererPpapiHost* PepperPluginDelegateImpl::CreateOutOfProcessModule(
     webkit::ppapi::PluginModule* module,
@@ -908,7 +914,7 @@ SkBitmap* PepperPluginDelegateImpl::GetSadPluginBitmap() {
 // FIXME  return GetContentClient()->renderer()->GetSadPluginBitmap();
 }
 
-WebKit::WebPlugin* PepperPluginDelegateImpl::CreatePluginReplacement(
+WebKit::PepperPlugin* PepperPluginDelegateImpl::CreatePluginReplacement(
     const FilePath& file_path) {
 /*
 FIXME
@@ -1370,11 +1376,10 @@ FIXME
 }
 
 void PepperPluginDelegateImpl::TCPServerSocketListen(
-/* FIXME
     PP_Resource socket_resource,
     const PP_NetAddress_Private& addr,
     int32_t backlog) {
-  render_view_->Send(
+/* FIXME  render_view_->Send(
       new PpapiHostMsg_PPBTCPServerSocket_Listen(
           render_view_->routing_id(), 0, socket_resource, addr, backlog));
 */
@@ -1622,7 +1627,7 @@ void PepperPluginDelegateImpl::SampleGamepads(WebKit::WebGamepads* data) {
 }
 
 bool PepperPluginDelegateImpl::IsPageVisible() const {
-  return m_page->corePage()->focusController()->isActive();
+  return render_view_->corePage()->focusController()->isActive();
 }
 
 /* FIXME

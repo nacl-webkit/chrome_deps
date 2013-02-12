@@ -112,7 +112,7 @@ FIXME:
 #include "webkit/plugins/ppapi/ppb_url_loader_impl.h"
 #include "webkit/plugins/ppapi/url_request_info_util.h"
 #include "webkit/plugins/ppapi/common.h"
-#include "gfx_conversion.h"
+#include "gfx/gfx_conversion.h"
 #include "webkit/plugins/ppapi/npapi_glue.h"
 #include "webkit/plugins/plugin_constants.h"
 
@@ -350,8 +350,8 @@ scoped_array<const char*> StringVectorToArgArray(
 // static
 PluginInstance* PluginInstance::Create(PluginDelegate* delegate,
                                        PluginModule* module,
-                                       WebPluginContainer* container,
-                                       const GURL& plugin_url) {
+                                       WebKit::PepperPluginContainer* container,
+                                       const KURL& plugin_url) {
   base::Callback<const void*(const char*)> get_plugin_interface_func =
       base::Bind(&PluginModule::GetPluginInterface, module);
   PPP_Instance_Combined* ppp_instance_combined =
@@ -386,7 +386,7 @@ PluginInstance::PluginInstance(
     PluginModule* module,
     ::ppapi::PPP_Instance_Combined* instance_interface,
     PepperPluginContainer* container,
-    const GURL& plugin_url)
+    const KURL& plugin_url)
     : delegate_(delegate),
       module_(module),
       instance_interface_(instance_interface),
@@ -404,7 +404,7 @@ PluginInstance::PluginInstance(
       plugin_input_event_interface_(NULL),
       plugin_messaging_interface_(NULL),
       plugin_mouse_lock_interface_(NULL),
-      plugin_pdf_interface_(NULL),
+//FIXME      plugin_pdf_interface_(NULL),
       plugin_private_interface_(NULL),
       plugin_selection_interface_(NULL),
       plugin_textinput_interface_(NULL),
@@ -412,7 +412,7 @@ PluginInstance::PluginInstance(
       checked_for_plugin_input_event_interface_(false),
       checked_for_plugin_messaging_interface_(false),
       checked_for_plugin_pdf_interface_(false),
-      gamepad_impl_(new GamepadImpl(delegate)),
+//FIXME:      gamepad_impl_(new GamepadImpl(delegate)),
       plugin_print_interface_(NULL),
       plugin_graphics_3d_interface_(NULL),
       always_on_top_(false),
@@ -546,7 +546,7 @@ void PluginInstance::InvalidateRect(const IntRect& rect) {
     if (!container_ ||
         view_data_.rect.size.width == 0 || view_data_.rect.size.height == 0)
       return;  // Nothing to do.
-    if (rect.IsEmpty())
+    if (rect.isEmpty())
       container_->invalidate();
     else
       container_->invalidateRect(rect);
@@ -922,7 +922,7 @@ void PluginInstance::ViewChanged(const IntRect& position,
   // consistent since this is given to the plugin, so force everything to 0
   // in the "everything is clipped" case.
   IntRect new_clip;
-  if (!clip.IsEmpty())
+  if (!clip.isEmpty())
     new_clip = clip;
 
   cut_outs_rects_ = cut_outs_rects;
@@ -2635,7 +2635,7 @@ PP_NaClResult PluginInstance::ResetAsProxied(
   original_instance_interface_.reset(instance_interface_.release());
 
   base::Callback<const void*(const char*)> get_plugin_interface_func =
-      base::Bind(&PluginModule::getPluginInterface, module_.get());
+      base::Bind(&PluginModule::GetPluginInterface, module_.get());
   PPP_Instance_Combined* ppp_instance_combined =
       PPP_Instance_Combined::Create(get_plugin_interface_func);
   if (!ppp_instance_combined) {

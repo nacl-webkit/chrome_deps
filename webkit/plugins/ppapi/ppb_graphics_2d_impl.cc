@@ -29,7 +29,8 @@
 */
 #include "FloatRect.h"
 #include "IntRect.h"
-#include "gfx_conversion.h"
+#include "webkit/plugins/ppapi/common.h"
+#include "gfx/gfx_conversion.h"
 #include "webkit/plugins/ppapi/ppapi_plugin_instance.h"
 #include "webkit/plugins/ppapi/ppb_image_data_impl.h"
 #include "webkit/plugins/ppapi/resource_helper.h"

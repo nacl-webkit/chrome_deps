@@ -8,11 +8,12 @@
 #include <list>
 #include <map>
 
-#include "content/public/common/pepper_plugin_info.h"
+#include "PepperPluginInfo.h"
 #include "webkit/plugins/ppapi/plugin_delegate.h"
 #include "webkit/plugins/ppapi/plugin_module.h"
 #include <wtf/text/StringHash.h>
 #include <wtf/text/WTFString.h>
+#include "content/common/content_export.h"
 
 namespace ppapi {
 class PluginModule;
@@ -46,8 +47,8 @@ class PepperPluginRegistry
   // has no need to load the pepper plugin modules. It will re-compute the
   // plugin list every time it is called. Generally, code in the registry should
   // be using the cached plugin_list_ instead.
-  CONTENT_EXPORT static void ComputeList(
-      std::vector<PepperPluginInfo>* plugins);
+  CONTENT_EXPORT void ComputeList(
+      std::vector<WebKit::PepperPluginInfo>* plugins);
   /* FIXME
   // Loads the (native) libraries but does not initialize them (i.e., does not
   // call PPP_InitializeModule). This is needed by the zygote on Linux to get
@@ -59,7 +60,7 @@ class PepperPluginRegistry
   // return value will be NULL if there is no such plugin.
   //
   // The returned pointer is owned by the PluginRegistry.
-  const PepperPluginInfo* GetInfoForPlugin(const WebKit::PepperPluginInfo& info);
+  const WebKit::PepperPluginInfo* GetInfoForPlugin(const WebKit::PepperPluginInfo& info);
 
   // Returns an existing loaded module for the given path. It will search for
   // both preloaded in-process or currently active (non crashed) out-of-process
@@ -77,18 +78,19 @@ class PepperPluginRegistry
   virtual void PluginModuleDead(
       webkit::ppapi::PluginModule* dead_module) OVERRIDE;
 
-  void computeBuiltInPlugins(std::vector<WebKit::PluginModuleInfo>& plugins);
-  void computeList(std::vector<WebKit::PluginModuleInfo>& plugins);
+  void ComputeBuiltInPlugins(std::vector<WebKit::PluginModuleInfo>& plugins);
+  void ComputeList(std::vector<WebKit::PluginModuleInfo>& plugins);
 
  private:
   PepperPluginRegistry();
+  void AddPepperPlugins(std::vector<WebKit::PepperPluginInfo>* plugins);
 
   // All known pepper plugins.
-  std::vector<PepperPluginInfo> plugin_list_;
+  std::vector<WebKit::PepperPluginInfo> plugin_list_;
 
   // Plugins that have been preloaded so they can be executed in-process in
   // the renderer (the sandbox prevents on-demand loading).
-  typedef std::map<WTF::String, scoped_refptr<webkit::ppapi::PluginModule> >
+  typedef std::map<base::FilePath, scoped_refptr<webkit::ppapi::PluginModule> >
       OwningModuleMap;
   OwningModuleMap preloaded_modules_;
 
@@ -98,7 +100,7 @@ class PepperPluginRegistry
   // non-crashed modules. If an out-of-process module crashes, it may
   // continue as long as there are WebKit references to it, but it will not
   // appear in this list.
-  typedef std::map<WTF::String, webkit::ppapi::PluginModule*> NonOwningModuleMap;
+  typedef std::map<base::FilePath, webkit::ppapi::PluginModule*> NonOwningModuleMap;
   NonOwningModuleMap live_modules_;
 
   DISALLOW_COPY_AND_ASSIGN(PepperPluginRegistry);

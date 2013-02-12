@@ -14,7 +14,7 @@
 
 // Conversions for graphics types between our gfx library and PPAPI.
 // The style of naming is to match the PP_Bool conversions.
-
+/* FIXME we are not using gfx right now
 namespace webkit {
 namespace ppapi {
 
@@ -44,5 +44,5 @@ inline PP_Size PP_FromGfxSize(const gfx::Size& s) {
 
 }  // namespace ppapi
 }  // namespace webkit
-
+*/
 #endif  // WEBKIT_PLUGINS_PPAPI_GFX_CONVERSION_H_

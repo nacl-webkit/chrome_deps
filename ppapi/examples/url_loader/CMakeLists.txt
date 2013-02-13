@@ -1,9 +1,9 @@
-SET(ppapi_DIR "${CMAKE_SOURCE_DIR}/../../")
-SET(paint_manager_LIBRARY_NAME ppapi_example_paint_manager)
-SET(paint_manager_LIBRARY_TYPE SHARED)
+SET(ppapi_DIR ./../..)
+SET(url_loader_LIBRARY_NAME ppapi_example_url_loader)
+SET(url_loader_LIBRARY_TYPE SHARED)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.3)
 
-SET(paint_manager_INCLUDE_DIRECTORIES
+SET(url_loader_INCLUDE_DIRECTORIES
     "${ppapi_DIR}"
     "${ppapi_DIR}/.."
     "${ppapi_DIR}/cpp"
@@ -11,7 +11,7 @@ SET(paint_manager_INCLUDE_DIRECTORIES
     "${CMAKE_SOURCE_DIR}"
 )
 
-SET(paint_manager_SOURCES
+SET(url_loader_SOURCES
     ${ppapi_DIR}/cpp/array_output.cc
     ${ppapi_DIR}/cpp/audio.cc
     ${ppapi_DIR}/cpp/audio_config.cc
@@ -106,8 +106,8 @@ SET(paint_manager_SOURCES
     #stream_to_file.cc
 )
 
-SET(paint_manager_LIBRARIES
-    ${paint_manager_LIBRARY_NAME}
+SET(url_loader_LIBRARIES
+    ${url_loader_LIBRARY_NAME}
 )
 
 ADD_DEFINITIONS(-DNACL_LINUX=1)
@@ -117,12 +117,12 @@ SET(NACL_OSX 0)
 ADD_DEFINITIONS(-DNACL_WINDOWS=0)
 SET(NACL_WINDOWS 0)
 
-INCLUDE_DIRECTORIES(${paint_manager_INCLUDE_DIRECTORIES})
-ADD_LIBRARY(${paint_manager_LIBRARY_NAME} ${paint_manager_LIBRARY_TYPE} ${paint_manager_SOURCES})
+INCLUDE_DIRECTORIES(${url_loader_INCLUDE_DIRECTORIES})
+ADD_LIBRARY(${url_loader_LIBRARY_NAME} ${url_loader_LIBRARY_TYPE} ${url_loader_SOURCES})
 
-TARGET_LINK_LIBRARIES(${paint_manager_LIBRARY_NAME} ${paint_manager_LIBRARIES})
-SET_TARGET_PROPERTIES(${paint_manager_LIBRARY_NAME} PROPERTIES FOLDER "WebKit")
-SET_TARGET_PROPERTIES(${paint_manager_LIBRARY_NAME} PROPERTIES LINK_INTERFACE_LIBRARIES "")
+TARGET_LINK_LIBRARIES(${url_loader_LIBRARY_NAME} ${url_loader_LIBRARIES})
+SET_TARGET_PROPERTIES(${url_loader_LIBRARY_NAME} PROPERTIES FOLDER "WebKit")
+SET_TARGET_PROPERTIES(${url_loader_LIBRARY_NAME} PROPERTIES LINK_INTERFACE_LIBRARIES "")
 
-SET_TARGET_PROPERTIES(${paint_manager_LIBRARY_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR})
+SET_TARGET_PROPERTIES(${url_loader_LIBRARY_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR})
 

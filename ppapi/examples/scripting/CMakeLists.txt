@@ -1,4 +1,4 @@
-SET(ppapi_DIR "${CMAKE_SOURCE_DIR}/../../")
+SET(ppapi_DIR ./../..)
 SET(scripting_LIBRARY_NAME ppapi_example_scripting)
 SET(scripting_LIBRARY_TYPE SHARED)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.3)

@@ -9,7 +9,7 @@
 #include "base/shared_memory.h"
 #include "base/sync_socket.h"
 #include "base/threading/simple_thread.h"
-#include "media/base/audio_bus.h"
+//FIXME #include "media/base/audio_bus.h"
 #include "ppapi/c/ppb_audio.h"
 #include "ppapi/shared_impl/resource.h"
 #include "ppapi/thunk/ppb_audio_api.h"

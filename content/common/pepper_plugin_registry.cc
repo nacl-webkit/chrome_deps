@@ -21,10 +21,10 @@
 #include "base/string_split.h"
 #include "base/string_util.h"
 #include "base/utf_string_conversions.h"
-#include "content/public/common/content_client.h"
+//FIXME #include "content/public/common/content_client.h"
 #include "content/public/common/content_switches.h"
 #include "ppapi/shared_impl/ppapi_permissions.h"
-#include "webkit/plugins/npapi/plugin_list.h"
+//FIXME #include "webkit/plugins/npapi/plugin_list.h"
 
 using namespace WebCore;
 using namespace WebKit;

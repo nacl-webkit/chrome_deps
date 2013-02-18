@@ -137,7 +137,7 @@ bool BrowserMessageFilter::DispatchMessage(const IPC::Message& message) {
   DCHECK(BrowserThread::CurrentlyOn(BrowserThread::IO) || rv) <<
       "Must handle messages that were dispatched to another thread!";
   if (!message_was_ok) {
-    content::RecordAction(UserMetricsAction("BadMessageTerminate_BMF"));
+//FIXME    content::RecordAction(UserMetricsAction("BadMessageTerminate_BMF"));
     BadMessageReceived();
   }
 

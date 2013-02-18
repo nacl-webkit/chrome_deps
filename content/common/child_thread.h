@@ -41,7 +41,6 @@ class CONTENT_EXPORT ChildThread : public IPC::Listener, public IPC::Sender {
   // Used for single-process mode.
   explicit ChildThread(const std::string& channel_name);
   virtual ~ChildThread();
-/* FIXME
 
   // IPC::Sender implementation:
   virtual bool Send(IPC::Message* msg) OVERRIDE;
@@ -54,6 +53,7 @@ class CONTENT_EXPORT ChildThread : public IPC::Listener, public IPC::Sender {
 
   IPC::SyncChannel* channel() { return channel_.get(); }
 
+/* FIXME
   // Creates a ResourceLoaderBridge.
   // Tests can override this method if they want a custom loading behavior.
   virtual webkit_glue::ResourceLoaderBridge* CreateBridge(
@@ -78,11 +78,11 @@ class CONTENT_EXPORT ChildThread : public IPC::Listener, public IPC::Sender {
   QuotaDispatcher* quota_dispatcher() const {
     return quota_dispatcher_.get();
   }
-  /*FIXME
 
   // Safe to call on any thread, as long as it's guaranteed that the thread's
   // lifetime is less than the main thread.
   IPC::SyncMessageFilter* sync_message_filter();
+/*FIXME
 
   ChildHistogramMessageFilter* child_histogram_message_filter() const {
     return histogram_message_filter_.get();
@@ -95,7 +95,7 @@ class CONTENT_EXPORT ChildThread : public IPC::Listener, public IPC::Sender {
 /* FIXME
 
   virtual bool IsWebFrameValid(WebKit::WebFrame* frame);
-
+*/
  protected:
   friend class ChildProcess;
 
@@ -112,7 +112,7 @@ class CONTENT_EXPORT ChildThread : public IPC::Listener, public IPC::Sender {
   virtual bool OnMessageReceived(const IPC::Message& msg) OVERRIDE;
   virtual void OnChannelConnected(int32 peer_pid) OVERRIDE;
   virtual void OnChannelError() OVERRIDE;
-*/
+
  private:
   void Init();
 /* FIXME
@@ -127,18 +127,18 @@ class CONTENT_EXPORT ChildThread : public IPC::Listener, public IPC::Sender {
 #if defined(USE_TCMALLOC)
   void OnGetTcmallocStats();
 #endif
-
-  void EnsureConnected();
 */
+  void EnsureConnected();
+
   std::string channel_name_;
   scoped_ptr<IPC::SyncChannel> channel_;
-  /* FIXME
+
   // Allows threads other than the main thread to send sync messages.
   scoped_refptr<IPC::SyncMessageFilter> sync_message_filter_;
 
   // Implements message routing functionality to the consumers of ChildThread.
   MessageRouter router_;
-
+  /* FIXME
   // Handles resource loads for this process.
   scoped_ptr<ResourceDispatcher> resource_dispatcher_;
 

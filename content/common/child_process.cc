@@ -79,7 +79,7 @@ ChildProcess::~ChildProcess() {
 ChildThread* ChildProcess::main_thread() {
   return main_thread_.get();
 }
-/* FIXME
+
 void ChildProcess::set_main_thread(ChildThread* thread) {
   main_thread_.reset(thread);
 }
@@ -106,7 +106,7 @@ base::WaitableEvent* ChildProcess::GetShutDownEvent() {
   DCHECK(child_process_);
   return &child_process_->shutdown_event_;
 }
-
+/* FIXME
 void ChildProcess::WaitForDebugger(const std::string& label) {
 #if defined(OS_WIN)
 #if defined(GOOGLE_CHROME_BUILD)

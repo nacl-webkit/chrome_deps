@@ -8,9 +8,12 @@
 #include "base/process.h"
 #include "base/shared_memory.h"
 #include "base/string16.h"
+/*
 #include "cc/compositor_frame.h"
 #include "cc/compositor_frame_ack.h"
+*/
 #include "content/common/content_export.h"
+/* FIXME
 #include "content/common/content_param_traits.h"
 #include "content/common/edit_command.h"
 #include "content/common/navigation_gesture.h"
@@ -28,11 +31,13 @@
 #include "content/public/common/stop_find_action.h"
 #include "content/public/common/three_d_api_types.h"
 #include "content/public/common/window_container_type.h"
+*/
 #include "ipc/ipc_channel_handle.h"
 #include "ipc/ipc_message_macros.h"
 #include "ipc/ipc_platform_file.h"
 #include "media/base/channel_layout.h"
 #include "media/base/media_log_event.h"
+/* FIXME
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/WebKit/Source/Platform/chromium/public/WebFloatPoint.h"
 #include "third_party/WebKit/Source/Platform/chromium/public/WebFloatRect.h"
@@ -58,12 +63,12 @@
 #if defined(OS_MACOSX)
 #include "content/common/mac/font_descriptor.h"
 #endif
-
+*/
 #undef IPC_MESSAGE_EXPORT
 #define IPC_MESSAGE_EXPORT CONTENT_EXPORT
 
 #define IPC_MESSAGE_START ViewMsgStart
-
+/* FIXME
 IPC_ENUM_TRAITS(AccessibilityMode)
 IPC_ENUM_TRAITS(ViewMsg_Navigate_Type::Value)
 IPC_ENUM_TRAITS(WebKit::WebContextMenuData::MediaType)
@@ -82,9 +87,12 @@ IPC_ENUM_TRAITS(content::RendererPreferencesHintingEnum)
 IPC_ENUM_TRAITS(content::RendererPreferencesSubpixelRenderingEnum)
 IPC_ENUM_TRAITS(content::StopFindAction)
 IPC_ENUM_TRAITS(content::ThreeDAPIType)
+*/
 IPC_ENUM_TRAITS(media::ChannelLayout)
+/* FIXME
 IPC_ENUM_TRAITS(media::MediaLogEvent::Type)
 IPC_ENUM_TRAITS(ui::TextInputType)
+*/
 
 #if defined(OS_MACOSX)
 IPC_STRUCT_TRAITS_BEGIN(FontDescriptor)
@@ -92,7 +100,8 @@ IPC_STRUCT_TRAITS_BEGIN(FontDescriptor)
   IPC_STRUCT_TRAITS_MEMBER(font_point_size)
 IPC_STRUCT_TRAITS_END()
 #endif
-
+#if 0
+FIXME
 IPC_STRUCT_TRAITS_BEGIN(WebKit::WebCompositionUnderline)
   IPC_STRUCT_TRAITS_MEMBER(startOffset)
   IPC_STRUCT_TRAITS_MEMBER(endOffset)
@@ -714,7 +723,7 @@ IPC_MESSAGE_ROUTED1(ViewMsg_SetName,
 IPC_MESSAGE_ROUTED2(ViewMsg_SetHistoryLengthAndPrune,
                     int, /* merge_history_length */
                     int32 /* minimum_page_id */)
-
+#endif // 0
 // Asks the browser for a unique routing ID.
 IPC_SYNC_MESSAGE_CONTROL0_1(ViewHostMsg_GenerateRoutingID,
                             int /* routing_id */)
@@ -725,7 +734,8 @@ IPC_SYNC_MESSAGE_CONTROL0_4(ViewHostMsg_GetAudioHardwareConfig,
                             int /* output_sample_rate */,
                             int /* input_sample_rate */,
                             media::ChannelLayout /* input_channel_layout */)
-
+#if 0
+FIXME
 // Asks the browser for CPU usage of the renderer process in percents.
 IPC_SYNC_MESSAGE_CONTROL0_1(ViewHostMsg_GetCPUUsage,
                             int /* CPU usage in percents */)
@@ -2376,3 +2386,4 @@ IPC_SYNC_MESSAGE_CONTROL2_0(ViewHostMsg_PreCacheFontCharacters,
 // Notifies the browser that the frame with the given id was detached.
 IPC_MESSAGE_ROUTED1(ViewHostMsg_FrameDetached,
                     int64 /* frame_id */)
+#endif // 0

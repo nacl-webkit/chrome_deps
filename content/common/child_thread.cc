@@ -15,7 +15,7 @@
 //FIXME #include "components/tracing/child_trace_message_filter.h"
 //FIXME #include "content/common/child_histogram_message_filter.h"
 #include "content/common/child_process.h"
-//FIXME #include "content/common/child_process_messages.h"
+#include "content/common/child_process_messages.h"
 #include "content/common/fileapi/file_system_dispatcher.h"
 #include "content/common/quota_dispatcher.h"
 #include "content/common/resource_dispatcher.h"
@@ -25,7 +25,7 @@
 #include "ipc/ipc_switches.h"
 #include "ipc/ipc_sync_channel.h"
 #include "ipc/ipc_sync_message_filter.h"
-//FIXME #include "webkit/glue/webkit_glue.h"
+#include "webkit/glue/webkit_glue.h"
 
 #if defined(OS_WIN)
 #include "content/common/handle_enumerator_win.h"
@@ -95,7 +95,6 @@ ChildThread::ChildThread(const std::string& channel_name)
 }
 
 void ChildThread::Init() {
-    /*FIXME
   on_channel_error_called_ = false;
   message_loop_ = MessageLoop::current();
   channel_.reset(new IPC::SyncChannel(channel_name_,
@@ -105,20 +104,24 @@ void ChildThread::Init() {
 #ifdef IPC_MESSAGE_LOG_ENABLED
   IPC::Logging::GetInstance()->SetIPCSender(this);
 #endif
-
+  /*FIXME
   resource_dispatcher_.reset(new ResourceDispatcher(this));
   socket_stream_dispatcher_.reset(new SocketStreamDispatcher());
   file_system_dispatcher_.reset(new FileSystemDispatcher());
   quota_dispatcher_.reset(new QuotaDispatcher());
-
+*/
   sync_message_filter_ =
       new IPC::SyncMessageFilter(ChildProcess::current()->GetShutDownEvent());
+/*FIXME
   histogram_message_filter_ = new ChildHistogramMessageFilter();
 
   channel_->AddFilter(histogram_message_filter_.get());
+*/
   channel_->AddFilter(sync_message_filter_.get());
+/*FIXME
   channel_->AddFilter(new components::ChildTraceMessageFilter(
       ChildProcess::current()->io_message_loop_proxy()));
+*/
 
 #if defined(OS_POSIX)
   // Check that --process-type is specified so we don't do this in unit tests
@@ -132,7 +135,6 @@ void ChildThread::Init() {
       base::Bind(&ChildThread::EnsureConnected,
                  channel_connected_factory_.GetWeakPtr()),
       base::TimeDelta::FromSeconds(kConnectionTimeoutS));
-      */
 }
 
 ChildThread::~ChildThread() {
@@ -155,7 +157,7 @@ ChildThread::~ChildThread() {
   channel_->ClearIPCTaskRunner();
 */
 }
-/*FIXME
+
 void ChildThread::OnChannelConnected(int32 peer_pid) {
   channel_connected_factory_.InvalidateWeakPtrs();
 }
@@ -192,7 +194,7 @@ IPC::Listener* ChildThread::ResolveRoute(int32 routing_id) {
 
   return router_.ResolveRoute(routing_id);
 }
-
+/* FIXME
 webkit_glue::ResourceLoaderBridge* ChildThread::CreateBridge(
     const webkit_glue::ResourceLoaderBridge::RequestInfo& request_info) {
   return resource_dispatcher()->CreateBridge(request_info);
@@ -234,27 +236,30 @@ base::SharedMemory* ChildThread::AllocateSharedMemory(
 ResourceDispatcher* ChildThread::resource_dispatcher() {
   return resource_dispatcher_.get();
 }
-
+*/
 IPC::SyncMessageFilter* ChildThread::sync_message_filter() {
   return sync_message_filter_;
 }
-*/
+
 MessageLoop* ChildThread::message_loop() {
   return message_loop_;
 }
-/*FIXME
+
 bool ChildThread::OnMessageReceived(const IPC::Message& msg) {
   // Resource responses are sent to the resource dispatcher.
+/*FIXME
   if (resource_dispatcher_->OnMessageReceived(msg))
     return true;
   if (socket_stream_dispatcher_->OnMessageReceived(msg))
     return true;
+*/
   if (file_system_dispatcher_->OnMessageReceived(msg))
     return true;
   if (quota_dispatcher_->OnMessageReceived(msg))
     return true;
 
   bool handled = true;
+/* FIXME
   IPC_BEGIN_MESSAGE_MAP(ChildThread, msg)
     IPC_MESSAGE_HANDLER(ChildProcessMsg_Shutdown, OnShutdown)
 #if defined(IPC_MESSAGE_LOG_ENABLED)
@@ -274,7 +279,7 @@ bool ChildThread::OnMessageReceived(const IPC::Message& msg) {
 
   if (handled)
     return true;
-
+*/
   if (msg.routing_id() == MSG_ROUTING_CONTROL)
     return OnControlMessageReceived(msg);
 
@@ -285,6 +290,7 @@ bool ChildThread::OnControlMessageReceived(const IPC::Message& msg) {
   return false;
 }
 
+/* FIXME
 void ChildThread::OnShutdown() {
   MessageLoop::current()->Quit();
 }
@@ -342,7 +348,7 @@ bool ChildThread::IsWebFrameValid(WebKit::WebFrame* frame) {
   // Return false so that it is overridden in any process in which it is used.
   return false;
 }
-
+*/
 void ChildThread::OnProcessFinalRelease() {
   if (on_channel_error_called_) {
     MessageLoop::current()->Quit();
@@ -355,12 +361,12 @@ void ChildThread::OnProcessFinalRelease() {
   // The browser then sends back a response if it's ok to shutdown. This avoids
   // race conditions if the process refcount is 0 but there's an IPC message
   // inflight that would addref it.
-  Send(new ChildProcessHostMsg_ShutdownRequest);
+//FIXME  Send(new ChildProcessHostMsg_ShutdownRequest);
 }
 
 void ChildThread::EnsureConnected() {
   LOG(INFO) << "ChildThread::EnsureConnected()";
   base::KillProcess(base::GetCurrentProcessHandle(), 0, false);
 }
-*/
+
 }  // namespace content

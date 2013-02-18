@@ -12,9 +12,10 @@
 #include "content/common/content_export.h"
 #include "ipc/ipc_channel_proxy.h"
 #include "ipc/ipc_sender.h"
+/* FIXME
 #include "ui/gfx/native_widget_types.h"
 #include "ui/surface/transport_dib.h"
-
+*/
 class GURL;
 struct ViewMsg_SwapOut_Params;
 
@@ -37,6 +38,7 @@ class CONTENT_EXPORT RenderProcessHost : public IPC::Sender,
                                          public IPC::Listener {
  public:
   typedef IDMap<RenderProcessHost>::iterator iterator;
+/* FIXME
   typedef IDMap<RenderWidgetHost>::const_iterator RenderWidgetHostsIterator;
 
   // Details for RENDERER_PROCESS_CLOSED notifications.
@@ -52,7 +54,7 @@ class CONTENT_EXPORT RenderProcessHost : public IPC::Sender,
     base::TerminationStatus status;
     int exit_code;
   };
-
+*/
   virtual ~RenderProcessHost() {}
 
   // Initialize the new renderer process, returning true on success. This must
@@ -60,7 +62,7 @@ class CONTENT_EXPORT RenderProcessHost : public IPC::Sender,
   // that with no effect. Therefore, if the caller isn't sure about whether
   // the process has been created, it should just call Init().
   virtual bool Init() = 0;
-
+/* FIXME
   // Gets the next available routing id.
   virtual int GetNextRoutingID() = 0;
 
@@ -137,7 +139,7 @@ class CONTENT_EXPORT RenderProcessHost : public IPC::Sender,
   // Returns whether this process is using the same StoragePartition as
   // |partition|.
   virtual bool InSameStoragePartition(StoragePartition* partition) const = 0;
-
+*/
   // Returns the unique ID for this child process. This can be used later in
   // a call to FromID() to get back to this object (this is used to avoid
   // sending non-threadsafe pointers to other threads).
@@ -145,10 +147,10 @@ class CONTENT_EXPORT RenderProcessHost : public IPC::Sender,
   // This ID will be unique for all child processes, including workers, plugins,
   // etc.
   virtual int GetID() const = 0;
-
+/* FIXME
   // Returns the render widget host for the routing id passed in.
   virtual RenderWidgetHost* GetRenderWidgetHostByID(int routing_id) = 0;
-
+*/
   // Returns true iff channel_ has been set to non-NULL. Use this for checking
   // if there is connection or not. Virtual for mocking out for tests.
   virtual bool HasConnection() const = 0;
@@ -159,7 +161,7 @@ class CONTENT_EXPORT RenderProcessHost : public IPC::Sender,
 
   // Returns the renderer channel.
   virtual IPC::ChannelProxy* GetChannel() = 0;
-
+/* FIXME
   // Returns the list of attached render widget hosts.
   virtual RenderWidgetHostsIterator GetRenderWidgetHostsIterator() = 0;
 
@@ -256,6 +258,7 @@ class CONTENT_EXPORT RenderProcessHost : public IPC::Sender,
   // Returns the current max number of renderer processes used by the content
   // module.
   static size_t GetMaxRendererProcessCount();
+*/
 };
 
 }  // namespace content.

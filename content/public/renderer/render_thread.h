@@ -67,6 +67,7 @@ class CONTENT_EXPORT RenderThread : public IPC::Sender {
   virtual void AddObserver(RenderProcessObserver* observer) = 0;
   virtual void RemoveObserver(RenderProcessObserver* observer) = 0;
 
+/* FIXME
   // Set the ResourceDispatcher delegate object for this process.
   virtual void SetResourceDispatcherDelegate(
       ResourceDispatcherDelegate* delegate) = 0;
@@ -110,7 +111,7 @@ class CONTENT_EXPORT RenderThread : public IPC::Sender {
   // returned and |proxy_list| is set to a PAC string containing a list of
   // proxy servers.
   virtual bool ResolveProxy(const GURL& url, std::string* proxy_list) = 0;
-
+*/
 #if defined(OS_WIN)
   // Request that the given font be loaded by the browser so it's cached by the
   // OS. Please see ChildProcessHost::PreCacheFont for details.

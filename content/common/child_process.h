@@ -25,7 +25,7 @@ class CONTENT_EXPORT ChildProcess {
 
   // May be NULL if the main thread hasn't been set explicitly.
   ChildThread* main_thread();
-/* FIXME
+
   // Sets the object associated with the main thread of this process.
   // Takes ownership of the pointer.
   void set_main_thread(ChildThread* thread);
@@ -52,7 +52,7 @@ class CONTENT_EXPORT ChildProcess {
   // process will hold a reference to the process, and release when closed.
   void AddRefProcess();
   void ReleaseProcess();
-*/
+
   // Getter for the one ChildProcess object for this process.
   static ChildProcess* current() { return child_process_; }
 

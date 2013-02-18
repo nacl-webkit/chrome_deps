@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "ppapi/c/pp_completion_callback.h"
 #include "webkit/plugins/ppapi/audio_helper.h"
 #include "webkit/plugins/ppapi/common.h"

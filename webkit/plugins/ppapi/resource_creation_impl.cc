@@ -11,8 +11,8 @@
 #include "ppapi/shared_impl/ppb_resource_array_shared.h"
 #include "ppapi/shared_impl/var.h"
 #include "webkit/plugins/ppapi/common.h"
-/* FIXME
 #include "webkit/plugins/ppapi/ppb_audio_impl.h"
+/* FIXME
 #include "webkit/plugins/ppapi/ppb_broker_impl.h"
 #include "webkit/plugins/ppapi/ppb_buffer_impl.h"
 #include "webkit/plugins/ppapi/ppb_directory_reader_impl.h"
@@ -56,20 +56,16 @@ PP_Resource ResourceCreationImpl::CreateAudio(
     PP_Resource config_id,
     PPB_Audio_Callback audio_callback,
     void* user_data) {
-/* FIXME
   return PPB_Audio_Impl::Create(instance, config_id, audio_callback,
                                 user_data);
-*/
 }
 
 PP_Resource ResourceCreationImpl::CreateAudioConfig(
     PP_Instance instance,
     PP_AudioSampleRate sample_rate,
     uint32_t sample_frame_count) {
-/* FIXME
   return ::ppapi::PPB_AudioConfig_Shared::Create(
       ::ppapi::OBJECT_IS_IMPL, instance, sample_rate, sample_frame_count);
-*/
 }
 
 PP_Resource ResourceCreationImpl::CreateAudioTrusted(

@@ -36,6 +36,7 @@
 #include "base/threading/thread.h"
 #include "base/threading/thread_restrictions.h"
 #include "base/tracked_objects.h"
+/* FIXME
 #include "cc/switches.h"
 #include "content/browser/appcache/appcache_dispatcher_host.h"
 #include "content/browser/appcache/chrome_appcache_service.h"
@@ -75,7 +76,9 @@
 #include "content/browser/renderer_host/p2p/socket_dispatcher_host.h"
 #include "content/browser/renderer_host/pepper/pepper_message_filter.h"
 #include "content/browser/renderer_host/quota_dispatcher_host.h"
+*/
 #include "content/browser/renderer_host/render_message_filter.h"
+/* FIXME
 #include "content/browser/renderer_host/render_view_host_delegate.h"
 #include "content/browser/renderer_host/render_view_host_impl.h"
 #include "content/browser/renderer_host/render_widget_helper.h"
@@ -107,12 +110,14 @@
 #include "content/public/common/result_codes.h"
 #include "content/public/common/url_constants.h"
 #include "content/renderer/render_process_impl.h"
+*/
 #include "content/renderer/render_thread_impl.h"
 #include "ipc/ipc_channel.h"
 #include "ipc/ipc_logging.h"
 #include "ipc/ipc_platform_file.h"
 #include "ipc/ipc_switches.h"
 #include "ipc/ipc_sync_channel.h"
+/*FIXME
 #include "media/base/media_switches.h"
 #include "net/url_request/url_request_context_getter.h"
 #include "ppapi/shared_impl/ppapi_switches.h"
@@ -128,13 +133,13 @@
 #endif
 
 #include "third_party/skia/include/core/SkBitmap.h"
-
+*/
 extern bool g_exited_main_message_loop;
 
 static const char* kSiteProcessMapKeyName = "content_site_process_map";
 
 namespace content {
-
+/* FIXME
 // This class creates the IO thread for the renderer when running in
 // single-process mode.  It's not used in multi-process mode.
 class RendererMainThread : public base::Thread {
@@ -175,9 +180,9 @@ class RendererMainThread : public base::Thread {
 
   DISALLOW_COPY_AND_ASSIGN(RendererMainThread);
 };
-
+*/
 namespace {
-
+/* FIXME
 // Helper class that we pass to ResourceMessageFilter so that it can find the
 // right net::URLRequestContext for a request.
 class RendererURLRequestContextSelector
@@ -209,11 +214,11 @@ class RendererURLRequestContextSelector
   scoped_refptr<net::URLRequestContextGetter> request_context_;
   scoped_refptr<net::URLRequestContextGetter> media_request_context_;
 };
-
+*/
 // the global list of all renderer processes
 base::LazyInstance<IDMap<RenderProcessHost> >::Leaky
     g_all_hosts = LAZY_INSTANCE_INITIALIZER;
-
+/* FIXME
 // Map of site to process, to ensure we only have one RenderProcessHost per
 // site in process-per-site mode.  Each map is specific to a BrowserContext.
 class SiteProcessMap : public base::SupportsUserData::Data {
@@ -268,13 +273,14 @@ SiteProcessMap* GetSiteProcessMapForBrowserContext(BrowserContext* context) {
   }
   return map;
 }
-
+*/
 }  // namespace
 
 // Stores the maximum number of renderer processes the content module can
 // create.
 static size_t g_max_renderer_count_override = 0;
-
+static int g_id = 0;
+/* FIXME
 // static
 size_t RenderProcessHost::GetMaxRendererProcessCount() {
   if (g_max_renderer_count_override)
@@ -321,7 +327,7 @@ bool g_run_renderer_in_process_ = false;
 void RenderProcessHost::SetMaxRendererProcessCount(size_t count) {
   g_max_renderer_count_override = count;
 }
-
+*/
 RenderProcessHostImpl::RenderProcessHostImpl(
     BrowserContext* browser_context,
     StoragePartitionImpl* storage_partition_impl,
@@ -329,12 +335,16 @@ RenderProcessHostImpl::RenderProcessHostImpl(
         : fast_shutdown_started_(false),
           deleting_soon_(false),
           pending_views_(0),
+/* FIXME
           visible_widgets_(0),
           backgrounded_(true),
           ALLOW_THIS_IN_INITIALIZER_LIST(cached_dibs_cleaner_(
                 FROM_HERE, base::TimeDelta::FromSeconds(5),
                 this, &RenderProcessHostImpl::ClearTransportDIBCache)),
+*/
           is_initialized_(false),
+          id_(++g_id) {
+/* FIXME
           id_(ChildProcessHostImpl::GenerateChildProcessUniqueId()),
           browser_context_(browser_context),
           storage_partition_impl_(storage_partition_impl),
@@ -349,6 +359,7 @@ RenderProcessHostImpl::RenderProcessHostImpl(
   ChildProcessSecurityPolicyImpl::GetInstance()->Add(GetID());
 
   CHECK(!g_exited_main_message_loop);
+*/
   RegisterHost(GetID(), this);
   g_all_hosts.Get().set_check_on_null_data(true);
   // Initialize |child_process_activity_time_| to a reasonable value.
@@ -360,17 +371,17 @@ RenderProcessHostImpl::RenderProcessHostImpl(
 }
 
 RenderProcessHostImpl::~RenderProcessHostImpl() {
+/* FIXME
   DCHECK(!run_renderer_in_process());
   ChildProcessSecurityPolicyImpl::GetInstance()->Remove(GetID());
-
+*/
   // We may have some unsent messages at this point, but that's OK.
   channel_.reset();
   while (!queued_messages_.empty()) {
     delete queued_messages_.front();
     queued_messages_.pop();
   }
-
-  ClearTransportDIBCache();
+// FIXME  ClearTransportDIBCache();
   UnregisterHost(GetID());
 }
 
@@ -383,7 +394,7 @@ bool RenderProcessHostImpl::Init() {
   // for the view host which may not be sure in some cases
   if (channel_.get())
     return true;
-
+/* FIXME
   CommandLine::StringType renderer_prefix;
 #if defined(OS_POSIX)
   // A command prefix is something prepended to the command line of the spawned
@@ -405,7 +416,7 @@ bool RenderProcessHostImpl::Init() {
   FilePath renderer_path = ChildProcessHost::GetChildPath(flags);
   if (renderer_path.empty())
     return false;
-
+*/
   // Setup the IPC channel.
   const std::string channel_id =
       IPC::Channel::GenerateVerifiedChannelID(std::string());
@@ -423,6 +434,9 @@ bool RenderProcessHostImpl::Init() {
           channel_id, IPC::Channel::MODE_SERVER, this,
           BrowserThread::GetMessageLoopProxyForThread(BrowserThread::IO)));
 
+  CommandLine::ForCurrentProcess()->AppendSwitchASCII(switches::kProcessChannelID, channel_id);
+
+/* FIXME
   // Call the embedder first so that their IPC filters have priority.
   GetContentClient()->browser()->RenderProcessHostCreated(this);
 
@@ -475,11 +489,12 @@ bool RenderProcessHostImpl::Init() {
 
     fast_shutdown_started_ = false;
   }
-
+*/
   is_initialized_ = true;
   return true;
 }
 
+/* FIXME
 void RenderProcessHostImpl::CreateMessageFilters() {
   DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
   MediaInternals* media_internals = MediaInternals::GetInstance();;
@@ -908,7 +923,7 @@ bool RenderProcessHostImpl::FastShutdownIfPossible() {
   if (!SuddenTerminationAllowed())
     return false;
 
-  ProcessDied(false /* already_dead */);
+  ProcessDied(false /* already_dead * /);
   fast_shutdown_started_ = true;
   return true;
 }
@@ -997,7 +1012,7 @@ void RenderProcessHostImpl::ClearTransportDIBCache() {
 #endif
   cached_dibs_.clear();
 }
-
+*/
 bool RenderProcessHostImpl::Send(IPC::Message* msg) {
   if (!channel_.get()) {
     if (!is_initialized_) {
@@ -1008,12 +1023,12 @@ bool RenderProcessHostImpl::Send(IPC::Message* msg) {
       return false;
     }
   }
-
+/* FIXME
   if (child_process_launcher_.get() && child_process_launcher_->IsStarting()) {
     queued_messages_.push(msg);
     return true;
   }
-
+*/
   return channel_->Send(msg);
 }
 
@@ -1025,6 +1040,8 @@ bool RenderProcessHostImpl::OnMessageReceived(const IPC::Message& msg) {
     return false;
 
   mark_child_process_activity_time();
+  return true;
+  /* FIXME
   if (msg.routing_id() == MSG_ROUTING_CONTROL) {
     // Dispatch control messages.
     bool msg_is_ok = true;
@@ -1075,9 +1092,11 @@ bool RenderProcessHostImpl::OnMessageReceived(const IPC::Message& msg) {
     return true;
   }
   return RenderWidgetHostImpl::From(rwh)->OnMessageReceived(msg);
+*/
 }
 
 void RenderProcessHostImpl::OnChannelConnected(int32 peer_pid) {
+/* FIXME
 #if defined(IPC_MESSAGE_LOG_ENABLED)
   Send(new ChildProcessMsg_SetIPCLoggingEnabled(
       IPC::Logging::GetInstance()->Enabled()));
@@ -1086,12 +1105,13 @@ void RenderProcessHostImpl::OnChannelConnected(int32 peer_pid) {
   tracked_objects::ThreadData::Status status =
       tracked_objects::ThreadData::status();
   Send(new ChildProcessMsg_SetProfilerStatus(status));
+*/
 }
 
 void RenderProcessHostImpl::OnChannelError() {
-  ProcessDied(true /* already_dead */);
+//FIXME  ProcessDied(true /* already_dead */);
 }
-
+/* FIXME
 BrowserContext* RenderProcessHostImpl::GetBrowserContext() const {
   return browser_context_;
 }
@@ -1100,7 +1120,7 @@ bool RenderProcessHostImpl::InSameStoragePartition(
     StoragePartition* partition) const {
   return storage_partition_impl_ == partition;
 }
-
+*/
 int RenderProcessHostImpl::GetID() const {
   return id_;
 }
@@ -1108,7 +1128,7 @@ int RenderProcessHostImpl::GetID() const {
 bool RenderProcessHostImpl::HasConnection() const {
   return channel_.get() != NULL;
 }
-
+/* FIXME
 RenderWidgetHost* RenderProcessHostImpl::GetRenderWidgetHostByID(
     int routing_id) {
   return render_widget_hosts_.Lookup(routing_id);
@@ -1210,11 +1230,11 @@ void RenderProcessHostImpl::SurfaceUpdated(int32 surface_id) {
 void RenderProcessHostImpl::ResumeRequestsForView(int route_id) {
   widget_helper_->ResumeRequestsForView(route_id);
 }
-
+*/
 IPC::ChannelProxy* RenderProcessHostImpl::GetChannel() {
   return channel_.get();
 }
-
+/* FIXME
 RenderProcessHost::RenderWidgetHostsIterator
     RenderProcessHostImpl::GetRenderWidgetHostsIterator() {
   return RenderWidgetHostsIterator(&render_widget_hosts_);
@@ -1229,7 +1249,7 @@ bool RenderProcessHostImpl::FastShutdownForPageCount(size_t count) {
 bool RenderProcessHostImpl::FastShutdownStarted() const {
   return fast_shutdown_started_;
 }
-
+*/
 // static
 void RenderProcessHostImpl::RegisterHost(int host_id, RenderProcessHost* host) {
   g_all_hosts.Get().AddWithID(host, host_id);
@@ -1242,15 +1262,16 @@ void RenderProcessHostImpl::UnregisterHost(int host_id) {
     return;
 
   g_all_hosts.Get().Remove(host_id);
-
+/* FIXME
   // Look up the map of site to process for the given browser_context,
   // in case we need to remove this process from it.  It will be registered
   // under any sites it rendered that use process-per-site mode.
   SiteProcessMap* map =
       GetSiteProcessMapForBrowserContext(host->GetBrowserContext());
   map->RemoveProcess(host);
+*/
 }
-
+/* FIXME
 // static
 bool RenderProcessHostImpl::IsSuitableHost(
     RenderProcessHost* host,
@@ -1613,5 +1634,5 @@ void RenderProcessHostImpl::OnCompositorSurfaceBuffersSwappedNoHost(
                                                  gpu_process_host_id,
                                                  ack_params);
 }
-
+*/
 }  // namespace content

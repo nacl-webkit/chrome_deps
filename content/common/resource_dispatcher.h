@@ -31,10 +31,10 @@ class CONTENT_EXPORT ResourceDispatcher : public IPC::Listener {
  public:
   explicit ResourceDispatcher(IPC::Sender* sender);
   virtual ~ResourceDispatcher();
-/* FIXME
+
   // IPC::Listener implementation.
   virtual bool OnMessageReceived(const IPC::Message& message) OVERRIDE;
-
+/* FIXME
   // Creates a ResourceLoaderBridge for this type of dispatcher, this is so
   // this can be tested regardless of the ResourceLoaderBridge::Create
   // implementation.
@@ -53,11 +53,11 @@ class CONTENT_EXPORT ResourceDispatcher : public IPC::Listener {
 
   // Cancels a request in the pending_requests_ list.
   void CancelPendingRequest(int routing_id, int request_id);
-
+*/
   IPC::Sender* message_sender() const {
     return message_sender_;
   }
-
+/* FIXME
   // Toggles the is_deferred attribute for the specified request.
   void SetDefersLoading(int request_id, bool value);
 
@@ -166,9 +166,9 @@ class CONTENT_EXPORT ResourceDispatcher : public IPC::Listener {
   // ReleaseResourcesInDataMessage and removing them from the queue. Intended
   // for use on deferred message queues that are no longer needed.
   static void ReleaseResourcesInMessageQueue(MessageQueue* queue);
-
+*/
   IPC::Sender* message_sender_;
-
+/* FIXME
   // All pending requests issued to the host
   PendingRequestList pending_requests_;
 

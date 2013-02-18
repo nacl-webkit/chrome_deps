@@ -16,6 +16,7 @@
 #include "base/threading/thread.h"
 #include "base/threading/worker_pool.h"
 #include "base/utf_string_conversions.h"
+/* FIXME
 #include "content/browser/child_process_security_policy_impl.h"
 #include "content/browser/dom_storage/dom_storage_context_impl.h"
 #include "content/browser/dom_storage/session_storage_namespace_impl.h"
@@ -44,8 +45,10 @@
 #include "content/public/common/content_switches.h"
 #include "content/public/common/context_menu_params.h"
 #include "content/public/common/url_constants.h"
+*/
 #include "ipc/ipc_channel_handle.h"
 #include "ipc/ipc_platform_file.h"
+/* FIXME
 #include "media/audio/audio_manager_base.h"
 #include "media/audio/audio_util.h"
 #include "media/base/media_log_event.h"
@@ -72,6 +75,7 @@
 #include "third_party/khronos/GLES2/gl2.h"
 #include "third_party/khronos/GLES2/gl2ext.h"
 #endif
+*/
 #if defined(OS_POSIX)
 #include "base/file_descriptor_posix.h"
 #endif
@@ -80,7 +84,7 @@
 #include "content/common/font_cache_dispatcher_win.h"
 #endif
 
-using net::CookieStore;
+//FIXME using net::CookieStore;
 
 namespace content {
 namespace {
@@ -90,13 +94,13 @@ const int kPluginsRefreshThresholdInSeconds = 3;
 // When two CPU usage queries arrive within this interval, we sample the CPU
 // usage only once and send it as a response for both queries.
 static const int64 kCPUUsageSampleIntervalMs = 900;
-
+/* FIXME
 // On Windows, |g_color_profile| can run on an arbitrary background thread.
 // We avoid races by using LazyInstance's constructor lock to initialize the
 // object.
 base::LazyInstance<gfx::ColorProfile>::Leaky g_color_profile =
     LAZY_INSTANCE_INITIALIZER;
-
+*/
 // Common functionality for converting a sync renderer message to a callback
 // function in the browser. Derive from this, create it on the heap when
 // issuing your callback. When done, write your reply parameters into
@@ -124,7 +128,7 @@ class RenderMessageCompletionCallback {
   scoped_refptr<RenderMessageFilter> filter_;
   IPC::Message* reply_msg_;
 };
-
+/* FIXME
 class OpenChannelToPpapiPluginCallback
     : public RenderMessageCompletionCallback,
       public PpapiPluginProcessHost::PluginClient {
@@ -183,7 +187,7 @@ class OpenChannelToPpapiBrokerCallback
 
   virtual void OnPpapiChannelOpened(const IPC::ChannelHandle& channel_handle,
                                     base::ProcessId plugin_pid,
-                                    int /* plugin_child_id */) OVERRIDE {
+                                    int /* plugin_child_id * /) OVERRIDE {
     filter_->Send(new ViewMsg_PpapiBrokerChannelCreated(routing_id_,
                                                         request_id_,
                                                         plugin_pid,
@@ -216,9 +220,9 @@ void RaiseInfobarForBlocked3DContentOnUIThread(
     return;
   web_contents->DidBlock3DAPIs(url, requester);
 }
-
+*/
 }  // namespace
-
+/* FIXME
 class RenderMessageFilter::OpenChannelToNpapiPluginCallback
     : public RenderMessageCompletionCallback,
       public PluginProcessHost::Client {
@@ -300,7 +304,7 @@ class RenderMessageFilter::OpenChannelToNpapiPluginCallback
   PluginProcessHost* host_;
   bool sent_plugin_channel_request_;
 };
-
+*/
 RenderMessageFilter::RenderMessageFilter(
     int render_process_id,
     PluginServiceImpl* plugin_service,
@@ -308,7 +312,7 @@ RenderMessageFilter::RenderMessageFilter(
     net::URLRequestContextGetter* request_context,
     RenderWidgetHelper* render_widget_helper,
     MediaInternals* media_internals,
-    DOMStorageContextImpl* dom_storage_context)
+    DOMStorageContextImpl* dom_storage_context) /* FIXME
     : resource_dispatcher_host_(ResourceDispatcherHostImpl::Get()),
       plugin_service_(plugin_service),
       profile_data_directory_(browser_context->GetPath()),
@@ -319,12 +323,12 @@ RenderMessageFilter::RenderMessageFilter(
       dom_storage_context_(dom_storage_context),
       render_process_id_(render_process_id),
       cpu_usage_(0),
-      media_internals_(media_internals) {
-  DCHECK(request_context_);
+      media_internals_(media_internals) */{
+// FIXME  DCHECK(request_context_);
 
-  render_widget_helper_->Init(render_process_id_, resource_dispatcher_host_);
+// FIXME  render_widget_helper_->Init(render_process_id_, resource_dispatcher_host_);
 }
-
+/* FIXME
 RenderMessageFilter::~RenderMessageFilter() {
   // This function should be called on the IO thread.
   DCHECK(BrowserThread::CurrentlyOn(BrowserThread::IO));
@@ -1072,7 +1076,7 @@ void RenderMessageFilter::OnAre3DAPIsBlocked(int render_view_id,
 
 void RenderMessageFilter::OnDidLose3DContext(
     const GURL& top_origin_url,
-    ThreeDAPIType /* unused */,
+    ThreeDAPIType /* unused * /,
     int arb_robustness_status_code) {
 #if defined(OS_MACOSX)
     // TODO(kbr): this file indirectly includes npapi.h, which on Mac
@@ -1136,5 +1140,5 @@ void RenderMessageFilter::OnPreCacheFontCharacters(const LOGFONT& font,
   }
 }
 #endif
-
+*/
 }  // namespace content

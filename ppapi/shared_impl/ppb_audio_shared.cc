@@ -107,6 +107,7 @@ void PPB_Audio_Shared::StartThread() {
   // start up quickly enough.
   memset(shared_memory_->memory(), 0, shared_memory_size_);
   memset(client_buffer_.get(), 0, client_buffer_size_bytes_);
+    */
 #if !defined(OS_NACL)
   DCHECK(!audio_thread_.get());
   audio_thread_.reset(new base::DelegateSimpleThread(
@@ -123,7 +124,6 @@ void PPB_Audio_Shared::StartThread() {
   DCHECK_EQ(result, 0);
   thread_active_ = true;
 #endif
-*/
 }
 
 void PPB_Audio_Shared::StopThread() {

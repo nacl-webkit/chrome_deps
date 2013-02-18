@@ -33,7 +33,7 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/base/message_loop_proxy_impl.cc
     ${CHROME_DEPS_DIR}/base/message_pump.cc
 #    ${CHROME_DEPS_DIR}/base/message_pump_aurax11.cc
-#    ${CHROME_DEPS_DIR}/base/message_pump_default.cc
+    ${CHROME_DEPS_DIR}/base/message_pump_default.cc
 #    ${CHROME_DEPS_DIR}/base/message_pump_glib.cc
 #    ${CHROME_DEPS_DIR}/base/message_pump_gtk.cc
     ${CHROME_DEPS_DIR}/base/message_pump_libevent.cc
@@ -58,7 +58,7 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/base/safe_strerror_posix.cc
 #    ${CHROME_DEPS_DIR}/base/scoped_native_library.cc
 #    ${CHROME_DEPS_DIR}/base/sequence_checker_impl.cc
-#    ${CHROME_DEPS_DIR}/base/sequenced_task_runner.cc
+    ${CHROME_DEPS_DIR}/base/sequenced_task_runner.cc
 #    ${CHROME_DEPS_DIR}/base/sha1_portable.cc
 #    ${CHROME_DEPS_DIR}/base/shared_memory_nacl.cc
     ${CHROME_DEPS_DIR}/base/shared_memory_posix.cc
@@ -167,7 +167,7 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/base/threading/non_thread_safe_impl.cc
     ${CHROME_DEPS_DIR}/base/threading/platform_thread_posix.cc
     ${CHROME_DEPS_DIR}/base/threading/post_task_and_reply_impl.cc
-#    ${CHROME_DEPS_DIR}/base/threading/sequenced_worker_pool.cc
+    ${CHROME_DEPS_DIR}/base/threading/sequenced_worker_pool.cc
     ${CHROME_DEPS_DIR}/base/threading/simple_thread.cc
     ${CHROME_DEPS_DIR}/base/threading/thread.cc
     ${CHROME_DEPS_DIR}/base/threading/thread_checker_impl.cc
@@ -177,17 +177,31 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/base/threading/thread_local_storage_posix.cc
     ${CHROME_DEPS_DIR}/base/threading/thread_restrictions.cc
 #    ${CHROME_DEPS_DIR}/base/threading/watchdog.cc
-#    ${CHROME_DEPS_DIR}/base/threading/worker_pool.cc
-#    ${CHROME_DEPS_DIR}/base/threading/worker_pool_posix.cc
+    ${CHROME_DEPS_DIR}/base/threading/worker_pool.cc
+    ${CHROME_DEPS_DIR}/base/threading/worker_pool_posix.cc
+
+    ${CHROME_DEPS_DIR}/content/browser/browser_thread_impl.cc
+
+    ${CHROME_DEPS_DIR}/content/browser/renderer_host/render_message_filter.cc
+    ${CHROME_DEPS_DIR}/content/browser/renderer_host/render_process_host_impl.cc
 
     ${CHROME_DEPS_DIR}/content/common/child_process.cc
     ${CHROME_DEPS_DIR}/content/common/child_thread.cc
     ${CHROME_DEPS_DIR}/content/common/content_message_generator.cc
 #    ${CHROME_DEPS_DIR}/content/common/content_param_traits.cc
+    ${CHROME_DEPS_DIR}/content/common/message_router.cc
     ${CHROME_DEPS_DIR}/content/common/pepper_plugin_registry.cc
 #    ${CHROME_DEPS_DIR}/content/common/quota_dispatcher.cc
 
     ${CHROME_DEPS_DIR}/content/common/fileapi/file_system_dispatcher.cc
+
+    ${CHROME_DEPS_DIR}/content/public/browser/browser_message_filter.cc
+
+    ${CHROME_DEPS_DIR}/content/public/common/common_param_traits.cc
+    ${CHROME_DEPS_DIR}/content/public/common/content_constants.cc
+    ${CHROME_DEPS_DIR}/content/public/common/content_switches.cc
+
+    ${CHROME_DEPS_DIR}/content/public/renderer/render_thread.cc
 
     ${CHROME_DEPS_DIR}/content/renderer/render_thread_impl.cc
 
@@ -199,12 +213,6 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_platform_image_2d_impl.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_plugin_delegate_impl.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/renderer_ppapi_host_impl.cc
-
-    ${CHROME_DEPS_DIR}/content/public/common/common_param_traits.cc
-    ${CHROME_DEPS_DIR}/content/public/common/content_constants.cc
-    ${CHROME_DEPS_DIR}/content/public/common/content_switches.cc
-
-    ${CHROME_DEPS_DIR}/content/public/renderer/render_thread.cc
 
     ${CHROME_DEPS_DIR}/ipc/file_descriptor_set_posix.cc
     ${CHROME_DEPS_DIR}/ipc/ipc_channel.cc
@@ -244,6 +252,7 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/webkit/plugins/plugin_constants.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/plugin_switches.cc
 
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/audio_helper.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/file_callbacks.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/host_array_buffer_var.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/host_globals.cc
@@ -255,8 +264,8 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/plugin_module.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/plugin_object.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppapi_plugin_instance.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_audio_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_directory_reader_impl.cc
-    ##${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_file_io_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_file_ref_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_file_system_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_graphics_2d_impl.cc

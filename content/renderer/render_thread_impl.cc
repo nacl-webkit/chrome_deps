@@ -41,7 +41,9 @@
 #include "content/common/plugin_messages.h"
 #include "content/common/resource_dispatcher.h"
 #include "content/common/resource_messages.h"
+*/
 #include "content/common/view_messages.h"
+/* FIXME
 #include "content/common/web_database_observer_impl.h"
 #include "content/public/common/content_constants.h"
 #include "content/public/common/content_paths.h"
@@ -72,12 +74,15 @@
 #include "content/renderer/render_view_impl.h"
 #include "content/renderer/renderer_webkitplatformsupport_impl.h"
 #include "grit/content_resources.h"
+*/
 #include "ipc/ipc_channel_handle.h"
 #include "ipc/ipc_forwarding_message_filter.h"
 #include "ipc/ipc_platform_file.h"
+#include "ipc/ipc_sync_channel.h"
 #include "media/base/audio_hardware_config.h"
 #include "media/base/media.h"
 #include "media/base/media_switches.h"
+/* FIXME
 #include "net/base/net_errors.h"
 #include "net/base/net_util.h"
 #include "third_party/WebKit/Source/Platform/chromium/public/Platform.h"
@@ -110,11 +115,11 @@
 #include "base/memory/scoped_handle.h"
 #include "content/common/np_channel_base.h"
 #endif
-
+*/
 #if defined(OS_POSIX)
 #include "ipc/ipc_channel_posix.h"
 #endif
-
+/* FIXME
 #if defined(ENABLE_WEBRTC)
 #include "third_party/webrtc/system_wrappers/interface/event_tracer.h"
 #endif
@@ -128,6 +133,9 @@ using WebKit::WebSecurityPolicy;
 using WebKit::WebString;
 using WebKit::WebView;
 */
+
+#include "content/renderer/media/audio_message_filter.h"
+
 namespace content {
 
 namespace {
@@ -280,7 +288,7 @@ void RenderThreadImpl::HistogramCustomizer::SetCommonHost(
 RenderThreadImpl* RenderThreadImpl::current() {
   return lazy_tls.Pointer()->Get();
 }
-/*FIXME
+
 // When we run plugins in process, we actually run them on the render thread,
 // which means that we need to make the render thread pump UI events.
 RenderThreadImpl::RenderThreadImpl() {
@@ -294,11 +302,11 @@ RenderThreadImpl::RenderThreadImpl(const std::string& channel_name)
 
 void RenderThreadImpl::Init() {
   TRACE_EVENT_BEGIN_ETW("RenderThreadImpl::Init", 0, "");
-
+/*FIXME
   v8::V8::SetCounterFunction(base::StatsTable::FindLocation);
   v8::V8::SetCreateHistogramFunction(CreateHistogram);
   v8::V8::SetAddHistogramSampleFunction(AddHistogramSample);
-
+*/
 #if defined(OS_MACOSX) || defined(OS_ANDROID)
   // On Mac and Android, the select popups are rendered by the browser.
   WebKit::WebView::setUseExternalPopupMenus(true);
@@ -325,6 +333,7 @@ void RenderThreadImpl::Init() {
   idle_notifications_to_skip_ = 0;
   compositor_initialized_ = false;
 
+/*FIXME
   appcache_dispatcher_.reset(new AppCacheDispatcher(Get()));
   dom_storage_dispatcher_.reset(new DomStorageDispatcher());
   main_thread_indexed_db_dispatcher_.reset(new IndexedDBDispatcher());
@@ -368,11 +377,12 @@ void RenderThreadImpl::Init() {
   PathService::Get(DIR_MEDIA_LIBS, &media_path);
   if (!media_path.empty())
     media::InitializeMediaLibrary(media_path);
-
+*/
   TRACE_EVENT_END_ETW("RenderThreadImpl::Init", 0, "");
 }
 
 RenderThreadImpl::~RenderThreadImpl() {
+/*FIXME
   FOR_EACH_OBSERVER(
       RenderProcessObserver, observers_, OnRenderProcessShutdown());
 
@@ -417,6 +427,7 @@ RenderThreadImpl::~RenderThreadImpl() {
 
   if (webkit_platform_support_.get())
     WebKit::shutdown();
+*/
 
   lazy_tls.Pointer()->Set(NULL);
 
@@ -442,7 +453,7 @@ bool RenderThreadImpl::Send(IPC::Message* msg) {
   if (msg->is_sync()) {
     if (msg->is_caller_pumping_messages()) {
       pumping_events = true;
-    } else {
+    }/* FIXME else {
       if ((msg->type() == ViewHostMsg_GetCookies::ID ||
            msg->type() == ViewHostMsg_GetRawCookies::ID ||
            msg->type() == ViewHostMsg_CookiesEnabled::ID) &&
@@ -451,6 +462,7 @@ bool RenderThreadImpl::Send(IPC::Message* msg) {
         pumping_events = true;
       }
     }
+*/
   }
 
   bool suspend_webkit_shared_timer = true;  // default value
@@ -460,7 +472,7 @@ bool RenderThreadImpl::Send(IPC::Message* msg) {
   std::swap(notify_webkit_of_modal_loop, notify_webkit_of_modal_loop_);
 
   int render_view_id = MSG_ROUTING_NONE;
-
+/* FIXME
   if (pumping_events) {
     if (suspend_webkit_shared_timer)
       webkit_platform_support_->SuspendSharedTimer();
@@ -476,9 +488,9 @@ bool RenderThreadImpl::Send(IPC::Message* msg) {
           new PluginMsg_SignalModalDialogEvent(render_view_id));
     }
   }
-
+*/
   bool rv = ChildThread::Send(msg);
-
+/* FIXME
   if (pumping_events) {
     if (render_view_id != MSG_ROUTING_NONE) {
       PluginChannelHost::Broadcast(
@@ -491,7 +503,7 @@ bool RenderThreadImpl::Send(IPC::Message* msg) {
     if (suspend_webkit_shared_timer)
       webkit_platform_support_->ResumeSharedTimer();
   }
-
+*/
   return rv;
 }
 
@@ -504,6 +516,7 @@ IPC::SyncChannel* RenderThreadImpl::GetChannel() {
 }
 
 std::string RenderThreadImpl::GetLocale() {
+/* FIXME
   // The browser process should have passed the locale to the renderer via the
   // --lang command line flag.
   const CommandLine& parsed_command_line = *CommandLine::ForCurrentProcess();
@@ -511,6 +524,7 @@ std::string RenderThreadImpl::GetLocale() {
       parsed_command_line.GetSwitchValueASCII(switches::kLang);
   DCHECK(!lang.empty());
   return lang;
+*/
 }
 
 IPC::SyncMessageFilter* RenderThreadImpl::GetSyncMessageFilter() {
@@ -534,7 +548,7 @@ void RenderThreadImpl::RemoveRoute(int32 routing_id) {
 
 int RenderThreadImpl::GenerateRoutingID() {
   int routing_id = MSG_ROUTING_NONE;
-  Send(new ViewHostMsg_GenerateRoutingID(&routing_id));
+// FIXME Send(new ViewHostMsg_GenerateRoutingID(&routing_id));
   return routing_id;
 }
 
@@ -557,7 +571,7 @@ void RenderThreadImpl::AddObserver(RenderProcessObserver* observer) {
 void RenderThreadImpl::RemoveObserver(RenderProcessObserver* observer) {
   observers_.RemoveObserver(observer);
 }
-
+/*FIXME
 void RenderThreadImpl::SetResourceDispatcherDelegate(
     ResourceDispatcherDelegate* delegate) {
   resource_dispatcher()->set_delegate(delegate);
@@ -912,8 +926,9 @@ AudioRendererMixerManager* RenderThreadImpl::GetAudioRendererMixerManager() {
 
   return audio_renderer_mixer_manager_.get();
 }
-
+*/
 media::AudioHardwareConfig* RenderThreadImpl::GetAudioHardwareConfig() {
+/*FIXME
   if (!audio_hardware_config_) {
     int output_buffer_size;
     int output_sample_rate;
@@ -931,6 +946,7 @@ media::AudioHardwareConfig* RenderThreadImpl::GetAudioHardwareConfig() {
   }
 
   return audio_hardware_config_.get();
+*/
 }
 
 #if defined(OS_WIN)
@@ -948,7 +964,7 @@ void RenderThreadImpl::ReleaseCachedFonts() {
 }
 
 #endif  // OS_WIN
-
+/*FIXME
 bool RenderThreadImpl::IsWebFrameValid(WebKit::WebFrame* web_frame) {
   if (!web_frame)
     return false;  // We must be shutting down.
@@ -959,7 +975,7 @@ bool RenderThreadImpl::IsWebFrameValid(WebKit::WebFrame* web_frame) {
 
   return true;
 }
-
+*/
 bool RenderThreadImpl::IsMainThread() {
   return !!current();
 }
@@ -979,7 +995,7 @@ scoped_refptr<base::MessageLoopProxy> RenderThreadImpl::GetIOLoopProxy() {
 base::WaitableEvent* RenderThreadImpl::GetShutDownEvent() {
   return ChildProcess::current()->GetShutDownEvent();
 }
-
+/*FIXME
 scoped_ptr<base::SharedMemory> RenderThreadImpl::AllocateSharedMemory(
     size_t size) {
   return scoped_ptr<base::SharedMemory>(
@@ -1032,22 +1048,23 @@ void RenderThreadImpl::OnSetZoomLevelForCurrentURL(const std::string& host,
   RenderViewZoomer zoomer(host, zoom_level);
   RenderView::ForEach(&zoomer);
 }
-
+*/
 bool RenderThreadImpl::OnControlMessageReceived(const IPC::Message& msg) {
+/*FIXME
   ObserverListBase<RenderProcessObserver>::Iterator it(observers_);
   RenderProcessObserver* observer;
   while ((observer = it.GetNext()) != NULL) {
     if (observer->OnControlMessageReceived(msg))
       return true;
   }
-
   // Some messages are handled by delegates.
   if (appcache_dispatcher_->OnMessageReceived(msg) ||
       dom_storage_dispatcher_->OnMessageReceived(msg)) {
     return true;
   }
-
+*/
   bool handled = true;
+/*FIXME
   IPC_BEGIN_MESSAGE_MAP(RenderThreadImpl, msg)
     IPC_MESSAGE_HANDLER(ViewMsg_SetZoomLevelForCurrentURL,
                         OnSetZoomLevelForCurrentURL)
@@ -1059,9 +1076,10 @@ bool RenderThreadImpl::OnControlMessageReceived(const IPC::Message& msg) {
     IPC_MESSAGE_HANDLER(ViewMsg_TempCrashWithData, OnTempCrashWithData)
     IPC_MESSAGE_UNHANDLED(handled = false)
   IPC_END_MESSAGE_MAP()
+*/
   return handled;
 }
-
+/*FIXME
 void RenderThreadImpl::OnCreateNewView(const ViewMsg_New_Params& params) {
   EnsureWebKitInitialized();
   // When bringing in render_view, also bring in webkit's glue and jsbindings.

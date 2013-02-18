@@ -14,9 +14,7 @@
 #include "base/logging.h"
 #include "base/memory/scoped_ptr.h"
 #include "base/message_loop_proxy_impl.h"
-#if !defined(BUILDING_WITH_WEBKIT)
 #include "base/message_pump_default.h"
-#endif
 #include "base/metrics/histogram.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/run_loop.h"
@@ -29,7 +27,7 @@
 #if defined(OS_MACOSX)
 #include "base/message_pump_mac.h"
 #endif
-#if defined(OS_POSIX) && !defined(OS_IOS) && !defined(BUILDING_WITH_WEBKIT)
+#if defined(OS_POSIX) && !defined(OS_IOS)
 #include "base/message_pump_libevent.h"
 #endif
 #if defined(OS_ANDROID)
@@ -172,16 +170,9 @@ MessageLoop::MessageLoop(Type type, base::MessagePump* pump)
 // ipc_channel_nacl.cc uses a worker thread to do socket reads currently, and
 // doesn't require extra support for watching file descriptors.
 #define MESSAGE_PUMP_IO new base::MessagePumpDefault();
-#elif !defined(BUILDING_WITH_WEBKIT)
-#define MESSAGE_PUMP_UI NULL
-#define MESSAGE_PUMP_IO NULL
 #elif defined(OS_POSIX)  // POSIX but not MACOSX.
 #define MESSAGE_PUMP_UI new base::MessagePumpForUI()
-#if defined(BUILDING_WITH_WEBKIT)
-#define MESSAGE_PUMP_IO new base::MessagePumpForUI()
-#else
 #define MESSAGE_PUMP_IO new base::MessagePumpLibevent()
-#endif // defined(BUILDING_WITH_WEBKIT
 #else
 #error Not implemented
 #endif
@@ -197,12 +188,8 @@ MessageLoop::MessageLoop(Type type, base::MessagePump* pump)
   } else if (type_ == TYPE_IO) {
     pump_ = MESSAGE_PUMP_IO;
   } else {
-#if defined(BUILDING_WITH_WEBKIT)
-    NOTREACHED();
-#else
     DCHECK_EQ(TYPE_DEFAULT, type_);
     pump_ = new base::MessagePumpDefault();
-#endif
   }
 }
 

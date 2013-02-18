@@ -116,6 +116,7 @@ class CONTENT_EXPORT RenderThreadImpl : public RenderThread,
       IPC::ChannelProxy::OutgoingMessageFilter* filter) OVERRIDE;
   virtual void AddObserver(RenderProcessObserver* observer) OVERRIDE;
   virtual void RemoveObserver(RenderProcessObserver* observer) OVERRIDE;
+  /* FIXME
   virtual void SetResourceDispatcherDelegate(
       ResourceDispatcherDelegate* delegate) OVERRIDE;
   virtual void WidgetHidden() OVERRIDE;
@@ -140,13 +141,14 @@ class CONTENT_EXPORT RenderThreadImpl : public RenderThread,
 
   // ChildThread:
   virtual bool IsWebFrameValid(WebKit::WebFrame* frame) OVERRIDE;
-/* FIXME:   
-  // GpuChannelHostFactory implementation:
+  GpuChannelHostFactory implementation:
+  */
   virtual bool IsMainThread() OVERRIDE;
   virtual bool IsIOThread() OVERRIDE;
   virtual MessageLoop* GetMainLoop() OVERRIDE;
   virtual scoped_refptr<base::MessageLoopProxy> GetIOLoopProxy() OVERRIDE;
   virtual base::WaitableEvent* GetShutDownEvent() OVERRIDE;
+  /* FIXME:
   virtual scoped_ptr<base::SharedMemory> AllocateSharedMemory(
       size_t size) OVERRIDE;
   virtual int32 CreateViewCommandBuffer(
@@ -193,12 +195,12 @@ class CONTENT_EXPORT RenderThreadImpl : public RenderThread,
   AudioInputMessageFilter* audio_input_message_filter() {
     return audio_input_message_filter_.get();
   }
-
+*/
   AudioMessageFilter* audio_message_filter() {
     return audio_message_filter_.get();
   }
 
-
+/* FIXME
 
   // Creates the embedder implementation of WebMediaStreamCenter.
   // The resulting object is owned by WebKit and deleted by WebKit at tear-down.
@@ -229,12 +231,12 @@ class CONTENT_EXPORT RenderThreadImpl : public RenderThread,
   // of the thread on which file operations should be run. Must be called
   // on the renderer's main thread.
   scoped_refptr<base::MessageLoopProxy> GetFileThreadMessageLoopProxy();
-
+/* FIXME
   // Causes the idle handler to skip sending idle notifications
   // on the two next scheduled calls, so idle notifications are
   // not sent for at least one notification delay.
   void PostponeIdleNotification();
-/* FIXME
+
   // Returns a graphics context shared among all
   // RendererGpuVideoDecoderFactories, or NULL on error.  Context remains owned
   // by this class and must be null-tested before each use to detect context
@@ -249,11 +251,12 @@ class CONTENT_EXPORT RenderThreadImpl : public RenderThread,
   // instances shared based on configured audio parameters.  Lazily created on
   // first call.
   AudioRendererMixerManager* GetAudioRendererMixerManager();
-
+*/
   // AudioHardwareConfig contains audio hardware configuration for
   // renderer side clients.  Creation requires a synchronous IPC call so it is
   // lazily created on the first call.
   media::AudioHardwareConfig* GetAudioHardwareConfig();
+  /*FIXME
 
 #if defined(OS_WIN)
   void PreCacheFontCharacters(const LOGFONT& log_font, const string16& str);
@@ -332,7 +335,9 @@ class CONTENT_EXPORT RenderThreadImpl : public RenderThread,
   // Used on the renderer and IPC threads.
   scoped_refptr<DBMessageFilter> db_message_filter_;
   scoped_refptr<AudioInputMessageFilter> audio_input_message_filter_;
+*/
   scoped_refptr<AudioMessageFilter> audio_message_filter_;
+/* FIXME
   scoped_refptr<DevToolsAgentFilter> devtools_agent_message_filter_;
 
   scoped_ptr<MediaStreamDependencyFactory> media_stream_factory_;
@@ -349,7 +354,7 @@ class CONTENT_EXPORT RenderThreadImpl : public RenderThread,
 
   // Used on multiple script execution context threads.
   scoped_ptr<WebDatabaseObserverImpl> web_database_observer_impl_;
-
+*/
 #if defined(OS_WIN)
   // Initialize COM when using plugins outside the sandbox.
   scoped_ptr<base::win::ScopedCOMInitializer> initialize_com_;
@@ -370,6 +375,7 @@ class CONTENT_EXPORT RenderThreadImpl : public RenderThread,
   bool suspend_webkit_shared_timer_;
   bool notify_webkit_of_modal_loop_;
 
+/*FIXME
   // Timer that periodically calls IdleHandler.
   base::RepeatingTimer<RenderThreadImpl> idle_timer_;
 
@@ -378,20 +384,21 @@ class CONTENT_EXPORT RenderThreadImpl : public RenderThread,
 */
   // A lazily initiated thread on which file operations are run.
   scoped_ptr<base::Thread> file_thread_;
-/*FIXME
   bool compositor_initialized_;
+  /*FIXME
   scoped_ptr<CompositorThread> compositor_thread_;
   scoped_refptr<IPC::ForwardingMessageFilter> compositor_output_surface_filter_;
-
+*/
   ObserverList<RenderProcessObserver> observers_;
-
+/* FIXME
   class GpuVDAContextLostCallback;
   scoped_ptr<GpuVDAContextLostCallback> context_lost_cb_;
   scoped_ptr<WebGraphicsContext3DCommandBufferImpl> gpu_vda_context3d_;
 
   scoped_ptr<AudioRendererMixerManager> audio_renderer_mixer_manager_;
+  */
   scoped_ptr<media::AudioHardwareConfig> audio_hardware_config_;
-
+/* FIXME
   HistogramCustomizer histogram_customizer_;
 */
   DISALLOW_COPY_AND_ASSIGN(RenderThreadImpl);

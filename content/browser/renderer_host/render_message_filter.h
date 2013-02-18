@@ -19,15 +19,18 @@
 #include "base/shared_memory.h"
 #include "base/string16.h"
 #include "build/build_config.h"
+/* FIXME
 #include "content/common/pepper_renderer_instance_data.h"
+*/
 #include "content/public/browser/browser_message_filter.h"
+/* FIXME
 #include "content/public/common/three_d_api_types.h"
 #include "media/base/channel_layout.h"
 #include "net/cookies/canonical_cookie.h"
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebPopupType.h"
 #include "ui/gfx/native_widget_types.h"
 #include "ui/surface/transport_dib.h"
-
+*/
 #if defined(OS_MACOSX)
 #include "content/common/mac/font_loader.h"
 #endif
@@ -84,7 +87,7 @@ class RenderMessageFilter : public BrowserMessageFilter {
                       RenderWidgetHelper* render_widget_helper,
                       MediaInternals* media_internals,
                       DOMStorageContextImpl* dom_storage_context);
-
+/* FIXME
   // IPC::ChannelProxy::MessageFilter methods:
   virtual void OnChannelClosing() OVERRIDE;
   virtual void OnChannelConnected(int32 peer_pid) OVERRIDE;
@@ -291,7 +294,7 @@ class RenderMessageFilter : public BrowserMessageFilter {
   scoped_ptr<base::ProcessMetrics> process_metrics_;
 
   MediaInternals* media_internals_;
-
+*/
   DISALLOW_COPY_AND_ASSIGN(RenderMessageFilter);
 };
 

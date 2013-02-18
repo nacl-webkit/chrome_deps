@@ -13,11 +13,11 @@
 #include "base/process.h"
 #include "base/synchronization/waitable_event.h"
 #include "base/timer.h"
-#include "content/browser/child_process_launcher.h"
+// FIXME #include "content/browser/child_process_launcher.h"
 #include "content/common/content_export.h"
 #include "content/public/browser/render_process_host.h"
 #include "ipc/ipc_channel_proxy.h"
-#include "ui/surface/transport_dib.h"
+// FIXME #include "ui/surface/transport_dib.h"
 
 class CommandLine;
 
@@ -55,8 +55,8 @@ class StoragePartitionImpl;
 // because all the IPCs from the RenderViews (renderer) will only ever be able
 // to access the partition they are assigned to.
 class CONTENT_EXPORT RenderProcessHostImpl
-    : public RenderProcessHost,
-      public ChildProcessLauncher::Client {
+    : public RenderProcessHost /* FIXME,
+      public ChildProcessLauncher::Client*/ {
  public:
   RenderProcessHostImpl(BrowserContext* browser_context,
                         StoragePartitionImpl* storage_partition_impl,
@@ -66,6 +66,7 @@ class CONTENT_EXPORT RenderProcessHostImpl
   // RenderProcessHost implementation (public portion).
   virtual void EnableSendQueue() OVERRIDE;
   virtual bool Init() OVERRIDE;
+/* FIXME
   virtual int GetNextRoutingID() OVERRIDE;
   virtual void CancelResourceRequests(int render_widget_id) OVERRIDE;
   virtual void SimulateSwapOutACK(const ViewMsg_SwapOut_Params& params)
@@ -86,8 +87,10 @@ class CONTENT_EXPORT RenderProcessHostImpl
   virtual BrowserContext* GetBrowserContext() const OVERRIDE;
   virtual bool InSameStoragePartition(
       StoragePartition* partition) const OVERRIDE;
+  */
   virtual int GetID() const OVERRIDE;
   virtual bool HasConnection() const OVERRIDE;
+  /* FIXME
   virtual RenderWidgetHost* GetRenderWidgetHostByID(int routing_id)
       OVERRIDE;
   virtual void SetIgnoreInputEvents(bool ignore_input_events) OVERRIDE;
@@ -100,14 +103,16 @@ class CONTENT_EXPORT RenderProcessHostImpl
   virtual void RemovePendingView() OVERRIDE;
   virtual void SetSuddenTerminationAllowed(bool enabled) OVERRIDE;
   virtual bool SuddenTerminationAllowed() const OVERRIDE;
+  */
   virtual IPC::ChannelProxy* GetChannel() OVERRIDE;
+  /* FIXME
   virtual RenderWidgetHostsIterator GetRenderWidgetHostsIterator() OVERRIDE;
   virtual bool FastShutdownForPageCount(size_t count) OVERRIDE;
   virtual bool FastShutdownStarted() const OVERRIDE;
   virtual base::TimeDelta GetChildProcessIdleTime() const OVERRIDE;
   virtual void SurfaceUpdated(int32 surface_id) OVERRIDE;
   virtual void ResumeRequestsForView(int route_id) OVERRIDE;
-
+*/
   // IPC::Sender via RenderProcessHost.
   virtual bool Send(IPC::Message* msg) OVERRIDE;
 
@@ -115,10 +120,10 @@ class CONTENT_EXPORT RenderProcessHostImpl
   virtual bool OnMessageReceived(const IPC::Message& msg) OVERRIDE;
   virtual void OnChannelConnected(int32 peer_pid) OVERRIDE;
   virtual void OnChannelError() OVERRIDE;
-
+/* FIXME
   // ChildProcessLauncher::Client implementation.
   virtual void OnProcessLaunched() OVERRIDE;
-
+*/
   // Call this function when it is evident that the child process is actively
   // performing some operation, for example if we just received an IPC message.
   void mark_child_process_activity_time() {
@@ -127,13 +132,13 @@ class CONTENT_EXPORT RenderProcessHostImpl
 
   // Returns the current number of active views in this process.  Excludes
   // any RenderViewHosts that are swapped out.
-  int GetActiveViewCount();
+// FIXME  int GetActiveViewCount();
 
   // Register/unregister the host identified by the host id in the global host
   // list.
   static void RegisterHost(int host_id, RenderProcessHost* host);
   static void UnregisterHost(int host_id);
-
+/* FIXME
   // Returns true if |host| is suitable for launching a new view with |site_url|
   // in the given |browser_context|.
   static bool IsSuitableHost(RenderProcessHost* host,
@@ -168,13 +173,13 @@ class CONTENT_EXPORT RenderProcessHostImpl
 
  protected:
   // A proxy for our IPC::Channel that lives on the IO thread (see
-  // browser_process.h)
+  // browser_process.h)*/
   scoped_ptr<IPC::ChannelProxy> channel_;
-
+/*FIXME
   // The registered render widget hosts. When this list is empty or all NULL,
   // we should delete ourselves
   IDMap<RenderWidgetHost> render_widget_hosts_;
-
+*/
   // True if fast shutdown has been performed on this RPH.
   bool fast_shutdown_started_;
 
@@ -186,6 +191,7 @@ class CONTENT_EXPORT RenderProcessHostImpl
   // this count is non-zero.
   int32 pending_views_;
 
+/*FIXME
  private:
   friend class VisitRelayingRenderProcessHost;
 
@@ -259,13 +265,13 @@ class CONTENT_EXPORT RenderProcessHostImpl
 
   // Used in single-process mode.
   scoped_ptr<RendererMainThread> in_process_renderer_;
-
+*/
   // True after Init() has been called. We can't just check channel_ because we
   // also reset that in the case of process termination.
   bool is_initialized_;
 
   // Used to launch and terminate the process without blocking the UI thread.
-  scoped_ptr<ChildProcessLauncher> child_process_launcher_;
+// FIXME  scoped_ptr<ChildProcessLauncher> child_process_launcher_;
 
   // Messages we queue while waiting for the process handle.  We queue them here
   // instead of in the channel so that we ensure they're sent after init related
@@ -275,12 +281,12 @@ class CONTENT_EXPORT RenderProcessHostImpl
 
   // The globally-unique identifier for this RPH.
   int id_;
-
+/* FIXME
   BrowserContext* browser_context_;
 
   // Owned by |browser_context_|.
   StoragePartitionImpl* storage_partition_impl_;
-
+*/
   // True if the process can be shut down suddenly.  If this is true, then we're
   // sure that all the RenderViews in the process can be shutdown suddenly.  If
   // it's false, then specific RenderViews might still be allowed to be shutdown
@@ -311,7 +317,7 @@ class CONTENT_EXPORT RenderProcessHostImpl
 
   // Forwards messages between WebRTCInternals in the browser process
   // and PeerConnectionTracker in the renderer process.
-  scoped_refptr<PeerConnectionTrackerHost> peer_connection_tracker_host_;
+// FIXME  scoped_refptr<PeerConnectionTrackerHost> peer_connection_tracker_host_;
 
   DISALLOW_COPY_AND_ASSIGN(RenderProcessHostImpl);
 };

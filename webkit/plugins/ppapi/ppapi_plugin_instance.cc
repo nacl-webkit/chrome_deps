@@ -2170,18 +2170,12 @@ PP_Var PluginInstance::ExecuteScript(PP_Instance instance,
 
 uint32_t PluginInstance::GetAudioHardwareOutputSampleRate(
     PP_Instance instance) {
-/*
-FIXME
   return delegate()->GetAudioHardwareOutputSampleRate();
-*/
 }
 
 uint32_t PluginInstance::GetAudioHardwareOutputBufferSize(
     PP_Instance instance) {
-/*
-FIXME
   return delegate()->GetAudioHardwareOutputBufferSize();
-*/
 }
 
 PP_Var PluginInstance::GetDefaultCharSet(PP_Instance instance) {

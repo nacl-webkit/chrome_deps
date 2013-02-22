@@ -34,7 +34,9 @@
 #include "content/common/child_process_host_impl.h"
 #include "content/common/child_process_messages.h"
 #include "content/common/desktop_notification_messages.h"
+*/
 #include "content/common/view_messages.h"
+/*FIXME
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
@@ -47,10 +49,11 @@
 #include "content/public/common/url_constants.h"
 */
 #include "ipc/ipc_channel_handle.h"
+#include "ipc/ipc_message_macros.h"
 #include "ipc/ipc_platform_file.h"
-/* FIXME
 #include "media/audio/audio_manager_base.h"
 #include "media/audio/audio_util.h"
+/*FIXME
 #include "media/base/media_log_event.h"
 #include "net/base/io_buffer.h"
 #include "net/base/keygen_handler.h"
@@ -368,7 +371,7 @@ void RenderMessageFilter::OnChannelConnected(int32 peer_id) {
   cpu_usage_ = process_metrics_->GetCPUUsage(); // Initialize CPU usage counters
   cpu_usage_sample_time_ = base::TimeTicks::Now();
 }
-
+*/
 bool RenderMessageFilter::OnMessageReceived(const IPC::Message& message,
                                             bool* message_was_ok) {
   bool handled = true;
@@ -377,6 +380,7 @@ bool RenderMessageFilter::OnMessageReceived(const IPC::Message& message,
     IPC_MESSAGE_HANDLER(ViewHostMsg_PreCacheFontCharacters,
                         OnPreCacheFontCharacters)
 #endif
+/* FIXME
     IPC_MESSAGE_HANDLER(ViewHostMsg_GenerateRoutingID, OnGenerateRoutingID)
     IPC_MESSAGE_HANDLER(ViewHostMsg_CreateWindow, OnCreateWindow)
     IPC_MESSAGE_HANDLER(ViewHostMsg_CreateWidget, OnCreateWidget)
@@ -421,19 +425,23 @@ bool RenderMessageFilter::OnMessageReceived(const IPC::Message& message,
     IPC_MESSAGE_HANDLER_DELAY_REPLY(ViewHostMsg_Keygen, OnKeygen)
     IPC_MESSAGE_HANDLER(ViewHostMsg_AsyncOpenFile, OnAsyncOpenFile)
     IPC_MESSAGE_HANDLER(ViewHostMsg_GetCPUUsage, OnGetCPUUsage)
+*/
     IPC_MESSAGE_HANDLER(ViewHostMsg_GetAudioHardwareConfig,
                         OnGetAudioHardwareConfig)
+/*FIXME
     IPC_MESSAGE_HANDLER(ViewHostMsg_GetMonitorColorProfile,
                         OnGetMonitorColorProfile)
     IPC_MESSAGE_HANDLER(ViewHostMsg_MediaLogEvent, OnMediaLogEvent)
     IPC_MESSAGE_HANDLER(ViewHostMsg_Are3DAPIsBlocked, OnAre3DAPIsBlocked)
     IPC_MESSAGE_HANDLER(ViewHostMsg_DidLose3DContext, OnDidLose3DContext)
+*/
     IPC_MESSAGE_UNHANDLED(handled = false)
   IPC_END_MESSAGE_MAP_EX()
 
   return handled;
 }
 
+/* FIXME
 void RenderMessageFilter::OnDestruct() const {
   BrowserThread::DeleteOnIOThread::Destruct(this);
 }
@@ -779,7 +787,7 @@ void RenderMessageFilter::OnGetCPUUsage(int* cpu_usage) {
   }
   *cpu_usage = cpu_usage_;
 }
-
+*/
 void RenderMessageFilter::OnGetAudioHardwareConfig(
     int* output_buffer_size, int* output_sample_rate, int* input_sample_rate,
     media::ChannelLayout* input_channel_layout) {
@@ -793,6 +801,7 @@ void RenderMessageFilter::OnGetAudioHardwareConfig(
       media::AudioManagerBase::kDefaultDeviceId);
 }
 
+/*FIXME
 void RenderMessageFilter::OnGetMonitorColorProfile(std::vector<char>* profile) {
 #if defined(OS_WIN)
   DCHECK(!BrowserThread::CurrentlyOn(BrowserThread::IO));

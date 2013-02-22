@@ -64,13 +64,13 @@ class MEDIA_EXPORT AudioManagerBase : public AudioManager {
   // Called internally by the audio stream when it has been closed.
   virtual void ReleaseOutputStream(AudioOutputStream* stream);
   virtual void ReleaseInputStream(AudioInputStream* stream);
-
+/* FIXME
   // Called internally by the browser-wide VirtualAudioInputStream after it has
   // been closed.  Notifies all AudioDeviceListeners to re-create output
   // streams and then deletes |stream|.
   virtual void ReleaseVirtualInputStream(VirtualAudioInputStream* stream);
   virtual void ReleaseVirtualOutputStream(VirtualAudioOutputStream* stream);
-
+*/
   void IncreaseActiveInputStreamCount();
   void DecreaseActiveInputStreamCount();
 
@@ -170,7 +170,7 @@ class MEDIA_EXPORT AudioManagerBase : public AudioManager {
   // Currently active VirtualAudioInputStream. When this is set, we will
   // create all audio output streams as virtual streams so as to redirect audio
   // data to this virtual input stream.
-  VirtualAudioInputStream* virtual_audio_input_stream_;
+//FIXME  VirtualAudioInputStream* virtual_audio_input_stream_;
 
   DISALLOW_COPY_AND_ASSIGN(AudioManagerBase);
 };

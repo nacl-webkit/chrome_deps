@@ -357,10 +357,10 @@ void RenderThreadImpl::Init() {
 
   audio_input_message_filter_ = new AudioInputMessageFilter();
   AddFilter(audio_input_message_filter_.get());
-
+*/
   audio_message_filter_ = new AudioMessageFilter();
   AddFilter(audio_message_filter_.get());
-
+/*FIXME
   AddFilter(new IndexedDBMessageFilter);
 
   GetContentClient()->renderer()->RenderThreadStarted();
@@ -398,10 +398,10 @@ RenderThreadImpl::~RenderThreadImpl() {
 
   RemoveFilter(audio_input_message_filter_.get());
   audio_input_message_filter_ = NULL;
-
+*/
   RemoveFilter(audio_message_filter_.get());
   audio_message_filter_ = NULL;
-
+/*FIXME
   RemoveFilter(vc_manager_->video_capture_message_filter());
 
   RemoveFilter(db_message_filter_.get());
@@ -928,7 +928,6 @@ AudioRendererMixerManager* RenderThreadImpl::GetAudioRendererMixerManager() {
 }
 */
 media::AudioHardwareConfig* RenderThreadImpl::GetAudioHardwareConfig() {
-/*FIXME
   if (!audio_hardware_config_) {
     int output_buffer_size;
     int output_sample_rate;
@@ -946,7 +945,6 @@ media::AudioHardwareConfig* RenderThreadImpl::GetAudioHardwareConfig() {
   }
 
   return audio_hardware_config_.get();
-*/
 }
 
 #if defined(OS_WIN)

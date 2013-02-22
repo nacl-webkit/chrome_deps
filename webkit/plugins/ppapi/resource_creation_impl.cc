@@ -70,7 +70,7 @@ PP_Resource ResourceCreationImpl::CreateAudioConfig(
 
 PP_Resource ResourceCreationImpl::CreateAudioTrusted(
     PP_Instance instance) {
-// FIXME  return (new PPB_Audio_Impl(instance))->GetReference();
+  return (new PPB_Audio_Impl(instance))->GetReference();
 }
 
 PP_Resource ResourceCreationImpl::CreateAudioInput(PP_Instance instance) {

@@ -20,11 +20,9 @@
 #include "base/sync_socket.h"
 #include "base/time.h"
 
-/* FIXME
 #include "content/common/child_process.h"
 #include "content/common/child_process_messages.h"
-*/
-//#include "content/common/child_thread.h"
+#include "content/common/child_thread.h"
 #include "content/common/fileapi/file_system_dispatcher.h"
 #include "content/common/fileapi/file_system_messages.h"
 #include "content/common/quota_dispatcher.h"
@@ -50,7 +48,9 @@
 #include "content/renderer/pepper/pepper_hung_plugin_filter.h"
 #include "content/renderer/pepper/pepper_in_process_resource_creation.h"
 #include "content/renderer/pepper/pepper_platform_audio_input_impl.h"
+*/
 #include "content/renderer/pepper/pepper_platform_audio_output_impl.h"
+/*FIXME
 #include "content/renderer/pepper/pepper_platform_context_3d_impl.h"
 #include "content/renderer/pepper/pepper_platform_image_2d_impl.h"
 #include "content/renderer/pepper/pepper_platform_video_capture_impl.h"
@@ -62,9 +62,9 @@
 #include "content/renderer/webplugin_delegate_proxy.h"
 #include "googleurl/src/gurl.h"
 #include "media/video/capture/video_capture_proxy.h"
-#include "media/base/audio_hardware_config.h"
-#include "media/video/capture/video_capture_proxy.h"
 */
+#include "media/base/audio_hardware_config.h"
+// FIXME #include "media/video/capture/video_capture_proxy.h"
 #include "content/renderer/render_thread_impl.h"
 #include "ipc/ipc_channel_handle.h"
 #include "ppapi/c/dev/pp_video_dev.h"
@@ -1001,17 +1001,13 @@ FIXME
 }
 
 uint32_t PepperPluginDelegateImpl::GetAudioHardwareOutputSampleRate() {
-/* FIXME
   RenderThreadImpl* thread = RenderThreadImpl::current();
   return thread->GetAudioHardwareConfig()->GetOutputSampleRate();
-*/
 }
 
 uint32_t PepperPluginDelegateImpl::GetAudioHardwareOutputBufferSize() {
-/* FIXME
   RenderThreadImpl* thread = RenderThreadImpl::current();
   return thread->GetAudioHardwareConfig()->GetOutputBufferSize();
-*/
 }
 
 webkit::ppapi::PluginDelegate::PlatformAudioOutput*
@@ -1019,12 +1015,9 @@ PepperPluginDelegateImpl::CreateAudioOutput(
     uint32_t sample_rate,
     uint32_t sample_count,
     webkit::ppapi::PluginDelegate::PlatformAudioOutputClient* client) {
-/*
-FIXME
   return PepperPlatformAudioOutputImpl::Create(
       static_cast<int>(sample_rate), static_cast<int>(sample_count),
       GetRoutingID(), client);
-*/
 }
 
 webkit::ppapi::PluginDelegate::PlatformAudioInput*
@@ -1109,7 +1102,6 @@ bool PepperPluginDelegateImpl::AsyncOpenFile(
     const FilePath& path,
     int flags,
     const AsyncOpenFileCallback& callback) {
-    ASSERT(0);
 /*
 FIXME
   int message_id = pending_async_open_files_.Add(
@@ -1822,6 +1814,8 @@ int PepperPluginDelegateImpl::GetRoutingID() const {
 /* FIXME
   return render_view_->routing_id();
 */
+    static int routing_id = 0;
+    return ++routing_id;
 }
 
 int PepperPluginDelegateImpl::OpenDevice(PP_DeviceType_Dev type,

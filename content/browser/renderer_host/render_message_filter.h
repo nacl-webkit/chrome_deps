@@ -23,9 +23,9 @@
 #include "content/common/pepper_renderer_instance_data.h"
 */
 #include "content/public/browser/browser_message_filter.h"
-/* FIXME
-#include "content/public/common/three_d_api_types.h"
+// FIXME #include "content/public/common/three_d_api_types.h"
 #include "media/base/channel_layout.h"
+/* FIXME
 #include "net/cookies/canonical_cookie.h"
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebPopupType.h"
 #include "ui/gfx/native_widget_types.h"
@@ -93,8 +93,10 @@ class RenderMessageFilter : public BrowserMessageFilter {
   virtual void OnChannelConnected(int32 peer_pid) OVERRIDE;
 
   // BrowserMessageFilter methods:
+*/
   virtual bool OnMessageReceived(const IPC::Message& message,
                                  bool* message_was_ok) OVERRIDE;
+/* FIXME
   virtual void OnDestruct() const OVERRIDE;
   virtual base::TaskRunner* OverrideTaskRunnerForMessage(
       const IPC::Message& message) OVERRIDE;
@@ -191,11 +193,11 @@ class RenderMessageFilter : public BrowserMessageFilter {
                                      int* permission_level);
 
   void OnGetCPUUsage(int* cpu_usage);
-
+*/
   void OnGetAudioHardwareConfig(int* output_buffer_size,
                                 int* output_sample_rate, int* input_sample_rate,
                                 media::ChannelLayout* input_channel_layout);
-
+/*FIXME
   // Used to look up the monitor color profile.
   void OnGetMonitorColorProfile(std::vector<char>* profile);
 

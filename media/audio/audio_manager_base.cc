@@ -13,10 +13,12 @@
 #include "media/audio/audio_output_proxy.h"
 #include "media/audio/audio_output_resampler.h"
 #include "media/audio/audio_util.h"
+/* FIXME
 #include "media/audio/fake_audio_input_stream.h"
 #include "media/audio/fake_audio_output_stream.h"
 #include "media/audio/virtual_audio_input_stream.h"
 #include "media/audio/virtual_audio_output_stream.h"
+*/
 #include "media/base/media_switches.h"
 
 namespace media {
@@ -44,8 +46,8 @@ AudioManagerBase::AudioManagerBase()
       num_input_streams_(0),
       output_listeners_(
           ObserverList<AudioDeviceListener>::NOTIFY_EXISTING_ONLY),
-      audio_thread_(new base::Thread("AudioThread")),
-      virtual_audio_input_stream_(NULL) {
+      audio_thread_(new base::Thread("AudioThread")) {
+//FIXME      virtual_audio_input_stream_(NULL) {
 #if defined(OS_WIN)
   audio_thread_->init_com_with_mta(true);
 #endif
@@ -83,6 +85,7 @@ scoped_refptr<base::MessageLoopProxy> AudioManagerBase::GetMessageLoop() {
 
 AudioOutputStream* AudioManagerBase::MakeAudioOutputStream(
     const AudioParameters& params) {
+/* FIXME
   // TODO(miu): Fix ~50 call points across several unit test modules to call
   // this method on the audio thread, then uncomment the following:
   // DCHECK(message_loop_->BelongsToCurrentThread());
@@ -134,10 +137,13 @@ AudioOutputStream* AudioManagerBase::MakeAudioOutputStream(
     ++num_output_streams_;
 
   return stream;
+*/
+    NOTREACHED();
 }
 
 AudioInputStream* AudioManagerBase::MakeAudioInputStream(
     const AudioParameters& params, const std::string& device_id) {
+/* FIXME
   // TODO(miu): Fix ~20 call points across several unit test modules to call
   // this method on the audio thread, then uncomment the following:
   // DCHECK(message_loop_->BelongsToCurrentThread());
@@ -200,10 +206,13 @@ AudioInputStream* AudioManagerBase::MakeAudioInputStream(
     ++num_input_streams_;
 
   return stream;
+*/
+    NOTREACHED();
 }
 
 AudioOutputStream* AudioManagerBase::MakeAudioOutputStreamProxy(
     const AudioParameters& params) {
+/* FIXME
 #if defined(OS_IOS)
   // IOS implements audio input only.
   NOTIMPLEMENTED();
@@ -271,6 +280,8 @@ AudioOutputStream* AudioManagerBase::MakeAudioOutputStreamProxy(
   output_dispatchers_[dispatcher_key] = dispatcher;
   return new AudioOutputProxy(dispatcher);
 #endif  // defined(OS_IOS)
+*/
+    NOTREACHED();
 }
 
 bool AudioManagerBase::CanShowAudioInputSettings() {
@@ -299,7 +310,7 @@ void AudioManagerBase::ReleaseInputStream(AudioInputStream* stream) {
   --num_input_streams_;
   delete stream;
 }
-
+/* FIXME
 void AudioManagerBase::ReleaseVirtualInputStream(
     VirtualAudioInputStream* stream) {
   DCHECK_EQ(virtual_audio_input_stream_, stream);
@@ -320,7 +331,7 @@ void AudioManagerBase::ReleaseVirtualOutputStream(
     VirtualAudioOutputStream* stream) {
   ReleaseOutputStream(stream);
 }
-
+*/
 void AudioManagerBase::IncreaseActiveInputStreamCount() {
   base::AtomicRefCountInc(&num_active_input_streams_);
 }

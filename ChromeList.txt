@@ -180,10 +180,15 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/base/threading/worker_pool.cc
     ${CHROME_DEPS_DIR}/base/threading/worker_pool_posix.cc
 
+    ${CHROME_DEPS_DIR}/chrome/renderer/pepper/ppb_nacl_private_impl.cc
+
     ${CHROME_DEPS_DIR}/content/browser/browser_thread_impl.cc
 
     ${CHROME_DEPS_DIR}/content/browser/renderer_host/render_message_filter.cc
     ${CHROME_DEPS_DIR}/content/browser/renderer_host/render_process_host_impl.cc
+
+    ${CHROME_DEPS_DIR}/content/browser/renderer_host/media/audio_renderer_host.cc
+    ${CHROME_DEPS_DIR}/content/browser/renderer_host/media/audio_sync_reader.cc
 
     ${CHROME_DEPS_DIR}/content/common/child_process.cc
     ${CHROME_DEPS_DIR}/content/common/child_thread.cc
@@ -195,6 +200,8 @@ LIST(APPEND WebKit2_SOURCES
 
     ${CHROME_DEPS_DIR}/content/common/fileapi/file_system_dispatcher.cc
 
+    ${CHROME_DEPS_DIR}/content/common/media/media_param_traits.cc
+
     ${CHROME_DEPS_DIR}/content/public/browser/browser_message_filter.cc
 
     ${CHROME_DEPS_DIR}/content/public/common/common_param_traits.cc
@@ -205,11 +212,15 @@ LIST(APPEND WebKit2_SOURCES
 
     ${CHROME_DEPS_DIR}/content/renderer/render_thread_impl.cc
 
+    ${CHROME_DEPS_DIR}/content/renderer/media/audio_message_filter.cc
+    ${CHROME_DEPS_DIR}/content/renderer/media/renderer_audio_output_device.cc
+
     ${CHROME_DEPS_DIR}/content/renderer/pepper/content_renderer_pepper_host_factory.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_file_chooser_host.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_graphics_2d_host.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_in_process_resource_creation.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_in_process_router.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_platform_audio_output_impl
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_platform_image_2d_impl.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_plugin_delegate_impl.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/renderer_ppapi_host_impl.cc
@@ -230,7 +241,24 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/ipc/ipc_sync_message.cc
     ${CHROME_DEPS_DIR}/ipc/ipc_sync_message_filter.cc
 
-    ${CHROME_DEPS_DIR}/chrome/renderer/pepper/ppb_nacl_private_impl.cc
+    ${CHROME_DEPS_DIR}/media/audio/audio_device_name.cc
+    ${CHROME_DEPS_DIR}/media/audio/audio_device_thread.cc
+    ${CHROME_DEPS_DIR}/media/audio/audio_manager.cc
+    ${CHROME_DEPS_DIR}/media/audio/audio_manager_base.cc
+    ${CHROME_DEPS_DIR}/media/audio/audio_output_controller.cc
+    ${CHROME_DEPS_DIR}/media/audio/audio_output_device.cc
+    ${CHROME_DEPS_DIR}/media/audio/audio_output_ipc.cc
+    ${CHROME_DEPS_DIR}/media/audio/audio_parameters.cc
+    ${CHROME_DEPS_DIR}/media/audio/audio_util.cc
+    ${CHROME_DEPS_DIR}/media/audio/scoped_loop_observer.cc
+    ${CHROME_DEPS_DIR}/media/audio/shared_memory_util.cc
+
+    ${CHROME_DEPS_DIR}/media/audio/bridge/audio_manager_bridge.cc
+
+    ${CHROME_DEPS_DIR}/media/base/audio_bus.cc
+    ${CHROME_DEPS_DIR}/media/base/audio_hardware_config.cc
+    ${CHROME_DEPS_DIR}/media/base/channel_layout.cc
+    ${CHROME_DEPS_DIR}/media/base/media_switches.cc
 
     ${CHROME_DEPS_DIR}/third_party/libevent/buffer.c
     ${CHROME_DEPS_DIR}/third_party/libevent/epoll.c

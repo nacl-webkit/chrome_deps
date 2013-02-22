@@ -191,13 +191,13 @@ class CONTENT_EXPORT RenderProcessHostImpl
   // this count is non-zero.
   int32 pending_views_;
 
-/*FIXME
  private:
   friend class VisitRelayingRenderProcessHost;
 
   // Creates and adds the IO thread message filters.
   void CreateMessageFilters();
 
+  /*FIXME
   // Control message handlers.
   void OnShutdownRequest();
   void OnDumpHandlesDone();

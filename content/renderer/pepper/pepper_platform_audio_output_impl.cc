@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "content/renderer/pepper/pepper_platform_audio_output_impl.h"
 
 #include "base/bind.h"

@@ -7,8 +7,8 @@
 #include "base/bind.h"
 #include "base/logging.h"
 #include "ipc/ipc_platform_file.h"
-//FIXME #include "media/audio/audio_parameters.h"
-//FIXME #include "media/audio/shared_memory_util.h"
+#include "media/audio/audio_parameters.h"
+#include "media/audio/shared_memory_util.h"
 #include "ppapi/c/pp_errors.h"
 #include "ppapi/proxy/ppapi_messages.h"
 #include "ppapi/proxy/resource_message_params.h"
@@ -166,7 +166,6 @@ void AudioInputResource::LastPluginRefWasDeleted() {
 
 void AudioInputResource::OnPluginMsgOpenReply(
     const ResourceMessageReplyParams& params) {
-/* FIXME
   if (open_state_ == BEFORE_OPEN && params.result() == PP_OK) {
     IPC::PlatformFileForTransit socket_handle_for_transit =
         IPC::InvalidPlatformFileForTransit();
@@ -196,7 +195,6 @@ void AudioInputResource::OnPluginMsgOpenReply(
   // The callback may have been aborted by Close().
   if (TrackedCallback::IsPending(open_callback_))
     open_callback_->Run(params.result());
-*/
 }
 
 void AudioInputResource::SetStreamInfo(
@@ -244,7 +242,6 @@ void AudioInputResource::StopThread() {
 }
 
 void AudioInputResource::Run() {
-/* FIXME
   // The shared memory represents AudioInputBufferParameters and the actual data
   // buffer.
   media::AudioInputBuffer* buffer =
@@ -262,7 +259,6 @@ void AudioInputResource::Run() {
     if (buffer->params.size > 0)
       audio_input_callback_(&buffer->audio[0], buffer->params.size, user_data_);
   }
-*/
 }
 
 }  // namespace proxy

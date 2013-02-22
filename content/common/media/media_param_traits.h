@@ -22,7 +22,7 @@ struct ParamTraits<media::AudioParameters> {
   static bool Read(const Message* m, PickleIterator* iter, param_type* r);
   static void Log(const param_type& p, std::string* l);
 };
-
+/*FIXME
 template <>
 struct ParamTraits<media::VideoCaptureParams> {
   typedef media::VideoCaptureParams param_type;
@@ -30,7 +30,7 @@ struct ParamTraits<media::VideoCaptureParams> {
   static bool Read(const Message* m, PickleIterator* iter, param_type* r);
   static void Log(const param_type& p, std::string* l);
 };
-
+*/
 
 } // namespace IPC
 

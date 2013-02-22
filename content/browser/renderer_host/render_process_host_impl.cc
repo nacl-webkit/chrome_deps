@@ -69,7 +69,9 @@
 #include "content/browser/renderer_host/gpu_message_filter.h"
 #include "content/browser/renderer_host/media/audio_input_renderer_host.h"
 #include "content/browser/renderer_host/media/audio_mirroring_manager.h"
+*/
 #include "content/browser/renderer_host/media/audio_renderer_host.h"
+/* FIXME
 #include "content/browser/renderer_host/media/media_stream_dispatcher_host.h"
 #include "content/browser/renderer_host/media/peer_connection_tracker_host.h"
 #include "content/browser/renderer_host/media/video_capture_host.h"
@@ -96,7 +98,9 @@
 #include "content/common/child_process_messages.h"
 #include "content/common/gpu/gpu_messages.h"
 #include "content/common/resource_messages.h"
+*/
 #include "content/common/view_messages.h"
+/*FIXME
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/notification_service.h"
@@ -180,9 +184,9 @@ class RendererMainThread : public base::Thread {
 
   DISALLOW_COPY_AND_ASSIGN(RendererMainThread);
 };
-*/
+
 namespace {
-/* FIXME
+
 // Helper class that we pass to ResourceMessageFilter so that it can find the
 // right net::URLRequestContext for a request.
 class RendererURLRequestContextSelector
@@ -218,6 +222,9 @@ class RendererURLRequestContextSelector
 // the global list of all renderer processes
 base::LazyInstance<IDMap<RenderProcessHost> >::Leaky
     g_all_hosts = LAZY_INSTANCE_INITIALIZER;
+
+static int g_id = 0;
+
 /* FIXME
 // Map of site to process, to ensure we only have one RenderProcessHost per
 // site in process-per-site mode.  Each map is specific to a BrowserContext.
@@ -273,14 +280,13 @@ SiteProcessMap* GetSiteProcessMapForBrowserContext(BrowserContext* context) {
   }
   return map;
 }
-*/
+
 }  // namespace
 
 // Stores the maximum number of renderer processes the content module can
 // create.
 static size_t g_max_renderer_count_override = 0;
-static int g_id = 0;
-/* FIXME
+
 // static
 size_t RenderProcessHost::GetMaxRendererProcessCount() {
   if (g_max_renderer_count_override)
@@ -436,12 +442,12 @@ bool RenderProcessHostImpl::Init() {
 
   CommandLine::ForCurrentProcess()->AppendSwitchASCII(switches::kProcessChannelID, channel_id);
 
-/* FIXME
   // Call the embedder first so that their IPC filters have priority.
-  GetContentClient()->browser()->RenderProcessHostCreated(this);
+//FIXME  GetContentClient()->browser()->RenderProcessHostCreated(this);
 
   CreateMessageFilters();
 
+  /* FIXME
   if (run_renderer_in_process()) {
     // Crank up a thread and run the initialization there.  With the way that
     // messages flow between the browser and renderer, this thread is required
@@ -494,9 +500,26 @@ bool RenderProcessHostImpl::Init() {
   return true;
 }
 
-/* FIXME
 void RenderProcessHostImpl::CreateMessageFilters() {
   DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
+
+  scoped_refptr<RenderMessageFilter> render_message_filter(
+      new RenderMessageFilter(
+          GetID(),
+          0,
+          0,
+          0,
+          0,
+          0,
+          0));
+  channel_->AddFilter(render_message_filter);
+
+  media::AudioManager* audio_manager = media::AudioManager::Create();
+  channel_->AddFilter(new AudioRendererHost(
+      GetID(), audio_manager, 0,  0));
+
+
+  /* FIXME
   MediaInternals* media_internals = MediaInternals::GetInstance();;
   // Add BrowserPluginMessageFilter to ensure it gets the first stab at messages
   // from guests.
@@ -626,8 +649,9 @@ void RenderProcessHostImpl::CreateMessageFilters() {
   channel_->AddFilter(new ProfilerMessageFilter(PROCESS_TYPE_RENDERER));
   channel_->AddFilter(new HistogramMessageFilter());
   channel_->AddFilter(new HyphenatorMessageFilter(this));
+*/
 }
-
+/* FIXME
 int RenderProcessHostImpl::GetNextRoutingID() {
   return widget_helper_->GetNextRoutingID();
 }

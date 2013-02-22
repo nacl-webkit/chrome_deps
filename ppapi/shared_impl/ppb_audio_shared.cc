@@ -5,7 +5,7 @@
 #include "ppapi/shared_impl/ppb_audio_shared.h"
 
 #include "base/logging.h"
-//FIXME #include "media/audio/shared_memory_util.h"
+#include "media/audio/shared_memory_util.h"
 #include "ppapi/shared_impl/ppapi_globals.h"
 
 // Hard coded values from PepperPlatformAudioOutputImpl.
@@ -74,7 +74,6 @@ void PPB_Audio_Shared::SetStreamInfo(
     size_t shared_memory_size,
     base::SyncSocket::Handle socket_handle,
     int sample_frame_count) {
-/* FIXME
   socket_.reset(new base::CancelableSyncSocket(socket_handle));
   shared_memory_.reset(new base::SharedMemory(shared_memory_handle, false));
   shared_memory_size_ = shared_memory_size;
@@ -93,11 +92,9 @@ void PPB_Audio_Shared::SetStreamInfo(
   }
 
   StartThread();
-  */
 }
 
 void PPB_Audio_Shared::StartThread() {
-/* FIXME
   // Don't start the thread unless all our state is set up correctly.
   if (!playing_ || !callback_ || !socket_.get() || !shared_memory_->memory() ||
       !audio_bus_.get() || !client_buffer_.get())
@@ -107,7 +104,6 @@ void PPB_Audio_Shared::StartThread() {
   // start up quickly enough.
   memset(shared_memory_->memory(), 0, shared_memory_size_);
   memset(client_buffer_.get(), 0, client_buffer_size_bytes_);
-    */
 #if !defined(OS_NACL)
   DCHECK(!audio_thread_.get());
   audio_thread_.reset(new base::DelegateSimpleThread(
@@ -158,7 +154,6 @@ void PPB_Audio_Shared::CallRun(void* self) {
 #endif
 
 void PPB_Audio_Shared::Run() {
-/* FIXME
   int pending_data;
   const int bytes_per_frame =
       sizeof(*audio_bus_->channel(0)) * audio_bus_->channels();
@@ -181,7 +176,6 @@ void PPB_Audio_Shared::Run() {
         shared_memory_.get(), shared_memory_size_,
         audio_bus_->frames() * bytes_per_frame);
   }
-*/
 }
 
 }  // namespace ppapi

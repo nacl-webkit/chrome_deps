@@ -9,7 +9,7 @@
 #include "base/shared_memory.h"
 #include "base/sync_socket.h"
 #include "base/threading/simple_thread.h"
-//FIXME #include "media/base/audio_bus.h"
+#include "media/base/audio_bus.h"
 #include "ppapi/c/ppb_audio.h"
 #include "ppapi/shared_impl/resource.h"
 #include "ppapi/thunk/ppb_audio_api.h"
@@ -105,7 +105,7 @@ class PPAPI_SHARED_EXPORT PPB_Audio_Shared
   void* user_data_;
 
   // AudioBus for shuttling data across the shared memory.
-//FIXME  scoped_ptr<media::AudioBus> audio_bus_;
+  scoped_ptr<media::AudioBus> audio_bus_;
 
   // Internal buffer for client's integer audio data.
   int client_buffer_size_bytes_;

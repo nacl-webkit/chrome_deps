@@ -7,13 +7,14 @@
 #include "base/stringprintf.h"
 #include "media/audio/audio_parameters.h"
 #include "media/base/limits.h"
-#include "media/video/capture/video_capture_types.h"
+//FIXME #include "media/video/capture/video_capture_types.h"
 
 using media::AudioParameters;
 using media::ChannelLayout;
+/*FIXME
 using media::VideoCaptureParams;
 using media::VideoCaptureSessionId;
-
+*/
 namespace IPC {
 
 void ParamTraits<AudioParameters>::Write(Message* m,
@@ -51,7 +52,7 @@ void ParamTraits<AudioParameters>::Log(const AudioParameters& p,
                                        std::string* l) {
   l->append(base::StringPrintf("<AudioParameters>"));
 }
-
+/*FIXME
 void ParamTraits<VideoCaptureParams>::Write(Message* m,
                                             const VideoCaptureParams& p) {
   m->WriteInt(p.width);
@@ -89,5 +90,5 @@ void ParamTraits<VideoCaptureParams>::Log(const VideoCaptureParams& p,
                                           std::string* l) {
   l->append(base::StringPrintf("<VideoCaptureParams>"));
 }
-
+*/
 }

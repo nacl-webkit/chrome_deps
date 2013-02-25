@@ -651,7 +651,8 @@ void RenderProcessHostImpl::CreateMessageFilters() {
   channel_->AddFilter(new HyphenatorMessageFilter(this));
 */
 }
-/* FIXME
+
+#if 0
 int RenderProcessHostImpl::GetNextRoutingID() {
   return widget_helper_->GetNextRoutingID();
 }
@@ -947,7 +948,7 @@ bool RenderProcessHostImpl::FastShutdownIfPossible() {
   if (!SuddenTerminationAllowed())
     return false;
 
-  ProcessDied(false /* already_dead * /);
+  ProcessDied(false /* already_dead */);
   fast_shutdown_started_ = true;
   return true;
 }
@@ -1036,7 +1037,8 @@ void RenderProcessHostImpl::ClearTransportDIBCache() {
 #endif
   cached_dibs_.clear();
 }
-*/
+#endif
+
 bool RenderProcessHostImpl::Send(IPC::Message* msg) {
   if (!channel_.get()) {
     if (!is_initialized_) {

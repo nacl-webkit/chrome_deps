@@ -177,8 +177,8 @@ MessageLoop::MessageLoop(Type type, base::MessagePump* pump)
 #error Not implemented
 #endif
   if (pump) {
-      pump_ = pump;
-      return;
+    pump_ = pump;
+    return;
   }
   if (type_ == TYPE_UI) {
     if (message_pump_for_ui_factory_)

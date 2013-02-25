@@ -2148,12 +2148,17 @@ PP_Var PluginInstance::ExecuteScript(PP_Instance instance,
   NPVariant result;
   bool ok = false;
   if (IsProcessingUserGesture()) {
-    WebCore::UserGestureIndicator user_gesture(WebCore::DefinitelyProcessingUserGesture);
-    ok = _NPN_Evaluate(NULL, frame->script()->windowScriptNPObject(), &np_script,
-                               &result);
+    WebCore::UserGestureIndicator user_gesture(
+        WebCore::DefinitelyProcessingUserGesture);
+    ok = _NPN_Evaluate(NULL,
+                       frame->script()->windowScriptNPObject(),
+                       &np_script,
+                       &result);
   } else {
-    ok = _NPN_Evaluate(NULL, frame->script()->windowScriptNPObject(), &np_script,
-                               &result);
+    ok = _NPN_Evaluate(NULL,
+                       frame->script()->windowScriptNPObject(),
+                       &np_script,
+                       &result);
   }
   if (!ok) {
     // TryCatch doesn't catch the exceptions properly. Since this is only for

@@ -19,20 +19,20 @@ AudioManagerBridge::AudioManagerBridge() {
 // Returns true if the OS reports existence of audio devices. This does not
 // guarantee that the existing devices support all formats and sample rates.
 bool AudioManagerBridge::HasAudioOutputDevices() {
-    NOTIMPLEMENTED();
+  NOTIMPLEMENTED();
 }
 
 // Returns true if the OS reports existence of audio recording devices. This
 // does not guarantee that the existing devices support all formats and
 // sample rates.
 bool AudioManagerBridge::HasAudioInputDevices() {
-    NOTIMPLEMENTED();
+  NOTIMPLEMENTED();
 }
 
 // Returns true if the platform specific audio input settings UI is known
 // and can be shown.
 bool AudioManagerBridge::CanShowAudioInputSettings() {
-    return false;
+  return false;
 }
 
 // Opens the platform default audio input settings UI.
@@ -40,14 +40,15 @@ bool AudioManagerBridge::CanShowAudioInputSettings() {
 // ideally must not be called from the UI thread or other time sensitive
 // threads to avoid blocking the rest of the application.
 void AudioManagerBridge::ShowAudioInputSettings() {
-    NOTREACHED();
+  NOTREACHED();
 }
 
 // Appends a list of available input devices. It is not guaranteed that
 // all the devices in the list support all formats and sample rates for
 // recording.
-void AudioManagerBridge::GetAudioInputDeviceNames(AudioDeviceNames* device_names) {
-    NOTIMPLEMENTED();
+void AudioManagerBridge::GetAudioInputDeviceNames(
+    AudioDeviceNames* device_names) {
+  NOTIMPLEMENTED();
 }
 
 // Factory for all the supported stream formats. |params| defines parameters
@@ -70,7 +71,7 @@ void AudioManagerBridge::GetAudioInputDeviceNames(AudioDeviceNames* device_names
 // Do not free the returned AudioOutputStream. It is owned by AudioManager.
 AudioOutputStream* AudioManagerBridge::MakeAudioOutputStream(
     const AudioParameters& params) {
-    NOTIMPLEMENTED();
+  NOTIMPLEMENTED();
 }
 
 // Creates new audio output proxy. A proxy implements
@@ -79,7 +80,7 @@ AudioOutputStream* AudioManagerBridge::MakeAudioOutputStream(
 // sound is actually playing.
 AudioOutputStream* AudioManagerBridge::MakeAudioOutputStreamProxy(
     const AudioParameters& params) {
-    NOTIMPLEMENTED();
+  NOTIMPLEMENTED();
 }
 
 // Factory to create audio recording streams.
@@ -96,46 +97,46 @@ AudioOutputStream* AudioManagerBridge::MakeAudioOutputStreamProxy(
 // When you are done with it, call |Stop()| and |Close()| to release it.
 AudioInputStream* AudioManagerBridge::MakeAudioInputStream(
     const AudioParameters& params, const std::string& device_id) {
-    NOTIMPLEMENTED();
+  NOTIMPLEMENTED();
 }
 
 // Used to determine if something else is currently making use of audio input.
 bool AudioManagerBridge::IsRecordingInProcess() {
-    NOTIMPLEMENTED();
+  NOTIMPLEMENTED();
 }
 
-void AudioManagerBridge::AddOutputDeviceChangeListener(AudioDeviceListener* listener) {
-    NOTIMPLEMENTED();
+void AudioManagerBridge::AddOutputDeviceChangeListener(
+    AudioDeviceListener* listener) {
+  NOTIMPLEMENTED();
 }
 
 void AudioManagerBridge::RemoveOutputDeviceChangeListener(
     AudioDeviceListener* listener) {
-    NOTIMPLEMENTED();
+  NOTIMPLEMENTED();
 }
 
 AudioOutputStream* AudioManagerBridge::MakeLinearOutputStream(
     const AudioParameters& params) {
-    NOTREACHED();
+  NOTREACHED();
 }
 
 AudioOutputStream* AudioManagerBridge::MakeLowLatencyOutputStream(
     const AudioParameters& params) {
-    NOTREACHED();
+  NOTREACHED();
 }
 
 AudioInputStream* AudioManagerBridge::MakeLinearInputStream(
     const AudioParameters& params, const std::string& device_id) {
-    NOTREACHED();
+  NOTREACHED();
 }
 
 // Creates the input stream for the |AUDIO_PCM_LOW_LATENCY| format.
 AudioInputStream* AudioManagerBridge::MakeLowLatencyInputStream(
     const AudioParameters& params, const std::string& device_id) {
-    NOTREACHED();
+  NOTREACHED();
 }
 
 AudioManagerBridge::~AudioManagerBridge() {
-
 }
 
 }  // namespace media

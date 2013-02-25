@@ -420,8 +420,8 @@ void MessageChannel::PostMessageToJavaScript(PP_Var message_data) {
     JSValue val;
     JSC::ExecState* exec = static_cast<PepperPluginContainerImpl*>(instance_->container())->execState();
     if (!PPVarToJSValue(message_data, &val, exec)) {
-        NOTREACHED();
-        return;
+      NOTREACHED();
+      return;
     }
     RefPtr<SerializedScriptValue> serialized_val =
         SerializedScriptValue::create(exec, val, 0, 0);

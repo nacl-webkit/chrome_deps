@@ -14,7 +14,8 @@
 #include "content/common/content_export.h"
 #include "gurl.h"
 #include "ipc/ipc_message_macros.h"
-/*FIXME
+
+#if 0
 IPC_ENUM_TRAITS(tracked_objects::ThreadData::Status)
 
 IPC_STRUCT_TRAITS_BEGIN(tracked_objects::LocationSnapshot)
@@ -69,21 +70,21 @@ IPC_MESSAGE_CONTROL0(ChildProcessMsg_Shutdown)
 #if defined(IPC_MESSAGE_LOG_ENABLED)
 // Tell the child process to begin or end IPC message logging.
 IPC_MESSAGE_CONTROL1(ChildProcessMsg_SetIPCLoggingEnabled,
-                     bool /* on or off * /)
+                     bool /* on or off */)
 #endif
 
 // Tell the child process to enable or disable the profiler status.
 IPC_MESSAGE_CONTROL1(ChildProcessMsg_SetProfilerStatus,
-                     tracked_objects::ThreadData::Status /* profiler status * /)
+                     tracked_objects::ThreadData::Status /* profiler status */)
 
 // Send to all the child processes to send back profiler data (ThreadData in
 // tracked_objects).
 IPC_MESSAGE_CONTROL1(ChildProcessMsg_GetChildProfilerData,
-                     int /* sequence_number * /)
+                     int /* sequence_number */)
 
 // Send to all the child processes to send back histogram data.
 IPC_MESSAGE_CONTROL1(ChildProcessMsg_GetChildHistogramData,
-                     int /* sequence_number * /)
+                     int /* sequence_number */)
 
 // Sent to child processes to dump their handle table.
 IPC_MESSAGE_CONTROL0(ChildProcessMsg_DumpHandles)
@@ -100,20 +101,20 @@ IPC_MESSAGE_CONTROL0(ChildProcessHostMsg_ShutdownRequest)
 
 // Send back profiler data (ThreadData in tracked_objects).
 IPC_MESSAGE_CONTROL2(ChildProcessHostMsg_ChildProfilerData,
-                     int, /* sequence_number * /
-                     tracked_objects::ProcessDataSnapshot /* profiler_data * /)
+                     int, /* sequence_number */
+                     tracked_objects::ProcessDataSnapshot /* profiler_data */)
 
 // Send back histograms as vector of pickled-histogram strings.
 IPC_MESSAGE_CONTROL2(ChildProcessHostMsg_ChildHistogramData,
-                     int, /* sequence_number * /
-                     std::vector<std::string> /* histogram_data * /)
+                     int, /* sequence_number */
+                     std::vector<std::string> /* histogram_data */)
 
 // Request a histogram from the browser. The browser will send the histogram
 // data only if it has been passed the command line flag
 // switches::kMemoryMetrics.
 IPC_SYNC_MESSAGE_CONTROL1_1(ChildProcessHostMsg_GetBrowserHistogram,
-                            std::string, /* histogram_name * /
-                            std::string /* histogram_json * /)
+                            std::string, /* histogram_name */
+                            std::string /* histogram_json */)
 
 // Reply to ChildProcessMsg_DumpHandles when handle table dump is complete.
 IPC_MESSAGE_CONTROL0(ChildProcessHostMsg_DumpHandlesDone)
@@ -122,7 +123,7 @@ IPC_MESSAGE_CONTROL0(ChildProcessHostMsg_DumpHandlesDone)
 // Request that the given font be loaded by the host so it's cached by the
 // OS. Please see ChildProcessHost::PreCacheFont for details.
 IPC_SYNC_MESSAGE_CONTROL1_0(ChildProcessHostMsg_PreCacheFont,
-                            LOGFONT /* font data * /)
+                            LOGFONT /* font data */)
 
 // Release the cached font
 IPC_MESSAGE_CONTROL0(ChildProcessHostMsg_ReleaseCachedFonts)
@@ -131,12 +132,12 @@ IPC_MESSAGE_CONTROL0(ChildProcessHostMsg_ReleaseCachedFonts)
 // Asks the browser to create a block of shared memory for the child process to
 // fill in and pass back to the browser.
 IPC_SYNC_MESSAGE_CONTROL1_1(ChildProcessHostMsg_SyncAllocateSharedMemory,
-                            uint32 /* buffer size * /,
+                            uint32 /* buffer size */,
                             base::SharedMemoryHandle)
 
 #if defined(USE_TCMALLOC)
 // Reply to ChildProcessMsg_GetTcmallocStats.
 IPC_MESSAGE_CONTROL1(ChildProcessHostMsg_TcmallocStats,
-                     std::string /* output * /)
+                     std::string /* output */)
 #endif
-*/
+#endif

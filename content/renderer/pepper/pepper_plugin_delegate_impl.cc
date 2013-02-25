@@ -405,36 +405,50 @@ PassRefPtr<PepperPlugin> PepperPluginDelegateImpl::CreatePepperWPlugin(
 }
 */
 
-PassRefPtr<PepperPlugin> PepperPluginDelegateImpl::CreatePepperPlugin(WebFrame* frame, Plugin::Parameters& params)
-{
-    PepperPluginInfo info;
-    String mimeType;
-    bool found = GetPluginInfo(params.url.string(), render_view_->corePage()->mainFrame()->tree()->top()->document()->url().string(), params.mimeType, info, mimeType);
-    if (!found)
-        return 0;
-
-    params.mimeType = mimeType;
-
-    bool pepperPluginWasRegistered = false;
-
-    scoped_refptr<webkit::ppapi::PluginModule> pepperModule(CreatePepperPluginModule(info, &pepperPluginWasRegistered));
-
-    if (pepperPluginWasRegistered) {
-        if (!pepperModule)
-            return 0;
-
-        return adoptRef(new webkit::ppapi::PepperPluginImpl(pepperModule.get(), params, this));
-    }
+PassRefPtr<PepperPlugin>
+PepperPluginDelegateImpl::CreatePepperPlugin(WebFrame* frame,
+                                             Plugin::Parameters& params) {
+  PepperPluginInfo info;
+  String mimeType;
+  bool found = GetPluginInfo(params.url.string(),
+                             render_view_->corePage()->mainFrame()->tree()->top()->document()->url().string(),
+                             params.mimeType,
+                             info,
+                             mimeType);
+  if (!found)
     return 0;
+
+  params.mimeType = mimeType;
+
+  bool pepperPluginWasRegistered = false;
+
+  scoped_refptr<webkit::ppapi::PluginModule> pepperModule(
+      CreatePepperPluginModule(info, &pepperPluginWasRegistered));
+
+  if (pepperPluginWasRegistered) {
+    if (!pepperModule)
+      return 0;
+
+    return adoptRef(new webkit::ppapi::PepperPluginImpl(pepperModule.get(), params, this));
+  }
+  return 0;
 }
 
-bool PepperPluginDelegateImpl::GetPluginInfo(const WTF::String& url, const WTF::String& pageUrl, const WTF::String& mimeType, PepperPluginInfo& pluginInfo, WTF::String& actualMimeType)
-{
-    bool found = false;
-    if (!render_view_->connection()->sendSync(Messages::WebProcessProxy::GetPluginInfo(url, pageUrl, mimeType), Messages::WebProcessProxy::GetPluginInfo::Reply(found, pluginInfo, actualMimeType), 0))
-        return 0;
+bool PepperPluginDelegateImpl::GetPluginInfo(const WTF::String& url,
+                                             const WTF::String& pageUrl,
+                                             const WTF::String& mimeType,
+                                             PepperPluginInfo& pluginInfo,
+                                             WTF::String& actualMimeType) {
+  bool found = false;
+  if (!render_view_->connection()->sendSync(
+      Messages::WebProcessProxy::GetPluginInfo(url, pageUrl, mimeType),
+      Messages::WebProcessProxy::GetPluginInfo::Reply(found,
+                                                      pluginInfo,
+                                                      actualMimeType),
+      0))
+    return 0;
 
-    return found;
+  return found;
 }
 
 scoped_refptr<webkit::ppapi::PluginModule>

@@ -16,39 +16,38 @@ namespace WTF { class ArrayBuffer; }
 namespace webkit {
 
 class WebArrayBuffer {
-public:
-    ~WebArrayBuffer() { reset(); }
+ public:
+  ~WebArrayBuffer() { reset(); }
 
-    WebArrayBuffer() { }
-    WebArrayBuffer(const WebArrayBuffer& b) { assign(b); }
-    WebArrayBuffer& operator=(const WebArrayBuffer& b)
-    {
-        assign(b);
-        return *this;
-    }
+  WebArrayBuffer() { }
+  WebArrayBuffer(const WebArrayBuffer& b) { assign(b); }
+  WebArrayBuffer& operator=(const WebArrayBuffer& b) {
+    assign(b);
+    return *this;
+  }
 
-    static WebArrayBuffer create(unsigned numElements, unsigned elementByteSize);
+  static WebArrayBuffer create(unsigned numElements, unsigned elementByteSize);
 
-    void reset();
-    void assign(const WebArrayBuffer&);
+  void reset();
+  void assign(const WebArrayBuffer&);
 
-    bool isNull() const { return m_private; }
-    void* data() const;
-    unsigned byteLength() const;
+  bool isNull() const { return m_private; }
+  void* data() const;
+  unsigned byteLength() const;
 
 #if WEBKIT_USING_V8
-    v8::Handle<v8::Value> toV8Value();
-    static WebArrayBuffer* createFromV8Value(v8::Handle<v8::Value>);
+  v8::Handle<v8::Value> toV8Value();
+  static WebArrayBuffer* createFromV8Value(v8::Handle<v8::Value>);
 #endif
 
 #if WEBKIT_IMPLEMENTATION
-    WebArrayBuffer(const WTF::PassRefPtr<WTF::ArrayBuffer>&);
-    WebArrayBuffer& operator=(const PassRefPtr<WTF::ArrayBuffer>&);
-    operator WTF::PassRefPtr<WTF::ArrayBuffer>() const;
+  WebArrayBuffer(const WTF::PassRefPtr<WTF::ArrayBuffer>&);
+  WebArrayBuffer& operator=(const PassRefPtr<WTF::ArrayBuffer>&);
+  operator WTF::PassRefPtr<WTF::ArrayBuffer>() const;
 #endif
 
-protected:
-    RefPtr<WTF::ArrayBuffer> m_private;
+ protected:
+  RefPtr<WTF::ArrayBuffer> m_private;
 };
 
 namespace ppapi {

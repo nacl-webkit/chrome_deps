@@ -105,41 +105,42 @@ const char kNaClPluginDescription[] = "Native Client Executable";
 const uint32 kNaClPluginPermissions = ::ppapi::PERMISSION_PRIVATE | ::ppapi::PERMISSION_DEV;
 const char kInternalNaClPluginFileName[] = "lib/libppWebKitNaClPlugin.so";
 
-void PepperPluginRegistry::ComputeBuiltInPlugins(std::vector<PluginModuleInfo>& plugins)
-{
-    // FIXME: any other built-in plugins?
-    String path = executablePathOfWebProcess();
-    size_t binIndex = path.reverseFind("bin/");
-    if (binIndex != notFound)
-        path = path.substring(0, binIndex) + kInternalNaClPluginFileName; // FIXME: what is the path?
-    else
-        path = "";
-    if (!path.isEmpty()) {
-        if (fileExists(path)) {
-            PluginModuleInfo nacl;
-            nacl.path = path;
-            nacl.info.name = kNaClPluginName;
-            nacl.info.file = pathGetFileName(path);
-            nacl.info.desc = kNaClPluginDescription;
-            MimeClassInfo mimeInfo;
-            mimeInfo.type = kNaClPluginMimeType;
-            mimeInfo.desc = kNaClPluginDescription;
-            mimeInfo.extensions.append(kNaClPluginExtension);
-            nacl.info.mimes.append(mimeInfo);
-            nacl.type = WebKit::PepperPluginInfo::PLUGIN_TYPE_PEPPER_IN_PROCESS;
-            nacl.pepperPermissions = kNaClPluginPermissions;
-            plugins.push_back(nacl);
-        }
+void PepperPluginRegistry::ComputeBuiltInPlugins(
+    std::vector<PluginModuleInfo>& plugins) {
+  // FIXME: any other built-in plugins?
+  String path = executablePathOfWebProcess();
+  size_t binIndex = path.reverseFind("bin/");
+  if (binIndex != notFound)
+    path = path.substring(0, binIndex) + kInternalNaClPluginFileName; // FIXME: what is the path?
+  else
+    path = "";
+  if (!path.isEmpty()) {
+    if (fileExists(path)) {
+      PluginModuleInfo nacl;
+      nacl.path = path;
+      nacl.info.name = kNaClPluginName;
+      nacl.info.file = pathGetFileName(path);
+      nacl.info.desc = kNaClPluginDescription;
+      MimeClassInfo mimeInfo;
+      mimeInfo.type = kNaClPluginMimeType;
+      mimeInfo.desc = kNaClPluginDescription;
+      mimeInfo.extensions.append(kNaClPluginExtension);
+      nacl.info.mimes.append(mimeInfo);
+      nacl.type = WebKit::PepperPluginInfo::PLUGIN_TYPE_PEPPER_IN_PROCESS;
+      nacl.pepperPermissions = kNaClPluginPermissions;
+      plugins.push_back(nacl);
     }
+  }
 }
 
-void PepperPluginRegistry::AddPepperPlugins(std::vector<WebKit::PepperPluginInfo>* plugins)
-{
-    std::vector<PluginModuleInfo> pluginModuleInfo;
-    ComputeBuiltInPlugins(pluginModuleInfo);
-    std::vector<PluginModuleInfo>::iterator end = pluginModuleInfo.end();
-    for (std::vector<PluginModuleInfo>::iterator it = pluginModuleInfo.begin(); it != end; ++it)
-        plugins->push_back(*it);
+void PepperPluginRegistry::AddPepperPlugins(
+    std::vector<WebKit::PepperPluginInfo>* plugins) {
+  std::vector<PluginModuleInfo> pluginModuleInfo;
+  ComputeBuiltInPlugins(pluginModuleInfo);
+  std::vector<PluginModuleInfo>::iterator end = pluginModuleInfo.end();
+  for (std::vector<PluginModuleInfo>::iterator it = pluginModuleInfo.begin();
+       it != end; ++it)
+    plugins->push_back(*it);
 }
 
 // static
@@ -153,8 +154,8 @@ PepperPluginRegistry* PepperPluginRegistry::GetInstance() {
 }
 
 // static
-void PepperPluginRegistry::ComputeList(std::vector<WebKit::PepperPluginInfo>* plugins)
-{
+void PepperPluginRegistry::ComputeList(
+    std::vector<WebKit::PepperPluginInfo>* plugins) {
   AddPepperPlugins(plugins);
   ComputePluginsFromCommandLine(plugins);
 }
@@ -178,36 +179,36 @@ void PepperPluginRegistry::PreloadModules() {
 }
 */
 
-void PepperPluginRegistry::ComputeList(std::vector<WebKit::PluginModuleInfo>& plugins)
-{
-    std::vector<WebKit::PepperPluginInfo> pluginInfos;
-    ComputeList(&pluginInfos);
+void PepperPluginRegistry::ComputeList(
+    std::vector<WebKit::PluginModuleInfo>& plugins) {
+  std::vector<WebKit::PepperPluginInfo> pluginInfos;
+  ComputeList(&pluginInfos);
 
-    for (int i = 0; i < pluginInfos.size(); i++){
-        PluginModuleInfo info;
-        pluginInfos[i].copyToPluginModuleInfo(info);
-        plugins.push_back(info);
-    }
+  for (int i = 0; i < pluginInfos.size(); i++){
+    PluginModuleInfo info;
+    pluginInfos[i].copyToPluginModuleInfo(info);
+    plugins.push_back(info);
+  }
 }
 
-const WebKit::PepperPluginInfo* PepperPluginRegistry::GetInfoForPlugin(const WebKit::PepperPluginInfo& info)
-{
-    // Finds the plugin info in the list and returns it.
-    // If the plugin info was not found, it is added.
-    for (size_t i = 0; i < plugin_list_.size(); ++i) {
-        if (info.path == plugin_list_[i].path)
-            return &plugin_list_[i];
-    }
-    // We did not find the plugin in our list. But wait! the plugin can also
-    // be a latecomer, as it happens with pepper flash. This information
-    // is actually in |info| and we can use it to construct it and add it to
-    // the list. This same deal needs to be done in the browser side in
-    // PluginService.
-    if (!isPepperPlugin(info))
-        return 0;
+const WebKit::PepperPluginInfo*
+PepperPluginRegistry::GetInfoForPlugin(const WebKit::PepperPluginInfo& info) {
+  // Finds the plugin info in the list and returns it.
+  // If the plugin info was not found, it is added.
+  for (size_t i = 0; i < plugin_list_.size(); ++i) {
+    if (info.path == plugin_list_[i].path)
+      return &plugin_list_[i];
+  }
+  // We did not find the plugin in our list. But wait! the plugin can also
+  // be a latecomer, as it happens with pepper flash. This information
+  // is actually in |info| and we can use it to construct it and add it to
+  // the list. This same deal needs to be done in the browser side in
+  // PluginService.
+  if (!isPepperPlugin(info))
+    return 0;
 
-    plugin_list_.push_back(info);
-    return &plugin_list_[plugin_list_.size() - 1];
+  plugin_list_.push_back(info);
+  return &plugin_list_[plugin_list_.size() - 1];
 }
 
 webkit::ppapi::PluginModule* PepperPluginRegistry::GetLiveModule(

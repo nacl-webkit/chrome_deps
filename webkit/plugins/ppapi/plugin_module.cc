@@ -287,8 +287,8 @@ const PPB_Testing_Dev testing_interface = {
 // GetInterface ----------------------------------------------------------------
 
 const void* InternalGetInterface(const char* name) {
-    if (strcmp(name, PPB_NACL_PRIVATE_INTERFACE_1_0) == 0)
-        return PPB_NaCl_Private_Impl::GetInterface();
+  if (strcmp(name, PPB_NACL_PRIVATE_INTERFACE_1_0) == 0)
+    return PPB_NaCl_Private_Impl::GetInterface();
 
 /*   FIXME:
   // Allow custom interface factories first stab at the GetInterface call.
@@ -395,14 +395,18 @@ const void* GetInterface(const char* name) {
 // given structure. Returns true on success.
 bool LoadEntryPointsFromLibrary(const WebKit::Module* library,
                                 PluginModule::EntryPoints* entry_points) {
-  entry_points->get_interface = library->functionPointer<PluginModule::GetInterfaceFunc>(reinterpret_cast<const char*>("PPP_GetInterface"));
+  entry_points->get_interface =
+      library->functionPointer<PluginModule::GetInterfaceFunc>(
+          reinterpret_cast<const char*>("PPP_GetInterface"));
 
   if (!entry_points->get_interface) {
     LOG(WARNING) << "No PPP_GetInterface in plugin library";
     return false;
   }
 
-  entry_points->initialize_module = library->functionPointer<PluginModule::PPP_InitializeModuleFunc>(reinterpret_cast<const char*>("PPP_InitializeModule"));
+  entry_points->initialize_module =
+      library->functionPointer<PluginModule::PPP_InitializeModuleFunc>(
+          reinterpret_cast<const char*>("PPP_InitializeModule"));
 
   if (!entry_points->initialize_module) {
     LOG(WARNING) << "No PPP_InitializeModule in plugin library";
@@ -411,7 +415,9 @@ bool LoadEntryPointsFromLibrary(const WebKit::Module* library,
 
   // It's okay for PPP_ShutdownModule to not be defined and shutdown_module to
   // be NULL.
-  entry_points->shutdown_module = library->functionPointer<PluginModule::PPP_ShutdownModuleFunc>(reinterpret_cast<const char*>("PPP_ShutdownModule"));
+  entry_points->shutdown_module =
+      library->functionPointer<PluginModule::PPP_ShutdownModuleFunc>(
+          reinterpret_cast<const char*>("PPP_ShutdownModule"));
 
   return true;
 }

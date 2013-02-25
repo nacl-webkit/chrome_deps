@@ -34,7 +34,8 @@ namespace content {
 class PepperFileChooserHost::CompletionHandler
     : public WebKit::WebOpenPanelResultListener {
  public:
-  CompletionHandler(WebKit::WebPage* page, const base::WeakPtr<PepperFileChooserHost>& host)
+  CompletionHandler(WebKit::WebPage* page,
+                    const base::WeakPtr<PepperFileChooserHost>& host)
       : WebOpenPanelResultListener(page, 0)
       , host_(host) {
   }
@@ -47,7 +48,7 @@ class PepperFileChooserHost::CompletionHandler
       std::vector<PepperFileChooserHost::ChosenFileInfo> files;
       for (size_t i = 0; i < file_names.size(); i++) {
         files.push_back(PepperFileChooserHost::ChosenFileInfo(
-                            file_names[i].utf8().data(), std::string()));
+            file_names[i].utf8().data(), std::string()));
       }
       host_->StoreChosenFiles(files);
     }
@@ -175,11 +176,11 @@ int32_t PepperFileChooserHost::OnShow(
   */
   FileChooserSettings settings;
   if (save_as) {
-      // FIXME - send save_as
-      settings.allowsMultipleFiles = false;
-      settings.selectedFiles.append(suggested_file_name.c_str());
+    // FIXME - send save_as
+    settings.allowsMultipleFiles = false;
+    settings.selectedFiles.append(suggested_file_name.c_str());
   } else
-      settings.allowsMultipleFiles = open_multiple;
+    settings.allowsMultipleFiles = open_multiple;
   WTF::Vector<WTF::String> mime_types;
   for (size_t i = 0; i < accept_mime_types.size(); i++) {
     mime_types.append(WTF::String(accept_mime_types[i].c_str()));

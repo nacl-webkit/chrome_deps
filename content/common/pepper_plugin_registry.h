@@ -60,7 +60,8 @@ class PepperPluginRegistry
   // return value will be NULL if there is no such plugin.
   //
   // The returned pointer is owned by the PluginRegistry.
-  const WebKit::PepperPluginInfo* GetInfoForPlugin(const WebKit::PepperPluginInfo& info);
+  const WebKit::PepperPluginInfo* GetInfoForPlugin(
+      const WebKit::PepperPluginInfo& info);
 
   // Returns an existing loaded module for the given path. It will search for
   // both preloaded in-process or currently active (non crashed) out-of-process
@@ -72,7 +73,8 @@ class PepperPluginRegistry
   // This is normally called for out-of-process plugins. Once this is called,
   // the module is available to be returned by GetModule(). The module will
   // automatically unregister itself by calling PluginModuleDestroyed().
-  void AddLiveModule(const WTF::String& path, webkit::ppapi::PluginModule* module);
+  void AddLiveModule(const WTF::String& path,
+                     webkit::ppapi::PluginModule* module);
 
   // ModuleLifetime implementation.
   virtual void PluginModuleDead(

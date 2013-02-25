@@ -131,7 +131,8 @@ class RenderMessageCompletionCallback {
   scoped_refptr<RenderMessageFilter> filter_;
   IPC::Message* reply_msg_;
 };
-/* FIXME
+
+#if 0
 class OpenChannelToPpapiPluginCallback
     : public RenderMessageCompletionCallback,
       public PpapiPluginProcessHost::PluginClient {
@@ -190,7 +191,7 @@ class OpenChannelToPpapiBrokerCallback
 
   virtual void OnPpapiChannelOpened(const IPC::ChannelHandle& channel_handle,
                                     base::ProcessId plugin_pid,
-                                    int /* plugin_child_id * /) OVERRIDE {
+                                    int /* plugin_child_id */) OVERRIDE {
     filter_->Send(new ViewMsg_PpapiBrokerChannelCreated(routing_id_,
                                                         request_id_,
                                                         plugin_pid,
@@ -223,7 +224,8 @@ void RaiseInfobarForBlocked3DContentOnUIThread(
     return;
   web_contents->DidBlock3DAPIs(url, requester);
 }
-*/
+#endif
+
 }  // namespace
 /* FIXME
 class RenderMessageFilter::OpenChannelToNpapiPluginCallback

@@ -1,4 +1,4 @@
-// Copyright (c) 2012 The Chromium Authors. All rights reserved.
+// Copyright (c) 2013 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -15,15 +15,16 @@ class TimeTicks;
 
 class BASE_EXPORT MessagePumpWebKit : public MessagePump {
  public:
-    class MessagePumpWebKitHelper {
-    public:
-        virtual void Run(Delegate* delegate) = 0;
-        virtual void Quit() = 0;
-        virtual void ScheduleWork() = 0;
-        virtual void ScheduleDelayedWork(const TimeTicks& delayed_work_time) = 0;
-        virtual void RunWithDispatcher(Delegate* delegate,  MessagePumpDispatcher* dispatcher) = 0;
-        virtual ~MessagePumpWebKitHelper() {}
-    };
+  class MessagePumpWebKitHelper {
+   public:
+    virtual void Run(Delegate* delegate) = 0;
+    virtual void Quit() = 0;
+    virtual void ScheduleWork() = 0;
+    virtual void ScheduleDelayedWork(const TimeTicks& delayed_work_time) = 0;
+    virtual void RunWithDispatcher(Delegate* delegate,
+                                   MessagePumpDispatcher* dispatcher) = 0;
+    virtual ~MessagePumpWebKitHelper() {}
+  };
 
   MessagePumpWebKit(MessagePumpWebKitHelper* = 0);
 

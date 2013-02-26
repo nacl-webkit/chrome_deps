@@ -7,7 +7,7 @@
 
 #include "base/string_util.h"
 #include "base/utf_string_conversions.h"
-#include "gurl.h"
+#include "googleurl/src/gurl.h"
 // FIXME#include "net/base/escape.h"
 #include "ppapi/c/pp_errors.h"
 #include "ppapi/thunk/enter.h"

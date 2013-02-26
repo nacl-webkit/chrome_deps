@@ -17,7 +17,7 @@
 #include "base/memory/ref_counted.h"
 #include "content/common/content_export.h"
 //FIXME #include "content/public/common/common_param_traits_macros.h"
-#include "gurl.h"
+#include "googleurl/src/gurl.h"
 #include "ipc/ipc_message_utils.h"
 /*FIXME
 #include "ui/gfx/native_widget_types.h"

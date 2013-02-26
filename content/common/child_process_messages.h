@@ -12,7 +12,7 @@
 #include "base/tracked_objects.h"
 #include "base/values.h"
 #include "content/common/content_export.h"
-#include "gurl.h"
+#include "googleurl/src/gurl.h"
 #include "ipc/ipc_message_macros.h"
 
 #if 0

@@ -11,7 +11,7 @@
 
 #include "base/basictypes.h"
 #include "content/common/content_export.h"
-#include "gurl.h"
+#include "googleurl/src/gurl.h"
 
 namespace content {
 

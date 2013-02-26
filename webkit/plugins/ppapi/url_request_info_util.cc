@@ -6,7 +6,7 @@
 
 #include "base/logging.h"
 #include "base/string_util.h"
-#include "gurl.h"
+#include "googleurl/src/gurl.h"
 //FIXME #include "net/http/http_util.h"
 #include "ppapi/shared_impl/url_request_info_data.h"
 #include "ppapi/shared_impl/var.h"

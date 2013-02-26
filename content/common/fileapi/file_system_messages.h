@@ -7,7 +7,7 @@
 
 #include "config.h"
 #include "base/files/file_util_proxy.h"
-#include "gurl.h"
+#include "googleurl/src/gurl.h"
 #include "ipc/ipc_message_macros.h"
 #include "ipc/ipc_platform_file.h"
 #include "FileSystemType.h"

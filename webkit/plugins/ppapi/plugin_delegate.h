@@ -39,7 +39,7 @@ FIXME:
 #include "FileSystemType.h"
 // FIXME: #include "webkit/glue/clipboard_client.h"
 #include "webkit/quota/quota_types.h"
-#include "gurl.h"
+#include "googleurl/src/gurl.h"
 
 class GURL;
 class SkBitmap;

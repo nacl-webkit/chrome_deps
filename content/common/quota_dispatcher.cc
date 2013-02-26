@@ -8,7 +8,7 @@
 #include "base/basictypes.h"
 #include "content/common/child_thread.h"
 #include "content/common/quota_messages.h"
-#include "gurl.h"
+#include "googleurl/src/gurl.h"
 //#include "third_party/WebKit/Source/WebKit/chromium/public/WebStorageQuotaCallbacks.h"
 //#include "third_party/WebKit/Source/WebKit/chromium/public/WebStorageQuotaType.h"
 

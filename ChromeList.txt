@@ -211,6 +211,24 @@ LIST(APPEND WebKit2_SOURCES
 
     ${CHROME_DEPS_DIR}/content/public/renderer/render_thread.cc
 
+    ${CHROME_DEPS_DIR}/googleurl/src/gurl.cc
+    ${CHROME_DEPS_DIR}/googleurl/src/url_canon_etc.cc
+    ${CHROME_DEPS_DIR}/googleurl/src/url_canon_path.cc
+    ${CHROME_DEPS_DIR}/googleurl/src/url_canon_pathurl.cc
+    ${CHROME_DEPS_DIR}/googleurl/src/url_canon_query.cc
+    ${CHROME_DEPS_DIR}/googleurl/src/url_canon_relative.cc
+    ${CHROME_DEPS_DIR}/googleurl/src/url_canon_stdurl.cc
+    ${CHROME_DEPS_DIR}/googleurl/src/url_parse.cc
+    ${CHROME_DEPS_DIR}/googleurl/src/url_parse_file.cc
+    ${CHROME_DEPS_DIR}/googleurl/src/url_util.cc
+    ${CHROME_DEPS_DIR}/googleurl/src/url_canon_filesystemurl.cc
+    ${CHROME_DEPS_DIR}/googleurl/src/url_canon_fileurl.cc
+    ${CHROME_DEPS_DIR}/googleurl/src/url_canon_host.cc
+    ${CHROME_DEPS_DIR}/googleurl/src/url_canon_icu.cc
+    ${CHROME_DEPS_DIR}/googleurl/src/url_canon_internal.cc
+    ${CHROME_DEPS_DIR}/googleurl/src/url_canon_ip.cc
+    ${CHROME_DEPS_DIR}/googleurl/src/url_canon_mailtourl.cc
+
     ${CHROME_DEPS_DIR}/content/renderer/render_thread_impl.cc
 
     ${CHROME_DEPS_DIR}/content/renderer/media/audio_message_filter.cc

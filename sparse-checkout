@@ -16,6 +16,7 @@ content/public
 content/renderer
 media/base/
 media/audio/
+third_party/jsoncpp/source/CMakeLists.txt
 webkit/fileapi/file_system_callback_dispatcher.cc
 webkit/fileapi/file_system_callback_dispatcher.h
 webkit/glue/webkit_glue.cc

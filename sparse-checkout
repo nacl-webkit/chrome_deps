@@ -2,6 +2,7 @@
 /build/build_config.h
 /ChromeList.txt
 /.gitignore
+/.gitmodules
 /ipc
 /ppapi
 /sparse-checkout

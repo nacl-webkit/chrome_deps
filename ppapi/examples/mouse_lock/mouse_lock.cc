@@ -68,6 +68,7 @@ class MyInstance : public pp::Instance, public pp::MouseLock {
       }
       case PP_INPUTEVENT_TYPE_KEYDOWN: {
         pp::KeyboardInputEvent key_event(event);
+        Log(PP_LOGLEVEL_LOG, "key pressed: %d", key_event.GetKeyCode());
         if (key_event.GetKeyCode() == 13) {
           // Lock the mouse when the Enter key is pressed.
           if (mouse_locked_)

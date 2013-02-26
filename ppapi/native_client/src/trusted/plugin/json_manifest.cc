@@ -19,7 +19,7 @@
 #include "native_client/src/trusted/plugin/utility.h"
 #include "ppapi/cpp/dev/url_util_dev.h"
 #include "ppapi/cpp/var.h"
-#include "json/reader.h"
+#include "third_party/jsoncpp/source/include/json/reader.h"
 
 namespace plugin {
 

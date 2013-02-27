@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "config.h"
 #include "base/basictypes.h"
 #include "base/memory/weak_ptr.h"
 #include "content/public/renderer/renderer_ppapi_host.h"

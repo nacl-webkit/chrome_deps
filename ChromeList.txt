@@ -236,6 +236,7 @@ LIST(APPEND WebKit2_SOURCES
 
     ${CHROME_DEPS_DIR}/content/renderer/pepper/content_renderer_pepper_host_factory.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_file_chooser_host.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_file_io_host.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_graphics_2d_host.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_in_process_resource_creation.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_in_process_router.cc

@@ -1,0 +1,6 @@
+Use 2d.html for testing, same MIME type.
+
+./bin/MiniBrowser --register-pepper-plugins \
+"/local/path/to/libppapi_example_input.so;application/x-ppapi-example-2d" \
+/local/path/to/2d.html
+

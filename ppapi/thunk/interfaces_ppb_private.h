@@ -8,7 +8,7 @@
 #include "ppapi/thunk/interfaces_preamble.h"
 
 // See interfaces_ppb_private_no_permissions.h for other private interfaces.
-
+/* FIXME
 PROXIED_API(PPB_X509Certificate_Private)
 
 PROXIED_IFACE(PPB_X509Certificate_Private,
@@ -33,8 +33,10 @@ PROXIED_IFACE(NoAPIName, PPB_FILECHOOSER_TRUSTED_INTERFACE_0_5,
               PPB_FileChooserTrusted_0_5)
 PROXIED_IFACE(NoAPIName, PPB_FILECHOOSER_TRUSTED_INTERFACE_0_6,
               PPB_FileChooserTrusted_0_6)
+*/
 PROXIED_IFACE(PPB_FileRef, PPB_FILEREFPRIVATE_INTERFACE_0_1,
               PPB_FileRefPrivate_0_1)
+/* FIXME
 PROXIED_IFACE(PPB_Instance, PPB_FLASHFULLSCREEN_INTERFACE_0_1,
               PPB_FlashFullscreen_0_1)
 PROXIED_IFACE(PPB_Instance, PPB_FLASHFULLSCREEN_INTERFACE_1_0,
@@ -42,14 +44,15 @@ PROXIED_IFACE(PPB_Instance, PPB_FLASHFULLSCREEN_INTERFACE_1_0,
 
 PROXIED_IFACE(NoAPIName, PPB_TALK_PRIVATE_INTERFACE_1_0,
               PPB_Talk_Private_1_0)
+*/
 // This uses the FileIO API which is declared in the public stable file.
 PROXIED_IFACE(NoAPIName, PPB_FILEIOTRUSTED_INTERFACE_0_4, PPB_FileIOTrusted_0_4)
-
+/* FIXME
 // Hack to keep font working. The Font 0.6 API is binary compatible with
 // BrowserFont 1.0, so just map the string to the same thing.
 // TODO(brettw) remove support for the old Font API.
 PROXIED_IFACE(PPB_Instance, PPB_FONT_DEV_INTERFACE_0_6,
               PPB_BrowserFont_Trusted_1_0)
 #endif  // !defined(OS_NACL)
-
+*/
 #include "ppapi/thunk/interfaces_postamble.h"

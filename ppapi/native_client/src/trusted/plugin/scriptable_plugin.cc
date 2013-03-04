@@ -134,7 +134,7 @@ bool ScriptablePlugin::HasProperty(const pp::Var& name, pp::Var* exception) {
   if (plugin_ == NULL) {
     return false;
   }
-  if (!name.is_string() && !name.is_int())
+  if (!name.is_string())//FIXME && !name.is_int())
     return false;
   bool has_property = plugin_->HasProperty(name.AsString());
   PLUGIN_PRINTF(("ScriptablePlugin::HasProperty (has_property=%d)\n",

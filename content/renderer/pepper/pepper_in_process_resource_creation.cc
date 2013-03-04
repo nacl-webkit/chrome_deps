@@ -76,11 +76,11 @@ PP_Resource PepperInProcessResourceCreation::CreateFileChooser(
 
 PP_Resource PepperInProcessResourceCreation::CreateFileIO(
     PP_Instance instance) {
-/* FIXME
+///* FIXME
   return (new ppapi::proxy::FileIOResource(
       host_impl_->in_process_router()->GetPluginConnection(),
       instance))->GetReference();
-*/
+//*/
 }
 
 PP_Resource PepperInProcessResourceCreation::CreateGraphics2D(

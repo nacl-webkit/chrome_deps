@@ -8,6 +8,7 @@
 #include "base/logging.h"
 // FIXME #include "content/renderer/pepper/pepper_audio_input_host.h"
 #include "content/renderer/pepper/pepper_file_chooser_host.h"
+#include "content/renderer/pepper/pepper_file_io_host.h"
 // FIXME #include "content/renderer/pepper/pepper_flash_clipboard_host.h"
 
 #include "content/renderer/pepper/pepper_graphics_2d_host.h"
@@ -60,6 +61,9 @@ scoped_ptr<ResourceHost> ContentRendererPepperHostFactory::CreateResourceHost(
       return scoped_ptr<ResourceHost>(new PepperWebSocketHost(
           host_, instance, params.pp_resource()));
       */
+    case PpapiHostMsg_FileIO_Create::ID:
+      return scoped_ptr<ResourceHost>(new PepperFileIOHost(
+          host_, instance, params.pp_resource()));
   }
 
   // Dev interfaces.

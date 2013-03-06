@@ -273,6 +273,7 @@ int AudioOutputController::OnMoreIOData(AudioBus* source,
   DisallowEntryToOnMoreIOData();
   TRACE_EVENT0("audio", "AudioOutputController::OnMoreIOData");
 
+  WaitTillDataReady();
   const int frames = sync_reader_->Read(source, dest);
   DCHECK_LE(0, frames);
   sync_reader_->UpdatePendingBytes(

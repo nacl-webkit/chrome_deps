@@ -79,7 +79,7 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/base/thread_task_runner_handle.cc
     ${CHROME_DEPS_DIR}/base/time.cc
     ${CHROME_DEPS_DIR}/base/time_posix.cc
-#    ${CHROME_DEPS_DIR}/base/timer.cc
+    ${CHROME_DEPS_DIR}/base/timer.cc
     ${CHROME_DEPS_DIR}/base/tracked_objects.cc
     ${CHROME_DEPS_DIR}/base/tracking_info.cc
     ${CHROME_DEPS_DIR}/base/utf_offset_string_conversions.cc
@@ -266,19 +266,26 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_url_util_shared.cc
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_url_util_thunk.cc
 
+    ${CHROME_DEPS_DIR}/media/audio/audio_buffers_state.cc
     ${CHROME_DEPS_DIR}/media/audio/audio_device_name.cc
     ${CHROME_DEPS_DIR}/media/audio/audio_device_thread.cc
     ${CHROME_DEPS_DIR}/media/audio/audio_manager.cc
     ${CHROME_DEPS_DIR}/media/audio/audio_manager_base.cc
     ${CHROME_DEPS_DIR}/media/audio/audio_output_controller.cc
     ${CHROME_DEPS_DIR}/media/audio/audio_output_device.cc
+    ${CHROME_DEPS_DIR}/media/audio/audio_output_dispatcher.cc
+    ${CHROME_DEPS_DIR}/media/audio/audio_output_dispatcher_impl.cc
     ${CHROME_DEPS_DIR}/media/audio/audio_output_ipc.cc
+    ${CHROME_DEPS_DIR}/media/audio/audio_output_proxy.cc
     ${CHROME_DEPS_DIR}/media/audio/audio_parameters.cc
     ${CHROME_DEPS_DIR}/media/audio/audio_util.cc
     ${CHROME_DEPS_DIR}/media/audio/scoped_loop_observer.cc
     ${CHROME_DEPS_DIR}/media/audio/shared_memory_util.cc
 
-    ${CHROME_DEPS_DIR}/media/audio/bridge/audio_manager_bridge.cc
+    ${CHROME_DEPS_DIR}/media/audio/gstreamer/audio_manager_gstreamer.cc
+    ${CHROME_DEPS_DIR}/media/audio/gstreamer/audio_output_stream_gstreamer.cc
+    ${CHROME_DEPS_DIR}/media/audio/gstreamer/audio_stream_gstreamer.cc
+    ${CHROME_DEPS_DIR}/media/audio/gstreamer/audio_stream_source_gstreamer.cc
 
     ${CHROME_DEPS_DIR}/media/base/audio_bus.cc
     ${CHROME_DEPS_DIR}/media/base/audio_hardware_config.cc

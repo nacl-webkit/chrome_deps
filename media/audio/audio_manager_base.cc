@@ -85,7 +85,6 @@ scoped_refptr<base::MessageLoopProxy> AudioManagerBase::GetMessageLoop() {
 
 AudioOutputStream* AudioManagerBase::MakeAudioOutputStream(
     const AudioParameters& params) {
-/* FIXME
   // TODO(miu): Fix ~50 call points across several unit test modules to call
   // this method on the audio thread, then uncomment the following:
   // DCHECK(message_loop_->BelongsToCurrentThread());
@@ -107,13 +106,16 @@ AudioOutputStream* AudioManagerBase::MakeAudioOutputStream(
     return NULL;
   }
 
+  /* FIXME
   // If there are no audio output devices we should use a FakeAudioOutputStream
   // to ensure video playback continues to work.
   bool audio_output_disabled =
       params.format() == AudioParameters::AUDIO_FAKE ||
       !HasAudioOutputDevices();
+  */
 
   AudioOutputStream* stream = NULL;
+  /* FIXME
   if (virtual_audio_input_stream_) {
 #if defined(OS_IOS)
     // We do not currently support iOS. It does not link.
@@ -127,7 +129,9 @@ AudioOutputStream* AudioManagerBase::MakeAudioOutputStream(
 #endif
   } else if (audio_output_disabled) {
     stream = FakeAudioOutputStream::MakeFakeStream(this, params);
-  } else if (params.format() == AudioParameters::AUDIO_PCM_LINEAR) {
+  } else
+  */
+  if (params.format() == AudioParameters::AUDIO_PCM_LINEAR) {
     stream = MakeLinearOutputStream(params);
   } else if (params.format() == AudioParameters::AUDIO_PCM_LOW_LATENCY) {
     stream = MakeLowLatencyOutputStream(params);
@@ -137,8 +141,6 @@ AudioOutputStream* AudioManagerBase::MakeAudioOutputStream(
     ++num_output_streams_;
 
   return stream;
-*/
-    NOTREACHED();
 }
 
 AudioInputStream* AudioManagerBase::MakeAudioInputStream(
@@ -212,7 +214,6 @@ AudioInputStream* AudioManagerBase::MakeAudioInputStream(
 
 AudioOutputStream* AudioManagerBase::MakeAudioOutputStreamProxy(
     const AudioParameters& params) {
-/* FIXME
 #if defined(OS_IOS)
   // IOS implements audio input only.
   NOTIMPLEMENTED();
@@ -220,6 +221,7 @@ AudioOutputStream* AudioManagerBase::MakeAudioOutputStreamProxy(
 #else
   DCHECK(message_loop_->BelongsToCurrentThread());
 
+  /* FIXME
   if (virtual_audio_input_stream_) {
     // Do not attempt to resample, nor cache via AudioOutputDispatcher, when
     // opening output streams for browser-wide audio mirroring.
@@ -230,10 +232,12 @@ AudioOutputStream* AudioManagerBase::MakeAudioOutputStreamProxy(
       !CommandLine::ForCurrentProcess()->HasSwitch(
           switches::kDisableAudioOutputResampler) &&
       params.format() == AudioParameters::AUDIO_PCM_LOW_LATENCY;
+  */
 
   // If we're not using AudioOutputResampler our output parameters are the same
   // as our input parameters.
   AudioParameters output_params = params;
+  /* FIXME
   if (use_audio_output_resampler) {
     output_params = GetPreferredLowLatencyOutputStreamParameters(params);
 
@@ -256,6 +260,7 @@ AudioOutputStream* AudioManagerBase::MakeAudioOutputStreamProxy(
           params.frames_per_buffer());
     }
   }
+  */
 
   std::pair<AudioParameters, AudioParameters> dispatcher_key =
       std::make_pair(params, output_params);
@@ -267,6 +272,7 @@ AudioOutputStream* AudioManagerBase::MakeAudioOutputStreamProxy(
   base::TimeDelta close_delay =
       base::TimeDelta::FromSeconds(kStreamCloseDelaySeconds);
 
+  /* FIXME
   if (use_audio_output_resampler &&
       output_params.format() != AudioParameters::AUDIO_FAKE) {
     scoped_refptr<AudioOutputDispatcher> dispatcher =
@@ -274,14 +280,13 @@ AudioOutputStream* AudioManagerBase::MakeAudioOutputStreamProxy(
     output_dispatchers_[dispatcher_key] = dispatcher;
     return new AudioOutputProxy(dispatcher);
   }
+  */
 
   scoped_refptr<AudioOutputDispatcher> dispatcher =
       new AudioOutputDispatcherImpl(this, output_params, close_delay);
   output_dispatchers_[dispatcher_key] = dispatcher;
   return new AudioOutputProxy(dispatcher);
 #endif  // defined(OS_IOS)
-*/
-    NOTREACHED();
 }
 
 bool AudioManagerBase::CanShowAudioInputSettings() {

@@ -1,15 +1,15 @@
 // Copyright
 
-#ifndef MEDIA_AUDIO_AUDIO_MANAGER_BRIDGE_H_
-#define MEDIA_AUDIO_AUDIO_MANAGER_BRIDGE_H_
+#ifndef MEDIA_AUDIO_AUDIO_MANAGER_GSTREAMER_H_
+#define MEDIA_AUDIO_AUDIO_MANAGER_GSTREAMER_H_
 
 #include "media/audio/audio_manager_base.h"
 
 namespace media {
 
-class AudioManagerBridge : public AudioManagerBase {
+class AudioManagerGstreamer : public AudioManagerBase {
  public:
-  AudioManagerBridge();
+  AudioManagerGstreamer();
 
   // Returns true if the OS reports existence of audio devices. This does not
   // guarantee that the existing devices support all formats and sample rates.
@@ -34,34 +34,6 @@ class AudioManagerBridge : public AudioManagerBase {
   // all the devices in the list support all formats and sample rates for
   // recording.
   virtual void GetAudioInputDeviceNames(AudioDeviceNames* device_names) OVERRIDE;
-
-  // Factory for all the supported stream formats. |params| defines parameters
-  // of the audio stream to be created.
-  //
-  // |params.sample_per_packet| is the requested buffer allocation which the
-  // audio source thinks it can usually fill without blocking. Internally two
-  // or three buffers are created, one will be locked for playback and one will
-  // be ready to be filled in the call to AudioSourceCallback::OnMoreData().
-  //
-  // Returns NULL if the combination of the parameters is not supported, or if
-  // we have reached some other platform specific limit.
-  //
-  // |params.format| can be set to AUDIO_PCM_LOW_LATENCY and that has two
-  // effects:
-  // 1- Instead of triple buffered the audio will be double buffered.
-  // 2- A low latency driver or alternative audio subsystem will be used when
-  //    available.
-  //
-  // Do not free the returned AudioOutputStream. It is owned by AudioManager.
-  virtual AudioOutputStream* MakeAudioOutputStream(
-      const AudioParameters& params) OVERRIDE;
-
-  // Creates new audio output proxy. A proxy implements
-  // AudioOutputStream interface, but unlike regular output stream
-  // created with MakeAudioOutputStream() it opens device only when a
-  // sound is actually playing.
-  virtual AudioOutputStream* MakeAudioOutputStreamProxy(
-      const AudioParameters& params) OVERRIDE;
 
   // Factory to create audio recording streams.
   // |channels| can be 1 or 2.
@@ -97,13 +69,13 @@ class AudioManagerBridge : public AudioManagerBase {
       const AudioParameters& params, const std::string& device_id);
 
  protected:
-  virtual ~AudioManagerBridge();
+  virtual ~AudioManagerGstreamer();
 
  private:
 
-  DISALLOW_COPY_AND_ASSIGN(AudioManagerBridge);
+  DISALLOW_COPY_AND_ASSIGN(AudioManagerGstreamer);
 };
 
 }  // namespace media
 
-#endif // MEDIA_AUDIO_AUDIO_MANAGER_BRIDGE_H_
+#endif // MEDIA_AUDIO_AUDIO_MANAGER_GSTREAMER_H_

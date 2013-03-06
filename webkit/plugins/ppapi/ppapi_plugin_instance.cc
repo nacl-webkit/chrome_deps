@@ -2572,8 +2572,10 @@ PP_Var PluginInstance::ResolveRelativeToDocument(
   Element* plugin_element = container()->element();
   KURL document_url = plugin_element->document()->baseURL();
   return ::ppapi::PPB_URLUtil_Shared::GenerateURLReturn(
-              KURL(document_url, WTF::String(relative_string->value().c_str())),
-      components);
+             GURL(std::string(reinterpret_cast<const char*>(
+                  (KURL(document_url, WTF::String(relative_string->value().
+                        c_str()))).string().characters8()))),
+             components);
 }
 
 PP_Bool PluginInstance::DocumentCanRequest(PP_Instance instance, PP_Var url) {
@@ -2608,15 +2610,19 @@ PP_Bool PluginInstance::DocumentCanAccessDocument(PP_Instance instance,
 PP_Var PluginInstance::GetDocumentURL(PP_Instance instance,
                                       PP_URLComponents_Dev* components) {
   Document* document = container()->element()->document();
-  return ::ppapi::PPB_URLUtil_Shared::GenerateURLReturn(document->url(),
-                                                        components);
+  return ::ppapi::PPB_URLUtil_Shared::GenerateURLReturn(
+             GURL(std::string(reinterpret_cast<const char*>(
+                  document->url().string().characters8()))),
+             components);
 }
 
 PP_Var PluginInstance::GetPluginInstanceURL(
     PP_Instance instance,
     PP_URLComponents_Dev* components) {
-  return ::ppapi::PPB_URLUtil_Shared::GenerateURLReturn(plugin_url_,
-                                                        components);
+  return ::ppapi::PPB_URLUtil_Shared::GenerateURLReturn(
+             GURL(std::string(reinterpret_cast<const char*>(
+                  plugin_url_.string().characters8()))),
+             components);
 }
 
 PP_NaClResult PluginInstance::ResetAsProxied(

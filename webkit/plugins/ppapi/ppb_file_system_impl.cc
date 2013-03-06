@@ -81,8 +81,9 @@ int32_t PPB_FileSystem_Impl::Open(int64_t expected_size,
     return PP_ERROR_FAILED;
 
   if (!plugin_instance->delegate()->OpenFileSystem(
-      GURL(plugin_instance->container()->element()->document()->url()).
-          GetOrigin(),
+      GURL(std::string(reinterpret_cast<const char*>(
+        plugin_instance->container()->element()->document()->url().
+          string().characters8()))).GetOrigin(),
       file_system_type, expected_size,
       new FileCallbacks(this, callback, NULL,
                         scoped_refptr<PPB_FileSystem_Impl>(this), NULL)))

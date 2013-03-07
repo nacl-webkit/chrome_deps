@@ -20,7 +20,9 @@
 #include "content/common/quota_dispatcher.h"
 #include "content/common/resource_dispatcher.h"
 //FIXME #include "content/common/socket_stream_dispatcher.h"
+#include "content/common/view_messages.h"
 #include "content/public/common/content_switches.h"
+#include "content/renderer/pepper/pepper_plugin_delegate_impl.h"
 #include "ipc/ipc_logging.h"
 #include "ipc/ipc_switches.h"
 #include "ipc/ipc_sync_channel.h"
@@ -107,9 +109,9 @@ void ChildThread::Init() {
   /*FIXME
   resource_dispatcher_.reset(new ResourceDispatcher(this));
   socket_stream_dispatcher_.reset(new SocketStreamDispatcher());
-  file_system_dispatcher_.reset(new FileSystemDispatcher());
-  quota_dispatcher_.reset(new QuotaDispatcher());
 */
+  file_system_dispatcher_.reset(new FileSystemDispatcher());
+//FIXME  quota_dispatcher_.reset(new QuotaDispatcher());
   sync_message_filter_ =
       new IPC::SyncMessageFilter(ChildProcess::current()->GetShutDownEvent());
 /*FIXME
@@ -255,12 +257,14 @@ bool ChildThread::OnMessageReceived(const IPC::Message& msg) {
 */
   if (file_system_dispatcher_->OnMessageReceived(msg))
     return true;
+/* FIXME
   if (quota_dispatcher_->OnMessageReceived(msg))
     return true;
-
+*/
   bool handled = true;
+  IPC_BEGIN_MESSAGE_MAP_EX(ChildThread, msg, handled)
+    IPC_MESSAGE_HANDLER(ViewMsg_AsyncOpenFile_ACK, OnAsyncFileOpened)
 /* FIXME
-  IPC_BEGIN_MESSAGE_MAP(ChildThread, msg)
     IPC_MESSAGE_HANDLER(ChildProcessMsg_Shutdown, OnShutdown)
 #if defined(IPC_MESSAGE_LOG_ENABLED)
     IPC_MESSAGE_HANDLER(ChildProcessMsg_SetIPCLoggingEnabled,
@@ -274,16 +278,30 @@ bool ChildThread::OnMessageReceived(const IPC::Message& msg) {
 #if defined(USE_TCMALLOC)
     IPC_MESSAGE_HANDLER(ChildProcessMsg_GetTcmallocStats, OnGetTcmallocStats)
 #endif
+*/
     IPC_MESSAGE_UNHANDLED(handled = false)
   IPC_END_MESSAGE_MAP()
 
   if (handled)
     return true;
-*/
+
   if (msg.routing_id() == MSG_ROUTING_CONTROL)
     return OnControlMessageReceived(msg);
-
   return router_.OnMessageReceived(msg);
+}
+
+void ChildThread::OnAsyncFileOpened(
+    base::PlatformFileError error_code,
+    IPC::PlatformFileForTransit file_for_transit,
+    int message_id) {
+  PepperPluginDelegateImpl* delegate = PepperPluginDelegateImpl::DelegateForRoutingID(1); // FIXME can we assume one process per tab?
+  if (!delegate)
+    return;
+
+  delegate->OnAsyncFileOpened(
+    error_code,
+    IPC::PlatformFileForTransitToPlatformFile(file_for_transit),
+    message_id);
 }
 
 bool ChildThread::OnControlMessageReceived(const IPC::Message& msg) {

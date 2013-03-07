@@ -6,6 +6,7 @@
 #define CONTENT_COMMON_CHILD_THREAD_H_
 
 #include "base/basictypes.h"
+#include "base/platform_file.h"
 #include "base/memory/scoped_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/shared_memory.h"
@@ -13,6 +14,7 @@
 #include "content/common/content_export.h"
 #include "content/common/message_router.h"
 #include "ipc/ipc_message.h"  // For IPC_MESSAGE_LOG_ENABLED.
+#include "ipc/ipc_platform_file.h"
 //FIXME #include "webkit/glue/resource_loader_bridge.h"
 
 class MessageLoop;
@@ -112,6 +114,9 @@ class CONTENT_EXPORT ChildThread : public IPC::Listener, public IPC::Sender {
   virtual bool OnMessageReceived(const IPC::Message& msg) OVERRIDE;
   virtual void OnChannelConnected(int32 peer_pid) OVERRIDE;
   virtual void OnChannelError() OVERRIDE;
+  void OnAsyncFileOpened(base::PlatformFileError error_code,
+                         IPC::PlatformFileForTransit file_for_transit,
+                         int message_id);
 
  private:
   void Init();

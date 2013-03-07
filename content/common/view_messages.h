@@ -1215,6 +1215,7 @@ IPC_MESSAGE_ROUTED1(ViewMsg_SetNavigationStartTime,
 // Response message to ViewHostMsg_CreateShared/DedicatedWorker.
 // Sent when the worker has started.
 IPC_MESSAGE_ROUTED0(ViewMsg_WorkerCreated)
+#endif // 0
 
 // The response to ViewHostMsg_AsyncOpenFile.
 IPC_MESSAGE_ROUTED3(ViewMsg_AsyncOpenFile_ACK,
@@ -1222,6 +1223,8 @@ IPC_MESSAGE_ROUTED3(ViewMsg_AsyncOpenFile_ACK,
                     IPC::PlatformFileForTransit /* file descriptor */,
                     int /* message_id */)
 
+#if 0
+FIXME
 // Tells the renderer that the network state has changed and that
 // window.navigator.onLine should be updated for all WebViews.
 IPC_MESSAGE_CONTROL1(ViewMsg_NetworkStateChanged,
@@ -2176,6 +2179,8 @@ IPC_MESSAGE_ROUTED1(ViewHostMsg_SwapCompositorFrame,
 IPC_MESSAGE_ROUTED1(ViewHostMsg_SwapCompositorFrameAck,
                     cc::CompositorFrameAck /* ack */)
 
+#endif // 0
+
 // Opens a file asynchronously. The response returns a file descriptor
 // and an error code from base/platform_file.h.
 IPC_MESSAGE_ROUTED3(ViewHostMsg_AsyncOpenFile,
@@ -2183,6 +2188,8 @@ IPC_MESSAGE_ROUTED3(ViewHostMsg_AsyncOpenFile,
                     int /* flags */,
                     int /* message_id */)
 
+#if 0
+FIXME
 //---------------------------------------------------------------------------
 // Request for cryptographic operation messages:
 // These are messages from the renderer to the browser to perform a

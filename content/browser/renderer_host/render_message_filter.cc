@@ -425,9 +425,9 @@ bool RenderMessageFilter::OnMessageReceived(const IPC::Message& message,
     IPC_MESSAGE_HANDLER(ViewHostMsg_DidGenerateCacheableMetadata,
                         OnCacheableMetadataAvailable)
     IPC_MESSAGE_HANDLER_DELAY_REPLY(ViewHostMsg_Keygen, OnKeygen)
-    IPC_MESSAGE_HANDLER(ViewHostMsg_AsyncOpenFile, OnAsyncOpenFile)
-    IPC_MESSAGE_HANDLER(ViewHostMsg_GetCPUUsage, OnGetCPUUsage)
 */
+    IPC_MESSAGE_HANDLER(ViewHostMsg_AsyncOpenFile, OnAsyncOpenFile)
+//FIXME    IPC_MESSAGE_HANDLER(ViewHostMsg_GetCPUUsage, OnGetCPUUsage)
     IPC_MESSAGE_HANDLER(ViewHostMsg_GetAudioHardwareConfig,
                         OnGetAudioHardwareConfig)
 /*FIXME
@@ -965,13 +965,13 @@ void RenderMessageFilter::OnKeygenOnWorkerThread(
       keygen_handler.GenKeyAndSignChallenge());
   Send(reply_msg);
 }
-
+*/
 void RenderMessageFilter::OnAsyncOpenFile(const IPC::Message& msg,
                                           const FilePath& path,
                                           int flags,
                                           int message_id) {
   DCHECK(BrowserThread::CurrentlyOn(BrowserThread::IO));
-
+/* FIXME
   if (!ChildProcessSecurityPolicyImpl::GetInstance()->HasPermissionsForFile(
           render_process_id_, path, flags)) {
     DLOG(ERROR) << "Bad flags in ViewMsgHost_AsyncOpenFile message: " << flags;
@@ -979,7 +979,7 @@ void RenderMessageFilter::OnAsyncOpenFile(const IPC::Message& msg,
     BadMessageReceived();
     return;
   }
-
+*/
   BrowserThread::PostTask(
       BrowserThread::FILE, FROM_HERE, base::Bind(
           &RenderMessageFilter::AsyncOpenFileOnFileThread, this,
@@ -1005,7 +1005,7 @@ void RenderMessageFilter::AsyncOpenFileOnFileThread(const FilePath& path,
       BrowserThread::IO, FROM_HERE,
       base::Bind(base::IgnoreResult(&RenderMessageFilter::Send), this, reply));
 }
-
+/* FIXME
 void RenderMessageFilter::OnMediaLogEvent(const media::MediaLogEvent& event) {
   if (media_internals_)
     media_internals_->OnMediaEvent(render_process_id_, event);

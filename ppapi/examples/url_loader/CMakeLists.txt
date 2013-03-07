@@ -102,8 +102,8 @@ SET(url_loader_SOURCES
     ${ppapi_DIR}/utility/threading/simple_thread.cc
     ${ppapi_DIR}/utility/websocket/websocket_api.cc
 
-    streaming.cc
-    #stream_to_file.cc
+    #streaming.cc
+    stream_to_file.cc
 )
 
 SET(url_loader_LIBRARIES

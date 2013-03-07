@@ -30,9 +30,11 @@
 #include "content/common/gpu/client/webgraphicscontext3d_command_buffer_impl.h"
 #include "content/common/pepper_messages.h"
 #include "content/common/pepper_plugin_registry.h"
+*/
 #include "content/common/quota_dispatcher.h"
 #include "content/common/view_messages.h"
 #include "content/public/common/content_switches.h"
+/* FIXME
 #include "content/public/common/context_menu_params.h"
 #include "content/public/common/media_stream_request.h"
 #include "content/public/common/referrer.h"
@@ -131,6 +133,9 @@ using namespace WebKit;
 namespace content {
 
 namespace {
+
+static int g_routing_id = 0;
+
 /*
 FIXME
 
@@ -372,18 +377,37 @@ void CreateHostForInProcessModule(WebPage* page,
 
 }  // namespace
 
+typedef std::map<int32, PepperPluginDelegateImpl*> RoutingIDMap;
+static base::LazyInstance<RoutingIDMap> g_routing_id_map =
+    LAZY_INSTANCE_INITIALIZER;
+
 PepperPluginDelegateImpl::PepperPluginDelegateImpl(WebPage* page)
     : //FIXME RenderViewObserver(render_view),
       render_view_(page),
+      routing_id_(++g_routing_id),
       focused_plugin_(NULL)
 //FIXME      last_mouse_event_target_(NULL),
 //FIXME      device_enumeration_event_handler_(
 //FIXME          new PepperDeviceEnumerationEventHandler()) {
 {
+  g_routing_id_map.Get().insert(std::make_pair(routing_id_, this));
 }
 
 PepperPluginDelegateImpl::~PepperPluginDelegateImpl() {
 //FIXME  DCHECK(mouse_lock_instances_.empty());
+  RoutingIDMap* routing_ids = g_routing_id_map.Pointer();
+  DCHECK(routing_ids->find(routing_id_) == routing_ids->end());
+}
+
+void PepperPluginDelegateImpl::Destroy() {
+  g_routing_id_map.Get().erase(routing_id_);
+}
+
+PepperPluginDelegateImpl* PepperPluginDelegateImpl::DelegateForRoutingID(int routing_id) {
+  RoutingIDMap* routing_ids = g_routing_id_map.Pointer();
+  if (routing_ids->find(routing_id) != routing_ids->end())
+    return routing_ids->find(routing_id)->second;
+  return NULL;
 }
 
 /*
@@ -1116,22 +1140,17 @@ bool PepperPluginDelegateImpl::AsyncOpenFile(
     const FilePath& path,
     int flags,
     const AsyncOpenFileCallback& callback) {
-/*
-FIXME
   int message_id = pending_async_open_files_.Add(
       new AsyncOpenFileCallback(callback));
   IPC::Message* msg = new ViewHostMsg_AsyncOpenFile(
-      render_view_->routing_id(), path, flags, message_id);
-  return render_view_->Send(msg);
-*/
+      GetRoutingID(), path, flags, message_id);
+  return RenderThread::Get()->Send(msg);
 }
 
 void PepperPluginDelegateImpl::OnAsyncFileOpened(
     base::PlatformFileError error_code,
     base::PlatformFile file,
     int message_id) {
-/*
-FIXME
   AsyncOpenFileCallback* callback =
       pending_async_open_files_.Lookup(message_id);
   DCHECK(callback);
@@ -1142,7 +1161,6 @@ FIXME
     base::FileUtilProxy::Close(GetFileThreadMessageLoopProxy(), file,
                                base::FileUtilProxy::StatusCallback());
   delete callback;
-*/
 }
 
 void PepperPluginDelegateImpl::OnSetFocus(bool has_focus) {
@@ -1828,8 +1846,7 @@ int PepperPluginDelegateImpl::GetRoutingID() const {
 /* FIXME
   return render_view_->routing_id();
 */
-    static int routing_id = 0;
-    return ++routing_id;
+    return routing_id_;
 }
 
 int PepperPluginDelegateImpl::OpenDevice(PP_DeviceType_Dev type,

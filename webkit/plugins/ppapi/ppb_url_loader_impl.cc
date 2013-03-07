@@ -38,6 +38,9 @@
 #include "webkit/plugins/ppapi/url_request_info_util.h"
 #include "webkit/plugins/ppapi/url_response_info_util.h"
 
+#include "base/message_loop.h"
+#include "base/memory/weak_ptr.h"
+
 //using appcache::WebApplicationCacheHostImpl;
 using ppapi::Resource;
 using ppapi::thunk::EnterResourceNoLock;
@@ -469,7 +472,21 @@ void PPB_URLLoader_Impl::RunCallback(int32_t result) {
   // callbacks get called in an unexpected order.
   user_buffer_ = NULL;
   user_buffer_size_ = 0;
-  pending_callback_->Run(result);
+
+// FIXME  pending_callback_->Run(result);
+  MessageLoop::current()->PostTask(
+      FROM_HERE,
+              base::Bind(&PPB_URLLoader_Impl::DoRunCallback, this, pending_callback_, result));
+  pending_callback_ = 0;
+}
+
+void PPB_URLLoader_Impl::DoRunCallback(scoped_refptr< ::ppapi::TrackedCallback> callback, int32_t result) {
+  // This may be null only when this is a main document loader.
+  if (!callback.get()) {
+    CHECK(main_document_loader_);
+    return;
+  }
+  callback->Run(result);
 }
 
 size_t PPB_URLLoader_Impl::FillUserBuffer() {

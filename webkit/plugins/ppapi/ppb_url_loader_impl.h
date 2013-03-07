@@ -88,6 +88,7 @@ class PPB_URLLoader_Impl : public ::ppapi::Resource,
   void RegisterCallback(scoped_refptr< ::ppapi::TrackedCallback> callback);
 
   void RunCallback(int32_t result);
+  void DoRunCallback(scoped_refptr< ::ppapi::TrackedCallback> callback, int32_t result);
 
   size_t FillUserBuffer();
 

@@ -88,6 +88,8 @@ class PepperPluginDelegateImpl
  {
  public:
   virtual ~PepperPluginDelegateImpl();
+  void Destroy();
+  static PepperPluginDelegateImpl* DelegateForRoutingID(int routing_id);
   PassRefPtr<WebKit::PepperPlugin> CreatePepperPlugin(WebKit::WebFrame* frame, WebKit::Plugin::Parameters& params);
   bool GetPluginInfo(const WTF::String& url, const WTF::String& pageUrl, const WTF::String& mimeType, WebKit::PepperPluginInfo& pluginInfo, WTF::String& actualMimeType);
   PepperPluginDelegateImpl(WebKit::WebPage* page);
@@ -478,6 +480,7 @@ FIXME
       device_enumeration_event_handler_;
 */
    WebKit::WebPage* render_view_;
+   int routing_id_;
 
   DISALLOW_COPY_AND_ASSIGN(PepperPluginDelegateImpl);
 };

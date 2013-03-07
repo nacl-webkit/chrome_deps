@@ -223,6 +223,7 @@ class RenderMessageFilter : public BrowserMessageFilter {
       const std::string& challenge_string,
       const GURL& url,
       IPC::Message* reply_msg);
+*/
   void OnAsyncOpenFile(const IPC::Message& msg,
                        const FilePath& path,
                        int flags,
@@ -231,6 +232,7 @@ class RenderMessageFilter : public BrowserMessageFilter {
                                  int flags,
                                  int message_id,
                                  int routing_id);
+/* FIXME
   void OnMediaLogEvent(const media::MediaLogEvent&);
 
   // Check the policy for getting cookies. Gets the cookies if allowed.

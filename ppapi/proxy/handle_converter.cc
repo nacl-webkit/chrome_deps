@@ -228,6 +228,7 @@ bool HandleConverter::ConvertNativeHandlesToPosix(
       }
       uint32_t type = iter->second;
       pending_sync_msgs_.erase(iter);
+/* FIXME
       switch (type) {
         CASE_FOR_REPLY(PpapiHostMsg_PPBGraphics3D_GetTransferBuffer)
         CASE_FOR_REPLY(PpapiHostMsg_PPBImageData_CreateNaCl)
@@ -236,6 +237,7 @@ bool HandleConverter::ConvertNativeHandlesToPosix(
           // Do nothing for messages we don't know.
           break;
       }
+*/
       break;
     }
     default:

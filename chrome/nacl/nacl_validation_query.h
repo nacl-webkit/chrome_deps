@@ -68,7 +68,7 @@ class NaClValidationQuery {
   // Track the state of the query to detect suspicious method calls.
   QueryState state_;
 
-  crypto::HMAC hasher_;
+  //FIXME crypto::HMAC hasher_;
   NaClValidationDB* db_;
 
   // The size of buffer_ is a somewhat arbitrary choice.  It needs to be at

@@ -10,3 +10,6 @@
 [submodule "third_party/lss"]
 	path = third_party/lss
 	url = https://chromium.googlesource.com/external/linux-syscall-support/lss.git
+[submodule "sandbox/linux/seccomp-legacy"]
+	path = sandbox/linux/seccomp-legacy
+	url = https://chromium.googlesource.com/external/seccompsandbox.git

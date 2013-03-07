@@ -126,7 +126,8 @@ bool NaClForkDelegate::CanHelp(const std::string& process_type,
                                std::string* uma_name,
                                int* uma_sample,
                                int* uma_boundary_value) {
-  if (process_type != switches::kNaClLoaderProcess)
+  //FIXME if (process_type != switches::kNaClLoaderProcess)
+  if (process_type != "nacl-loader")
     return false;
   *uma_name = "NaCl.Client.Helper.StateOnFork";
   *uma_sample = status_;

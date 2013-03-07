@@ -577,7 +577,8 @@ DEFINE_CHECK_OP_IMPL(GT, > )
 #elif defined(NDEBUG)
 // Otherwise, if we're a release build, remove DLOGs but not DCHECKs
 // (since those can still be turned on via a command-line flag).
-#define ENABLE_DLOG 0
+//FIXME ENABLE_DLOG should be 0 for non debug build
+#define ENABLE_DLOG 1
 #define ENABLE_DCHECK 1
 
 #else

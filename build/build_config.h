@@ -30,22 +30,24 @@
 #define OS_NACL 1
 #elif defined(__linux__)
 #define OS_LINUX 1
+/* FIXME
 // Use TOOLKIT_GTK on linux if TOOLKIT_VIEWS isn't defined.
 #if !defined(TOOLKIT_VIEWS)
 #define TOOLKIT_GTK
 #endif
+*/
 #elif defined(_WIN32)
 #define OS_WIN 1
 #define TOOLKIT_VIEWS 1
 #elif defined(__FreeBSD__)
 #define OS_FREEBSD 1
-#define TOOLKIT_GTK
+//FIXME #define TOOLKIT_GTK
 #elif defined(__OpenBSD__)
 #define OS_OPENBSD 1
-#define TOOLKIT_GTK
+//FIXME #define TOOLKIT_GTK
 #elif defined(__sun)
 #define OS_SOLARIS 1
-#define TOOLKIT_GTK
+//FIXME #define TOOLKIT_GTK
 #else
 #error Please add support for your platform in build/build_config.h
 #endif

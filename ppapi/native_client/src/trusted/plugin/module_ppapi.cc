@@ -3,9 +3,6 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-/*
-FIXME:
-*/
 #include "native_client/src/shared/imc/nacl_imc_c.h"
 #include "native_client/src/shared/platform/nacl_time.h"
 #include "native_client/src/trusted/desc/nrd_all_modules.h"
@@ -22,8 +19,8 @@ class ModulePpapi : public pp::Module {
   ModulePpapi() : pp::Module(),
                   init_was_successful_(false),
                   private_interface_(NULL) {
-//FIXME:    MODULE_PRINTF(("ModulePpapi::ModulePpapi (this=%p)\n",
-//FIXME:                   static_cast<void*>(this)));
+    MODULE_PRINTF(("ModulePpapi::ModulePpapi (this=%p)\n",
+                   static_cast<void*>(this)));
   }
 
   virtual ~ModulePpapi() {
@@ -31,8 +28,8 @@ class ModulePpapi : public pp::Module {
 //FIXME:      NaClSrpcModuleFini();
 //FIXME:      NaClNrdAllModulesFini();
     }
-//FIXME:    MODULE_PRINTF(("ModulePpapi::~ModulePpapi (this=%p)\n",
-//FIXME:                   static_cast<void*>(this)));
+    MODULE_PRINTF(("ModulePpapi::~ModulePpapi (this=%p)\n",
+                   static_cast<void*>(this)));
   }
 
   virtual bool Init() {
@@ -41,8 +38,8 @@ class ModulePpapi : public pp::Module {
         GetBrowserInterface(PPB_NACL_PRIVATE_INTERFACE));
 
     if (NULL == private_interface_) {
-//FIXME:      MODULE_PRINTF(("ModulePpapi::Init failed: "
-//FIXME:                     "GetBrowserInterface returned NULL\n"));
+      MODULE_PRINTF(("ModulePpapi::Init failed: "
+                     "GetBrowserInterface returned NULL\n"));
       return false;
     }
 /*
@@ -72,14 +69,14 @@ class ModulePpapi : public pp::Module {
   }
 
   virtual pp::Instance* CreateInstance(PP_Instance pp_instance) {
-//FIXME:    MODULE_PRINTF(("ModulePpapi::CreateInstance (pp_instance=%"NACL_PRId32")\n",
-//FIXME:                   pp_instance));
+    MODULE_PRINTF(("ModulePpapi::CreateInstance (pp_instance=%"NACL_PRId32")\n",
+                   pp_instance));
     // This must be called from here rather than Init, as it relies on
     // chrome state that is not set at the time Init runs.
 //FIXME:    private_interface_->EnableBackgroundSelLdrLaunch();
     Plugin* plugin = Plugin::New(pp_instance);
-//FIXME:    MODULE_PRINTF(("ModulePpapi::CreateInstance (return %p)\n",
-//FIXME:                   static_cast<void* >(plugin)));
+    MODULE_PRINTF(("ModulePpapi::CreateInstance (return %p)\n",
+                   static_cast<void* >(plugin)));
     return plugin;
   }
 
@@ -94,7 +91,7 @@ class ModulePpapi : public pp::Module {
 namespace pp {
 
 Module* CreateModule() {
-//FIXME:  MODULE_PRINTF(("CreateModule ()\n"));
+  MODULE_PRINTF(("CreateModule ()\n"));
   return new plugin::ModulePpapi();
 }
 

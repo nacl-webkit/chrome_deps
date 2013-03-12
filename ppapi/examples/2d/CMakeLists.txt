@@ -1,6 +1,8 @@
 SET(ppapi_DIR ./../..)
 SET(paint_manager_LIBRARY_NAME ppapi_example_paint_manager)
+SET(paint_manager_another_LIBRARY_NAME ppapi_example_paint_manager_another)
 SET(paint_manager_LIBRARY_TYPE SHARED)
+SET(paint_manager_another_LIBRARY_TYPE SHARED)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.3)
 
 SET(paint_manager_INCLUDE_DIRECTORIES
@@ -11,7 +13,7 @@ SET(paint_manager_INCLUDE_DIRECTORIES
     "${CMAKE_SOURCE_DIR}"
 )
 
-SET(paint_manager_SOURCES
+SET(common_SOURCES
     ${ppapi_DIR}/cpp/array_output.cc
     ${ppapi_DIR}/cpp/audio.cc
     ${ppapi_DIR}/cpp/audio_config.cc
@@ -101,12 +103,24 @@ SET(paint_manager_SOURCES
     ${ppapi_DIR}/utility/graphics/paint_manager.cc
     ${ppapi_DIR}/utility/threading/simple_thread.cc
     ${ppapi_DIR}/utility/websocket/websocket_api.cc
+)
 
+SET(paint_manager_SOURCES
+    ${common_SOURCES}
     paint_manager_example.cc
+)
+
+SET(paint_manager_another_SOURCES
+    ${common_SOURCES}
+    paint_manager_another_example.cc
 )
 
 SET(paint_manager_LIBRARIES
     ${paint_manager_LIBRARY_NAME}
+)
+
+SET(paint_manager_another_LIBRARIES
+    ${paint_manager_another_LIBRARY_NAME}
 )
 
 ADD_DEFINITIONS(-DNACL_LINUX=1)
@@ -118,10 +132,17 @@ SET(NACL_WINDOWS 0)
 
 INCLUDE_DIRECTORIES(${paint_manager_INCLUDE_DIRECTORIES})
 ADD_LIBRARY(${paint_manager_LIBRARY_NAME} ${paint_manager_LIBRARY_TYPE} ${paint_manager_SOURCES})
+ADD_LIBRARY(${paint_manager_another_LIBRARY_NAME} ${paint_manager_another_LIBRARY_TYPE} ${paint_manager_another_SOURCES})
 
 TARGET_LINK_LIBRARIES(${paint_manager_LIBRARY_NAME} ${paint_manager_LIBRARIES})
+TARGET_LINK_LIBRARIES(${paint_manager_another_LIBRARY_NAME} ${paint_manager_another_LIBRARIES})
+
 SET_TARGET_PROPERTIES(${paint_manager_LIBRARY_NAME} PROPERTIES FOLDER "WebKit")
+SET_TARGET_PROPERTIES(${paint_manager_another_LIBRARY_NAME} PROPERTIES FOLDER "WebKit")
+
 SET_TARGET_PROPERTIES(${paint_manager_LIBRARY_NAME} PROPERTIES LINK_INTERFACE_LIBRARIES "")
+SET_TARGET_PROPERTIES(${paint_manager_another_LIBRARY_NAME} PROPERTIES LINK_INTERFACE_LIBRARIES "")
 
 SET_TARGET_PROPERTIES(${paint_manager_LIBRARY_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR})
+SET_TARGET_PROPERTIES(${paint_manager_another_LIBRARY_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR})
 

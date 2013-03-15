@@ -26,7 +26,9 @@
 #include "base/posix/unix_domain_socket_linux.h"
 #include "base/rand_util.h"
 #include "chrome/nacl/nacl_listener.h"
+#if defined(USE_NSS)
 #include "crypto/nss_util.h"
+#endif
 #include "ipc/ipc_descriptors.h"
 #include "ipc/ipc_switches.h"
 #include "sandbox/linux/services/libc_urandom_override.h"
@@ -207,7 +209,7 @@ int main(int argc, char* argv[]) {
   base::RandUint64();  // acquire /dev/urandom fd before sandbox is raised
 #if !defined(CHROMIUM_SELINUX)
   // Allows NSS to fopen() /dev/urandom.
-  sandbox::InitLibcUrandomOverrides();
+  //FIXME: sandbox::InitLibcUrandomOverrides();
 #endif
 #if defined(USE_NSS)
   // Configure NSS for use inside the NaCl process.

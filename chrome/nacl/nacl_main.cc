@@ -10,7 +10,7 @@
 #include "base/system_monitor/system_monitor.h"
 #include "chrome/common/chrome_result_codes.h"
 #include "chrome/common/chrome_switches.h"
-#include "chrome/common/logging_chrome.h"
+//FIXME #include "chrome/common/logging_chrome.h"
 #include "chrome/nacl/nacl_listener.h"
 #include "chrome/nacl/nacl_main_platform_delegate.h"
 #include "content/public/common/main_function_params.h"
@@ -30,7 +30,8 @@ int NaClMain(const content::MainFunctionParams& parameters) {
   NaClMainPlatformDelegate platform(parameters);
 
   platform.PlatformInitialize();
-  bool no_sandbox = parsed_command_line.HasSwitch(switches::kNoSandbox);
+  //bool no_sandbox = parsed_command_line.HasSwitch(switches::kNoSandbox);
+  bool no_sandbox = parsed_command_line.HasSwitch("no-sandbox");
   platform.InitSandboxTests(no_sandbox);
 
   if (!no_sandbox) {

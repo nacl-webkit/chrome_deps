@@ -1,0 +1,61 @@
+set(NACL_LIBRARY_NAME chrome_nacl)
+set(NACL_HELPER_NAME nacl_helper)
+
+set(NACL_LIBRARY_SOURCES
+    ${CHROME_DEPS_DIR}/chrome/app/nacl_fork_delegate_linux.cc
+    ${CHROME_DEPS_DIR}/chrome/nacl/nacl_ipc_adapter.cc
+    ${CHROME_DEPS_DIR}/chrome/nacl/nacl_main.cc
+    ${CHROME_DEPS_DIR}/chrome/nacl/nacl_main_platform_delegate_linux.cc
+    ${CHROME_DEPS_DIR}/chrome/nacl/nacl_listener.cc
+    ${CHROME_DEPS_DIR}/chrome/nacl/nacl_validation_query.cc
+)
+
+set(NACL_LIBRARY_INCLUDE_DIRECTORIES
+    ${CHROME_DEPS_DIR}
+    ${CHROME_DEPS_DIR}/..
+    ${CHROME_DEPS_DIR}/third_party/wtl/include
+)
+
+set(NACL_HELPER_INCLUDE_DIRECTORIES
+    ${CHROME_DEPS_DIR}
+    ${GLIB_INCLUDE_DIRS}
+)
+
+set(NACL_HELPER_LIBRARIES
+    "-Wl,--whole-archive"
+    ${NACL_LIBRARY_NAME}
+    ${CHROME_BASE_LIBRARY_NAME}
+    ${CHROME_IPC_LIBRARY_NAME}
+    ${PPAPI_SHARED_LIBRARY_NAME}
+    ${PPAPI_PROXY_LIBRARY_NAME}
+    ${NACL_SEL_LIBRARY_NAME}
+    "-Wl,--no-whole-archive"
+    ${GLIB_LIBRARIES}
+)
+
+set(NACL_HELPER_SOURCES
+    ${CHROME_DEPS_DIR}/base/posix/unix_domain_socket_linux.cc
+    ${CHROME_DEPS_DIR}/chrome/common/nacl_messages.cc
+    ${CHROME_DEPS_DIR}/chrome/common/nacl_types.cc
+    ${CHROME_DEPS_DIR}/chrome/nacl/nacl_helper_linux.cc
+    ${CHROME_DEPS_DIR}/content/common/child_process_sandbox_support_impl_shm_linux.cc
+)
+
+include(../ppapi/ppapi_shared.txt)
+include(../ppapi/ppapi_proxy.txt)
+
+include_directories(${NACL_LIBRARY_INCLUDE_DIRECTORIES})
+add_library(${NACL_LIBRARY_NAME} STATIC ${NACL_LIBRARY_SOURCES})
+set_target_properties(${NACL_LIBRARY_NAME}
+    PROPERTIES COMPILE_FLAGS "-DNACL_LINUX=1 -DNACL_OSX=0 -DNACL_WINDOWS=0 -D__STDC_LIMIT_MACROS=1 -fPIC"
+)
+
+add_executable(${NACL_HELPER_NAME} ${NACL_HELPER_SOURCES})
+set_property(TARGET ${NACL_HELPER_NAME}
+    PROPERTY INCLUDE_DIRECTORIES ${NACL_HELPER_INCLUDE_DIRECTORIES}
+)
+target_link_libraries(${NACL_HELPER_NAME} ${NACL_HELPER_LIBRARIES})
+set_target_properties(${NACL_HELPER_NAME}
+    PROPERTIES COMPILE_FLAGS "-fPIE"
+    LINK_FLAGS "-pie"
+)

@@ -5,7 +5,7 @@
 #include "chrome/nacl/nacl_validation_query.h"
 
 #include "base/logging.h"
-#include "crypto/nss_util.h"
+//FIXME  #include "crypto/nss_util.h"
 #include "chrome/nacl/nacl_validation_db.h"
 #include "native_client/src/trusted/validator/validation_cache.h"
 
@@ -32,7 +32,7 @@ NaClValidationQuery* NaClValidationQueryContext::CreateQuery() {
 NaClValidationQuery::NaClValidationQuery(NaClValidationDB* db,
                                          const std::string& profile_key)
     : state_(READY),
-      hasher_(crypto::HMAC::SHA256),
+      //FIXME hasher_(crypto::HMAC::SHA256),
       db_(db),
       buffer_length_(0) {
   // Without this line on Linux, HMAC::Init will instantiate a singleton that
@@ -45,7 +45,7 @@ NaClValidationQuery::NaClValidationQuery(NaClValidationDB* db,
 #if defined(USE_NSS)
   crypto::ForceNSSNoDBInit();
 #endif
-  CHECK(hasher_.Init(profile_key));
+  //FIXME CHECK(hasher_.Init(profile_key));
 }
 
 void NaClValidationQuery::AddData(const char* data, size_t length) {
@@ -60,9 +60,11 @@ void NaClValidationQuery::AddData(const char* data, size_t length) {
   }
   // Hash the input data into the buffer.  Assumes that sizeof(buffer_) >=
   // kDigestLength * 2 (the buffer can store at least two digests.)
+  /* FIXME
   CHECK(hasher_.Sign(base::StringPiece(data, length),
                      reinterpret_cast<unsigned char*>(buffer_ + buffer_length_),
                      kDigestLength));
+  */
   buffer_length_ += kDigestLength;
 }
 
@@ -99,8 +101,10 @@ void NaClValidationQuery::CompressBuffer() {
   // directly back into the buffer, but this is an "accidental" semantic we're
   // avoiding depending on.
   unsigned char temp[kDigestLength];
+  /* FIXME
   CHECK(hasher_.Sign(base::StringPiece(buffer_, buffer_length_), temp,
-                     kDigestLength));
+                      kDigestLength));
+  */
   memcpy(buffer_, temp, kDigestLength);
   buffer_length_ = kDigestLength;
 }

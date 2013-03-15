@@ -7,14 +7,17 @@
 #include "base/logging.h"
 #include "build/build_config.h"
 
+/*FIXME
 #if !defined(OS_NACL) && !defined(NACL_WIN64)
 #include "SkTypes.h"
 #endif
+*/
 
 namespace ppapi {
 
 // static
 PP_ImageDataFormat PPB_ImageData_Shared::GetNativeImageDataFormat() {
+/*FIXME
 #if defined(OS_NACL)
   // In NaCl, just default to something. If we're wrong, it will be converted
   // later.
@@ -33,6 +36,7 @@ PP_ImageDataFormat PPB_ImageData_Shared::GetNativeImageDataFormat() {
   else
     return PP_IMAGEDATAFORMAT_BGRA_PREMUL;  // Default to something on failure.
 #endif
+*/
 }
 
 // static

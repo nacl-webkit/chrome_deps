@@ -37,14 +37,11 @@ public:
 
     bool isPlaying() { return m_isPlaying; }
     float sampleRate() const { return m_sampleRate; }
-//    media::AudioSourceCallbackGstreamer& callback() const { return m_callback; }
 
     void finishBuildingPipelineAfterWavParserPadReady(GstPad*);
     gboolean handleMessage(GstMessage*);
 
 private:
-//    media::AudioSourceCallback* m_callback;
-//    media::AudioBus* m_renderBus;
 
     float m_sampleRate;
     bool m_isPlaying;

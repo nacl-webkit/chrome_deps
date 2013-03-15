@@ -285,6 +285,7 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/media/audio/gstreamer/audio_manager_gstreamer.cc
     ${CHROME_DEPS_DIR}/media/audio/gstreamer/audio_output_stream_gstreamer.cc
     ${CHROME_DEPS_DIR}/media/audio/gstreamer/audio_stream_gstreamer.cc
+    ${CHROME_DEPS_DIR}/media/audio/gstreamer/audio_stream_provider_gstreamer.cc
     ${CHROME_DEPS_DIR}/media/audio/gstreamer/audio_stream_source_gstreamer.cc
 
     ${CHROME_DEPS_DIR}/media/base/audio_bus.cc

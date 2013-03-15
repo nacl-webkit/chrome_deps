@@ -24,6 +24,7 @@
 
 #include "media/base/audio_bus.h"
 #include "media/audio/gstreamer/audio_stream_gstreamer.h"
+#include "media/audio/gstreamer/audio_stream_provider_gstreamer.h"
 #include <wtf/gobject/GOwnPtr.h>
 #include "gstreamer/GRefPtrGStreamer.h"
 #include "gstreamer/GStreamerVersioning.h"
@@ -59,6 +60,7 @@ struct _WebKitPepperSourcePrivate {
     gfloat sampleRate;
     AudioBus* bus;
     AudioOutputStream::AudioSourceCallback* provider;
+    scoped_refptr<AudioStreamProviderGStreamer> dataProvider;
     guint framesToPull;
 
     GRefPtr<GstElement> interleave;
@@ -207,6 +209,8 @@ static void webKitPepperSrcConstructed(GObject* object)
     ASSERT(priv->bus);
     ASSERT(priv->provider);
     ASSERT(priv->sampleRate);
+    scoped_refptr<AudioStreamProviderGStreamer> provider(new AudioStreamProviderGStreamer(priv->provider, priv->bus));
+    priv->dataProvider = provider;
 
     priv->interleave = gst_element_factory_make("interleave", 0);
     priv->wavEncoder = gst_element_factory_make("wavenc", 0);
@@ -266,6 +270,8 @@ static void webKitPepperSrcFinalize(GObject* object)
 {
     WebKitPepperSrc* src = WEBKIT_PEPPER_SRC(object);
     WebKitPepperSourcePrivate* priv = src->priv;
+    priv->dataProvider->CancelGetMoreData();
+    priv->dataProvider = 0;
 
 #ifdef GST_API_VERSION_1
     g_rec_mutex_clear(&priv->mutex);
@@ -354,8 +360,11 @@ static void webKitPepperSrcLoop(WebKitPepperSrc* src)
     channelBufferList = g_slist_reverse(channelBufferList);
 
     // FIXME: Add support for local/live audio input.
-    AudioBuffersState s;
-    priv->provider->OnMoreData(priv->bus, s);
+    int framesRead = priv->dataProvider->GetMoreData(priv->bus);
+    if (!framesRead) {
+        g_slist_free(channelBufferList);
+        return;
+    }
 
     for (unsigned i = 0; i < g_slist_length(priv->pads); i++) {
         GstPad* pad = static_cast<GstPad*>(g_slist_nth_data(priv->pads, i));

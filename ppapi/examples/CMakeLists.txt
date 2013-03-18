@@ -18,6 +18,8 @@ set(input_DIR "${CMAKE_SOURCE_DIR}/input")
 set(mouse_lock_DIR "${CMAKE_SOURCE_DIR}/mouse_lock")
 set(scripting_DIR "${CMAKE_SOURCE_DIR}/scripting")
 set(url_loader_DIR "${CMAKE_SOURCE_DIR}/url_loader")
+set(audio_DIR "${CMAKE_SOURCE_DIR}/audio")
+set(websockets_DIR "${CMAKE_SOURCE_DIR}/websockets")
 
 # -----------------------------------------------------------------------------
 # Default target names (can be overrriden in Options${PORT}.cmake file)
@@ -28,6 +30,8 @@ set(input_LIBRARY_NAME ppapi_example_input)
 set(mouse_lock_LIBRARY_NAME ppapi_example_mouse_lock)
 set(scripting_LIBRARY_NAME ppapi_example_scripting)
 set(url_loader_LIBRARY_NAME ppapi_example_url_loader)
+set(audio_LIBRARY_NAME ppapi_example_audio)
+set(websockets_LIBRARY_NAME ppapi_example_websockets)
 
 # -----------------------------------------------------------------------------
 # Default library types
@@ -39,6 +43,8 @@ set(input_LIBRARY_TYPE SHARED)
 set(mouse_lock_LIBRARY_TYPE SHARED)
 set(scripting_LIBRARY_TYPE SHARED)
 set(url_loader_LIBRARY_TYPE SHARED)
+set(audio_LIBRARY_TYPE SHARED)
+set(websockets_LIBRARY_TYPE SHARED)
 
 # -----------------------------------------------------------------------------
 # Add module directories
@@ -49,4 +55,6 @@ add_subdirectory(input)
 add_subdirectory(mouse_lock)
 add_subdirectory(scripting)
 add_subdirectory(url_loader)
+add_subdirectory(audio)
+add_subdirectory(websockets)
 

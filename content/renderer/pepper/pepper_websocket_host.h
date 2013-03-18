@@ -13,8 +13,15 @@
 #include "ppapi/host/host_message_context.h"
 #include "ppapi/host/resource_host.h"
 #include "ppapi/proxy/resource_message_params.h"
+/* FIXME
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebSocket.h"
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebSocketClient.h"
+*/
+
+#include <wtf/RefPtr.h>
+#include <wtf/text/WTFString.h>
+#include "Modules/websockets/WebSocketChannel.h"
+#include "Modules/websockets/WebSocketChannelClient.h"
 
 namespace ppapi {
 class StringVar;
@@ -27,7 +34,7 @@ class RendererPpapiHost;
 
 class CONTENT_EXPORT PepperWebSocketHost
     : public ppapi::host::ResourceHost,
-      public NON_EXPORTED_BASE(::WebKit::WebSocketClient) {
+      public ::WebCore::WebSocketChannelClient {
  public:
   explicit PepperWebSocketHost(RendererPpapiHost* host,
                                PP_Instance instance,
@@ -40,15 +47,15 @@ class CONTENT_EXPORT PepperWebSocketHost
 
   // WebSocketClient implementation.
   virtual void didConnect();
-  virtual void didReceiveMessage(const WebKit::WebString& message);
-  virtual void didReceiveArrayBuffer(const WebKit::WebArrayBuffer& binaryData);
+  virtual void didReceiveMessage(const WTF::String& message);
+  virtual void didReceiveBinaryData(PassOwnPtr<Vector<char> >);
   virtual void didReceiveMessageError();
   virtual void didUpdateBufferedAmount(unsigned long buffered_amount);
   virtual void didStartClosingHandshake();
   virtual void didClose(unsigned long unhandled_buffered_amount,
                         ClosingHandshakeCompletionStatus status,
                         unsigned short code,
-                        const WebKit::WebString& reason);
+                        const WTF::String& reason);
  private:
   // IPC message handlers.
   int32_t OnHostMsgConnect(ppapi::host::HostMessageContext* context,
@@ -89,7 +96,7 @@ class CONTENT_EXPORT PepperWebSocketHost
 
   // Keeps the WebKit side WebSocket object. This is used for calling WebKit
   // side functions via WebKit API.
-  scoped_ptr<WebKit::WebSocket> websocket_;
+  WTF::RefPtr<WebCore::WebSocketChannel> websocket_;
 
   DISALLOW_COPY_AND_ASSIGN(PepperWebSocketHost);
 };

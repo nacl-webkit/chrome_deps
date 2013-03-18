@@ -211,6 +211,23 @@ LIST(APPEND WebKit2_SOURCES
 
     ${CHROME_DEPS_DIR}/content/public/renderer/render_thread.cc
 
+    ${CHROME_DEPS_DIR}/content/renderer/render_thread_impl.cc
+
+    ${CHROME_DEPS_DIR}/content/renderer/media/audio_message_filter.cc
+    ${CHROME_DEPS_DIR}/content/renderer/media/renderer_audio_output_device.cc
+
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/content_renderer_pepper_host_factory.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_file_chooser_host.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_file_io_host.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_graphics_2d_host.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_in_process_resource_creation.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_in_process_router.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_platform_audio_output_impl
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_platform_image_2d_impl.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_plugin_delegate_impl.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_websocket_host.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/renderer_ppapi_host_impl.cc
+
     ${CHROME_DEPS_DIR}/googleurl/src/gurl.cc
     ${CHROME_DEPS_DIR}/googleurl/src/url_canon_etc.cc
     ${CHROME_DEPS_DIR}/googleurl/src/url_canon_path.cc
@@ -228,22 +245,6 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/googleurl/src/url_canon_internal.cc
     ${CHROME_DEPS_DIR}/googleurl/src/url_canon_ip.cc
     ${CHROME_DEPS_DIR}/googleurl/src/url_canon_mailtourl.cc
-
-    ${CHROME_DEPS_DIR}/content/renderer/render_thread_impl.cc
-
-    ${CHROME_DEPS_DIR}/content/renderer/media/audio_message_filter.cc
-    ${CHROME_DEPS_DIR}/content/renderer/media/renderer_audio_output_device.cc
-
-    ${CHROME_DEPS_DIR}/content/renderer/pepper/content_renderer_pepper_host_factory.cc
-    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_file_chooser_host.cc
-    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_file_io_host.cc
-    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_graphics_2d_host.cc
-    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_in_process_resource_creation.cc
-    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_in_process_router.cc
-    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_platform_audio_output_impl
-    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_platform_image_2d_impl.cc
-    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_plugin_delegate_impl.cc
-    ${CHROME_DEPS_DIR}/content/renderer/pepper/renderer_ppapi_host_impl.cc
 
     ${CHROME_DEPS_DIR}/ipc/file_descriptor_set_posix.cc
     ${CHROME_DEPS_DIR}/ipc/ipc_channel.cc

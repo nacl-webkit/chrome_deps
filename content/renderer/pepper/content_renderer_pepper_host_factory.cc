@@ -12,10 +12,8 @@
 // FIXME #include "content/renderer/pepper/pepper_flash_clipboard_host.h"
 
 #include "content/renderer/pepper/pepper_graphics_2d_host.h"
-/* FIXME
-#include "content/renderer/pepper/pepper_video_capture_host.h"
+// FIXME #include "content/renderer/pepper/pepper_video_capture_host.h"
 #include "content/renderer/pepper/pepper_websocket_host.h"
-*/
 #include "content/renderer/pepper/renderer_ppapi_host_impl.h"
 #include "ppapi/host/resource_host.h"
 #include "ppapi/proxy/ppapi_messages.h"
@@ -56,11 +54,9 @@ scoped_ptr<ResourceHost> ContentRendererPepperHostFactory::CreateResourceHost(
                                        msg_params.a /* PP_Size */,
                                        msg_params.b /* PP_Bool */));
     }
-      /* FIXME
     case PpapiHostMsg_WebSocket_Create::ID:
       return scoped_ptr<ResourceHost>(new PepperWebSocketHost(
           host_, instance, params.pp_resource()));
-      */
     case PpapiHostMsg_FileIO_Create::ID:
       return scoped_ptr<ResourceHost>(new PepperFileIOHost(
           host_, instance, params.pp_resource()));

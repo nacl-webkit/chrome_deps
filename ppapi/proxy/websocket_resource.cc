@@ -128,7 +128,6 @@ int32_t WebSocketResource::Connect(
 int32_t WebSocketResource::Close(uint16_t code,
                                  const PP_Var& reason,
                                  scoped_refptr<TrackedCallback> callback) {
-/* FIXME
   if (TrackedCallback::IsPending(close_callback_))
     return PP_ERROR_INPROGRESS;
   if (state_ == PP_WEBSOCKETREADYSTATE_INVALID)
@@ -137,13 +136,17 @@ int32_t WebSocketResource::Close(uint16_t code,
   // Validate |code| and |reason|.
   scoped_refptr<StringVar> reason_string_var;
   std::string reason_string;
+/* FIXME
   WebKit::WebSocket::CloseEventCode event_code =
       static_cast<WebKit::WebSocket::CloseEventCode>(code);
+*/
+  int event_code = static_cast<int>(code);
   if (code == PP_WEBSOCKETSTATUSCODE_NOT_SPECIFIED) {
     // PP_WEBSOCKETSTATUSCODE_NOT_SPECIFIED and CloseEventCodeNotSpecified are
     // assigned to different values. A conversion is needed if
     // PP_WEBSOCKETSTATUSCODE_NOT_SPECIFIED is specified.
-    event_code = WebKit::WebSocket::CloseEventCodeNotSpecified;
+    //FIXME event_code = WebKit::WebSocket::CloseEventCodeNotSpecified;
+    event_code = -1;
   } else {
     if (!(code == PP_WEBSOCKETSTATUSCODE_NORMAL_CLOSURE ||
         (PP_WEBSOCKETSTATUSCODE_USER_REGISTERED_MIN <= code &&
@@ -200,7 +203,6 @@ int32_t WebSocketResource::Close(uint16_t code,
   Call<PpapiPluginMsg_WebSocket_CloseReply>(RENDERER, msg,
       base::Bind(&WebSocketResource::OnPluginMsgCloseReply, this));
   return PP_OK_COMPLETIONPENDING;
-*/
 }
 
 int32_t WebSocketResource::ReceiveMessage(

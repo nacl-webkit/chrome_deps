@@ -125,7 +125,9 @@ void WebSocketInstance::OnReceiveCompletion(int32_t result) {
       PostMessage(pp::Var(std::string("log:receive: ") +
           receive_var_.AsString()));
   }
-  Receive();
+  // Stop receiving messages if we closed the conection
+  if (IsConnected())
+    Receive();
 }
 
 void WebSocketInstance::OnConnectCompletionCallback(void* user_data,

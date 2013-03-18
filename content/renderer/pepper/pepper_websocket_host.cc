@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "content/renderer/pepper/pepper_websocket_host.h"
 
 #include <string>
@@ -14,6 +15,8 @@
 #include "ppapi/host/host_message_context.h"
 #include "ppapi/host/ppapi_host.h"
 #include "ppapi/proxy/ppapi_messages.h"
+
+/* FIXME
 #include "third_party/WebKit/Source/Platform/chromium/public/WebString.h"
 #include "third_party/WebKit/Source/Platform/chromium/public/WebURL.h"
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebArrayBuffer.h"
@@ -27,6 +30,14 @@ using WebKit::WebDocument;
 using WebKit::WebString;
 using WebKit::WebSocket;
 using WebKit::WebURL;
+*/
+
+#include "PepperPluginContainer.h"
+#include <WebCore/Document.h>
+#include <WebCore/Element.h>
+
+using namespace WTF;
+using namespace WebCore;
 
 namespace content {
 
@@ -68,7 +79,7 @@ int32_t PepperWebSocketHost::OnResourceMessageReceived(
 void PepperWebSocketHost::didConnect() {
   std::string protocol;
   if (websocket_.get())
-    protocol = websocket_->subprotocol().utf8();
+    protocol = websocket_->subprotocol().utf8().data();
   connecting_ = false;
   connect_reply_.params.set_result(PP_OK);
   host()->SendReply(connect_reply_,
@@ -77,27 +88,26 @@ void PepperWebSocketHost::didConnect() {
                         protocol));
 }
 
-void PepperWebSocketHost::didReceiveMessage(const WebKit::WebString& message) {
+void PepperWebSocketHost::didReceiveMessage(const String& message) {
   // Dispose packets after receiving an error.
   if (error_was_received_)
     return;
 
   // Send an IPC to transport received data.
-  std::string string_message = message.utf8();
+  std::string string_message = message.utf8().data();
   host()->SendUnsolicitedReply(pp_resource(),
                                PpapiPluginMsg_WebSocket_ReceiveTextReply(
                                   string_message));
 }
 
-void PepperWebSocketHost::didReceiveArrayBuffer(
-    const WebKit::WebArrayBuffer& binaryData) {
+void PepperWebSocketHost::didReceiveBinaryData(PassOwnPtr<Vector<char> > binaryData) {
   // Dispose packets after receiving an error.
   if (error_was_received_)
     return;
 
   // Send an IPC to transport received data.
-  uint8_t* data = static_cast<uint8_t*>(binaryData.data());
-  std::vector<uint8_t> array_message(data, data + binaryData.byteLength());
+  uint8_t* data = reinterpret_cast<uint8_t*>(binaryData->data());
+  std::vector<uint8_t> array_message(data, data + binaryData->size());
   host()->SendUnsolicitedReply(pp_resource(),
                                PpapiPluginMsg_WebSocket_ReceiveBinaryReply(
                                   array_message));
@@ -135,7 +145,7 @@ void PepperWebSocketHost::didStartClosingHandshake() {
 void PepperWebSocketHost::didClose(unsigned long unhandled_buffered_amount,
                                    ClosingHandshakeCompletionStatus status,
                                    unsigned short code,
-                                   const WebKit::WebString& reason) {
+                                   const String& reason) {
   if (connecting_) {
     connecting_ = false;
     connect_reply_.params.set_result(PP_ERROR_FAILED);
@@ -148,7 +158,7 @@ void PepperWebSocketHost::didClose(unsigned long unhandled_buffered_amount,
   bool was_clean =
       (initiating_close_ || accepting_close_) &&
       !unhandled_buffered_amount &&
-      status == WebSocketClient::ClosingHandshakeComplete;
+      status == WebSocketChannelClient::ClosingHandshakeComplete;
 
   if (initiating_close_) {
     initiating_close_ = false;
@@ -157,7 +167,7 @@ void PepperWebSocketHost::didClose(unsigned long unhandled_buffered_amount,
           unhandled_buffered_amount,
           was_clean,
           code,
-          reason.utf8()));
+                          reason.utf8().data()));
   } else {
     accepting_close_ = false;
     host()->SendUnsolicitedReply(pp_resource(),
@@ -165,7 +175,7 @@ void PepperWebSocketHost::didClose(unsigned long unhandled_buffered_amount,
                                      unhandled_buffered_amount,
                                      was_clean,
                                      code,
-                                     reason.utf8()));
+                                     reason.utf8().data()));
   }
 
   // Disconnect.
@@ -186,9 +196,9 @@ int32_t PepperWebSocketHost::OnHostMsgConnect(
     return PP_ERROR_BADARGUMENT;
   if (gurl.has_ref())
     return PP_ERROR_BADARGUMENT;
-  if (!net::IsPortAllowedByDefault(gurl.IntPort()))
-    return PP_ERROR_BADARGUMENT;
-  WebURL web_url(gurl);
+//FIXME  if (!net::IsPortAllowedByDefault(gurl.IntPort()))
+//    return PP_ERROR_BADARGUMENT;
+  KURL web_url(KURL(), gurl.spec().c_str());
 
   // Validate protocols.
   std::string protocol_string;
@@ -222,22 +232,22 @@ int32_t PepperWebSocketHost::OnHostMsgConnect(
   }
 
   // Convert protocols to WebString.
-  WebString web_protocols = WebString::fromUTF8(protocol_string);
+  String web_protocols = String::fromUTF8(protocol_string.c_str());
 
   // Create WebKit::WebSocket object and connect.
-  WebKit::WebPluginContainer* container =
+  WebKit::PepperPluginContainer* container =
       renderer_ppapi_host_->GetContainerForInstance(pp_instance());
   if (!container)
     return PP_ERROR_BADARGUMENT;
   // TODO(toyoshim) Remove following WebDocument object copy.
-  WebDocument document = container->element().document();
-  websocket_.reset(WebSocket::create(document, this));
+  Document* document = container->element()->document();
+  websocket_ = WebSocketChannel::create(document, this);
   DCHECK(websocket_.get());
   if (!websocket_.get())
     return PP_ERROR_NOTSUPPORTED;
 
   // Set receiving binary object type.
-  websocket_->setBinaryType(WebSocket::BinaryTypeArrayBuffer);
+  //websocket_->setBinaryType(WebSocket::BinaryTypeArrayBuffer);
   websocket_->connect(web_url, web_protocols);
 
   connect_reply_ = context->MakeReplyMessageContext();
@@ -253,7 +263,7 @@ int32_t PepperWebSocketHost::OnHostMsgClose(
     return PP_ERROR_FAILED;
   close_reply_ = context->MakeReplyMessageContext();
   initiating_close_ = true;
-  WebString web_reason = WebString::fromUTF8(reason);
+  String web_reason = String::fromUTF8(reason.c_str());
   websocket_->close(code, web_reason);
   return PP_OK_COMPLETIONPENDING;
 }
@@ -262,8 +272,7 @@ int32_t PepperWebSocketHost::OnHostMsgSendText(
     ppapi::host::HostMessageContext* context,
     const std::string& message) {
   if (websocket_.get()) {
-    WebString web_message = WebString::fromUTF8(message);
-    websocket_->sendText(web_message);
+    websocket_->send(message.c_str(), message.length());
   }
   return PP_OK;
 }
@@ -272,9 +281,7 @@ int32_t PepperWebSocketHost::OnHostMsgSendBinary(
     ppapi::host::HostMessageContext* context,
     const std::vector<uint8_t>& message) {
   if (websocket_.get() && !message.empty()) {
-    WebArrayBuffer web_message = WebArrayBuffer::create(message.size(), 1);
-    memcpy(web_message.data(), &message.front(), message.size());
-    websocket_->sendArrayBuffer(web_message);
+    websocket_->send(reinterpret_cast<const char*>(&message.front()), message.size());
   }
   return PP_OK;
 }
@@ -283,7 +290,7 @@ int32_t PepperWebSocketHost::OnHostMsgFail(
     ppapi::host::HostMessageContext* context,
     const std::string& message) {
   if (websocket_.get())
-    websocket_->fail(WebString::fromUTF8(message));
+    websocket_->fail(String::fromUTF8(message.c_str()));
   return PP_OK;
 }
 

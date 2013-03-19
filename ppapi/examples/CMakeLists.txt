@@ -20,6 +20,7 @@ set(scripting_DIR "${CMAKE_SOURCE_DIR}/scripting")
 set(url_loader_DIR "${CMAKE_SOURCE_DIR}/url_loader")
 set(audio_DIR "${CMAKE_SOURCE_DIR}/audio")
 set(websockets_DIR "${CMAKE_SOURCE_DIR}/websockets")
+set(console_DIR "${CMAKE_SOURCE_DIR}/console")
 
 # -----------------------------------------------------------------------------
 # Default target names (can be overrriden in Options${PORT}.cmake file)
@@ -32,6 +33,7 @@ set(scripting_LIBRARY_NAME ppapi_example_scripting)
 set(url_loader_LIBRARY_NAME ppapi_example_url_loader)
 set(audio_LIBRARY_NAME ppapi_example_audio)
 set(websockets_LIBRARY_NAME ppapi_example_websockets)
+set(console_LIBRARY_NAME ppapi_example_console)
 
 # -----------------------------------------------------------------------------
 # Default library types
@@ -45,6 +47,7 @@ set(scripting_LIBRARY_TYPE SHARED)
 set(url_loader_LIBRARY_TYPE SHARED)
 set(audio_LIBRARY_TYPE SHARED)
 set(websockets_LIBRARY_TYPE SHARED)
+set(console_LIBRARY_TYPE SHARED)
 
 # -----------------------------------------------------------------------------
 # Add module directories
@@ -57,4 +60,5 @@ add_subdirectory(scripting)
 add_subdirectory(url_loader)
 add_subdirectory(audio)
 add_subdirectory(websockets)
+add_subdirectory(console)
 

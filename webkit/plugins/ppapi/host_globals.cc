@@ -23,9 +23,13 @@
 #include "webkit/plugins/ppapi/plugin_module.h"
 #include "webkit/plugins/ppapi/ppapi_plugin_instance.h"
 
+#include "WebCore/page/Console.h"
+
 using ppapi::CheckIdType;
 using ppapi::MakeTypedId;
 using ppapi::PPIdType;
+
+using namespace WebCore;
 
 namespace webkit {
 namespace ppapi {
@@ -43,32 +47,31 @@ void GetAllContainersForModule(PluginModule* module,
        i != instances.end(); ++i)
     containers->insert((*i)->container());
 }
-/* FIXME
-WebConsoleMessage::Level LogLevelToWebLogLevel(PP_LogLevel level) {
+
+MessageLevel LogLevelToWebLogLevel(PP_LogLevel level) {
   switch (level) {
     case PP_LOGLEVEL_TIP:
-      return WebConsoleMessage::LevelTip;
+      return TipMessageLevel;
     case PP_LOGLEVEL_LOG:
-      return WebConsoleMessage::LevelLog;
+      return LogMessageLevel;
     case PP_LOGLEVEL_WARNING:
-      return WebConsoleMessage::LevelWarning;
+      return WarningMessageLevel;
     case PP_LOGLEVEL_ERROR:
     default:
-      return WebConsoleMessage::LevelError;
+      return ErrorMessageLevel;
   }
 }
 
-WebConsoleMessage MakeLogMessage(PP_LogLevel level,
+WTF::String MakeLogMessage(PP_LogLevel level,
                                  const std::string& source,
                                  const std::string& message) {
-  std::string result = source;
-  if (!result.empty())
+  WTF::String result = source.c_str();
+  if (!result.isEmpty())
     result.append(": ");
-  result.append(message);
-  return WebConsoleMessage(LogLevelToWebLogLevel(level),
-                           WebString(UTF8ToUTF16(result)));
+  result.append(message.c_str());
+  return result;
 }
-*/
+
 }  // namespace
 
 HostGlobals* HostGlobals::host_globals_ = NULL;
@@ -140,10 +143,9 @@ void HostGlobals::LogWithSource(PP_Instance instance,
                                 const std::string& value) {
   PluginInstance* instance_object = HostGlobals::Get()->GetInstance(instance);
   if (instance_object) {
-/* FIXME
-    instance_object->container()->element().document().frame()->
-        addMessageToConsole(MakeLogMessage(level, source, value));
-*/
+    MessageLevel messageLevel = LogLevelToWebLogLevel(level);
+    instance_object->container()->element()->document()->
+        addConsoleMessage(OtherMessageSource, messageLevel, MakeLogMessage(level, source, value));
   } else {
     BroadcastLogWithSource(0, level, source, value);
   }
@@ -168,12 +170,10 @@ void HostGlobals::BroadcastLogWithSource(PP_Module pp_module,
     }
   }
 
-/* FIXME
-  WebConsoleMessage message = MakeLogMessage(level, source, value);
+  MessageLevel messageLevel = LogLevelToWebLogLevel(level);
   for (ContainerSet::iterator i = containers.begin();
        i != containers.end(); ++i)
-     (*i)->element().document().frame()->addMessageToConsole(message);
-*/
+     (*i)->element()->document()->addConsoleMessage(OtherMessageSource, messageLevel, MakeLogMessage(level, source, value));
 }
 
 ::ppapi::MessageLoopShared* HostGlobals::GetCurrentMessageLoop() {

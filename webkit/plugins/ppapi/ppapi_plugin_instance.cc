@@ -102,8 +102,10 @@ FIXME:
 #include "webkit/plugins/ppapi/plugin_module.h"
 #include "webkit/plugins/ppapi/plugin_object.h"
 #include "webkit/plugins/ppapi/ppb_buffer_impl.h"
+*/
 #include "webkit/plugins/ppapi/ppb_graphics_3d_impl.h"
 #include "webkit/plugins/ppapi/ppb_image_data_impl.h"
+/* FIXME
 #include "webkit/plugins/ppapi/ppb_url_loader_impl.h"
 #include "webkit/plugins/ppapi/ppp_pdf.h"
 #include "webkit/plugins/ppapi/url_request_info_util.h"
@@ -507,9 +509,9 @@ FIXME
     fullscreen_container_->Destroy();
     fullscreen_container_ = NULL;
   }
+*/
   bound_graphics_3d_ = NULL;
   UpdateLayer();
-*/
   container_ = NULL;
 }
 
@@ -573,12 +575,9 @@ void PluginInstance::ScrollRect(int dx, int dy, const IntRect& rect) {
 }
 
 unsigned PluginInstance::GetBackingTextureId() {
-
-/*
-//FIXME
   if (bound_graphics_3d_.get())
     return bound_graphics_3d_->GetBackingTextureId();
-*/
+
   return 0;
 }
 
@@ -1003,21 +1002,15 @@ void PluginInstance::PageVisibilityChanged(bool is_visible) {
 void PluginInstance::ViewWillInitiatePaint() {
   if (GetBoundGraphics2D())
     GetBoundGraphics2D()->ViewWillInitiatePaint();
-/*
-FIXME
   else if (bound_graphics_3d_.get())
     bound_graphics_3d_->ViewWillInitiatePaint();
-*/
 }
 
 void PluginInstance::ViewInitiatedPaint() {
   if (GetBoundGraphics2D())
     GetBoundGraphics2D()->ViewInitiatedPaint();
-/*
-FIXME
   else if (bound_graphics_3d_.get())
     bound_graphics_3d_->ViewInitiatedPaint();
-*/
 }
 
 void PluginInstance::ViewFlushedPaint() {
@@ -1025,11 +1018,8 @@ void PluginInstance::ViewFlushedPaint() {
   scoped_refptr<PluginInstance> ref(this);
   if (GetBoundGraphics2D())
     GetBoundGraphics2D()->ViewFlushedPaint();
-/*
-FIXME
   else if (bound_graphics_3d_.get())
     bound_graphics_3d_->ViewFlushedPaint();
-*/
 }
 
 bool PluginInstance::GetBitmapForOptimizedPluginPaint(
@@ -1735,15 +1725,16 @@ bool PluginInstance::IsViewAccelerated() {
   return frame->settings()->acceleratedCompositingEnabled();
 }
 
-/*
-FIXME
 PluginDelegate::PlatformContext3D* PluginInstance::CreateContext3D() {
+/* FIXME
   if (fullscreen_container_)
     return fullscreen_container_->CreateContext3D();
   else
+*/
     return delegate_->CreateContext3D();
 }
 
+/* FIXME
 bool PluginInstance::PrintPDFOutput(PP_Resource print_output,
                                     WebKit::WebCanvas* canvas) {
 #if defined(ENABLE_PRINTING)
@@ -2033,13 +2024,11 @@ PP_Bool PluginInstance::BindGraphics(PP_Instance instance,
   TRACE_EVENT0("ppapi", "PluginInstance::BindGraphics");
   // The Graphics3D instance can't be destroyed until we call
   // UpdateLayer().
-/* FIXME
   scoped_refptr< ::ppapi::Resource> old_graphics = bound_graphics_3d_.get();
   if (bound_graphics_3d_.get()) {
     bound_graphics_3d_->BindToInstance(false);
     bound_graphics_3d_ = NULL;
   }
-*/
   if (bound_graphics_2d_platform_) {
     GetBoundGraphics2D()->BindToInstance(NULL);
     bound_graphics_2d_platform_ = NULL;
@@ -2059,16 +2048,13 @@ PP_Bool PluginInstance::BindGraphics(PP_Instance instance,
     return PP_FALSE;
 
   bound_graphics_2d_platform_ = delegate_->GetGraphics2D(this, device);
-/* FIXME
   EnterResourceNoLock<PPB_Graphics3D_API> enter_3d(device, false);
   PPB_Graphics3D_Impl* graphics_3d = enter_3d.succeeded() ?
       static_cast<PPB_Graphics3D_Impl*>(enter_3d.object()) : NULL;
-*/
 
   if (bound_graphics_2d_platform_) {
     if (!bound_graphics_2d_platform_->BindToInstance(this))
       return PP_FALSE;  // Can't bind to more than one instance.
-/* FIXME
   } else if (graphics_3d) {
     // Make sure graphics can only be bound to the instance it is
     // associated with.
@@ -2078,7 +2064,6 @@ PP_Bool PluginInstance::BindGraphics(PP_Instance instance,
       return PP_FALSE;
 
     bound_graphics_3d_ = graphics_3d;
-*/
   } else {
     // The device is not a valid resource type.
     return PP_FALSE;

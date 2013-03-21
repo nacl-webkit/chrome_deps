@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "webkit/plugins/ppapi/ppb_graphics_3d_impl.h"
 
 #include "base/bind.h"
@@ -11,23 +12,35 @@
 #include "gpu/command_buffer/client/gles2_implementation.h"
 #include "ppapi/c/ppp_graphics_3d.h"
 #include "ppapi/thunk/enter.h"
+/*FIXME
 #include "third_party/WebKit/Source/Platform/chromium/public/WebString.h"
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebConsoleMessage.h"
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebDocument.h"
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebElement.h"
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebFrame.h"
 #include "third_party/WebKit/Source/WebKit/chromium/public/WebPluginContainer.h"
+*/
 #include "webkit/plugins/plugin_switches.h"
 #include "webkit/plugins/ppapi/plugin_module.h"
 #include "webkit/plugins/ppapi/ppapi_plugin_instance.h"
 #include "webkit/plugins/ppapi/resource_helper.h"
 
+#include "PepperPluginContainer.h"
+#include "WebCore/page/Console.h"
+#include <WebCore/Document.h>
+#include <WebCore/Element.h>
+#include <WebCore/Frame.h>
+
 using ppapi::thunk::EnterResourceNoLock;
 using ppapi::thunk::PPB_Graphics3D_API;
+using namespace WebCore;
+
+/*FIXME
 using WebKit::WebConsoleMessage;
 using WebKit::WebFrame;
 using WebKit::WebPluginContainer;
 using WebKit::WebString;
+*/
 
 namespace webkit {
 namespace ppapi {
@@ -286,16 +299,14 @@ void PPB_Graphics3D_Impl::OnConsoleMessage(const std::string& message,
                                            int id) {
   if (!bound_to_instance_)
     return;
-  WebPluginContainer* container =
+  WebKit::PepperPluginContainer* container =
       ResourceHelper::GetPluginInstance(this)->container();
   if (!container)
     return;
-  WebFrame* frame = container->element().document().frame();
+  Frame* frame = container->element()->document()->frame();
   if (!frame)
     return;
-  WebConsoleMessage console_message = WebConsoleMessage(
-      WebConsoleMessage::LevelError, WebString(UTF8ToUTF16(message)));
-  frame->addMessageToConsole(console_message);
+  container->element()->document()->addConsoleMessage(OtherMessageSource, ErrorMessageLevel, message.c_str());
 }
 
 void PPB_Graphics3D_Impl::OnSwapBuffers() {

@@ -323,7 +323,7 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   // Implementation of PPP_Messaging.
   void HandleMessage(PP_Var message);
 
-//FIXME:  PluginDelegate::PlatformContext3D* CreateContext3D();
+  PluginDelegate::PlatformContext3D* CreateContext3D();
 
   // Returns true iff the plugin is a full-page plugin (i.e. not in an iframe
   // or embedded in a page).
@@ -632,7 +632,7 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   base::WeakPtrFactory<PluginInstance> view_change_weak_ptr_factory_;
 
   // The current device context for painting in 2D and 3D.
-//FIXME:  scoped_refptr<PPB_Graphics3D_Impl> bound_graphics_3d_;
+  scoped_refptr<PPB_Graphics3D_Impl> bound_graphics_3d_;
   PluginDelegate::PlatformGraphics2D* bound_graphics_2d_platform_;
 
   // We track two types of focus, one from WebKit, which is the focus among

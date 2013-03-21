@@ -333,6 +333,7 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_file_ref_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_file_system_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_graphics_2d_impl.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_graphics_3d_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_image_data_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_url_loader_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_var_deprecated_impl.cc

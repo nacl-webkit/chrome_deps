@@ -336,7 +336,6 @@ const void* InternalGetInterface(const char* name) {
   */
   if (strcmp(name, PPB_INSTANCE_PRIVATE_INTERFACE_0_1) == 0)
     return ::ppapi::thunk::GetPPB_Instance_Private_0_1_Thunk();
-  /* FIXME
   if (strcmp(name, PPB_OPENGLES2_INTERFACE) == 0)
     return ::ppapi::PPB_OpenGLES2_Shared::GetInterface();
   if (strcmp(name, PPB_OPENGLES2_INSTANCEDARRAYS_INTERFACE) == 0)
@@ -353,6 +352,7 @@ const void* InternalGetInterface(const char* name) {
     return ::ppapi::PPB_OpenGLES2_Shared::GetChromiumMapSubInterface();
   if (strcmp(name, PPB_OPENGLES2_QUERY_INTERFACE) == 0)
     return ::ppapi::PPB_OpenGLES2_Shared::GetQueryInterface();
+  /* FIXME
   if (strcmp(name, PPB_PROXY_PRIVATE_INTERFACE) == 0)
     return PPB_Proxy_Impl::GetInterface();
   if (strcmp(name, PPB_UMA_PRIVATE_INTERFACE) == 0)

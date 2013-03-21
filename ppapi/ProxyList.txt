@@ -29,7 +29,7 @@ LIST(APPEND WebKit2_SOURCES
     ${ppapi_DIR}/proxy/plugin_resource_tracker.cc
     ${ppapi_DIR}/proxy/plugin_var_serialization_rules.cc
     ${ppapi_DIR}/proxy/plugin_var_tracker.cc
-#    ${ppapi_DIR}/proxy/ppapi_command_buffer_proxy.cc
+    ${ppapi_DIR}/proxy/ppapi_command_buffer_proxy.cc
     ${ppapi_DIR}/proxy/ppapi_messages.cc
     ${ppapi_DIR}/proxy/ppapi_param_traits.cc
     ${ppapi_DIR}/proxy/ppb_audio_proxy.cc
@@ -39,7 +39,7 @@ LIST(APPEND WebKit2_SOURCES
     ${ppapi_DIR}/proxy/ppb_file_ref_proxy.cc
     ${ppapi_DIR}/proxy/ppb_file_system_proxy.cc
 #    ${ppapi_DIR}/proxy/ppb_flash_message_loop_proxy.cc
-#    ${ppapi_DIR}/proxy/ppb_graphics_3d_proxy.cc
+    ${ppapi_DIR}/proxy/ppb_graphics_3d_proxy.cc
     ${ppapi_DIR}/proxy/ppb_host_resolver_private_proxy.cc
     ${ppapi_DIR}/proxy/ppb_image_data_proxy.cc
 #    ${ppapi_DIR}/proxy/ppb_instance_proxy.cc

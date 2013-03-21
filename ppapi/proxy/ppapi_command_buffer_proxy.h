@@ -7,10 +7,12 @@
 
 #include "base/callback.h"
 #include "base/hash_tables.h"
-#include "gpu/command_buffer/common/command_buffer.h"
+//FIXME #include "gpu/command_buffer/common/command_buffer.h"
 #include "ppapi/proxy/ppapi_proxy_export.h"
 #include "ppapi/shared_impl/host_resource.h"
-#include "gpu/ipc/command_buffer_proxy.h"
+//FIXME #include "gpu/ipc/command_buffer_proxy.h"
+
+#include "gpu_shim.h"
 
 namespace IPC {
 class Message;

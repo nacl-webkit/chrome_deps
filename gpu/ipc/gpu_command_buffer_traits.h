@@ -6,7 +6,7 @@
 #define GPU_IPC_GPU_PARAM_TRAITS_H_
 
 #include "ipc/ipc_message_utils.h"
-#include "gpu/command_buffer/common/command_buffer.h"
+#include "gpu_shim.h"
 #include "gpu/gpu_export.h"
 
 namespace IPC {

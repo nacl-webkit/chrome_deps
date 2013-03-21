@@ -13,7 +13,7 @@
 #include "base/string16.h"
 #include "base/sync_socket.h"
 //FIXME: #include "gpu/command_buffer/common/command_buffer.h"
-//FIXME: #include "gpu/ipc/gpu_command_buffer_traits.h"
+#include "gpu/ipc/gpu_command_buffer_traits.h"
 #include "ipc/ipc_channel_handle.h"
 #include "ipc/ipc_message_macros.h"
 #include "ipc/ipc_message_utils.h"
@@ -60,6 +60,8 @@
 #include "ppapi/shared_impl/private/ppb_x509_certificate_private_shared.h"
 #include "ppapi/shared_impl/url_request_info_data.h"
 #include "ppapi/shared_impl/url_response_info_data.h"
+
+#include "gpu_shim.h"
 
 #undef IPC_MESSAGE_EXPORT
 #define IPC_MESSAGE_EXPORT PPAPI_PROXY_EXPORT
@@ -474,13 +476,10 @@ IPC_MESSAGE_ROUTED2(
     ppapi::HostResource /* filesystem */,
     int32_t /* result */)
 
-#if 0
-// FIXME:
 // PPB_Graphics3D.
 IPC_MESSAGE_ROUTED2(PpapiMsg_PPBGraphics3D_SwapBuffersACK,
                     ppapi::HostResource /* graphics_3d */,
                     int32_t /* pp_error */)
-#endif // 0
 
 // PPB_ImageData.
 IPC_MESSAGE_ROUTED1(PpapiMsg_PPBImageData_NotifyUnusedImageData,
@@ -853,8 +852,6 @@ IPC_MESSAGE_ROUTED2(PpapiHostMsg_PPBFileSystem_Open,
                     ppapi::HostResource /* result */,
                     int64_t /* expected_size */)
 
-#if 0
-// FIXME:
 // PPB_Graphics3D.
 IPC_SYNC_MESSAGE_ROUTED3_1(PpapiHostMsg_PPBGraphics3D_Create,
                            PP_Instance /* instance */,
@@ -892,7 +889,6 @@ IPC_SYNC_MESSAGE_ROUTED2_1(PpapiHostMsg_PPBGraphics3D_GetTransferBuffer,
                            ppapi::proxy::SerializedHandle /* transfer_buffer */)
 IPC_MESSAGE_ROUTED1(PpapiHostMsg_PPBGraphics3D_SwapBuffers,
                     ppapi::HostResource /* graphics_3d */)
-#endif // 0
 // PPB_ImageData.
 IPC_SYNC_MESSAGE_ROUTED4_3(PpapiHostMsg_PPBImageData_Create,
                            PP_Instance /* instance */,

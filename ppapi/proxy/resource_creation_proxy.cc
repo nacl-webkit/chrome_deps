@@ -26,7 +26,7 @@
 #include "ppapi/proxy/ppb_file_ref_proxy.h"
 #include "ppapi/proxy/ppb_file_system_proxy.h"
 #include "ppapi/proxy/ppb_flash_message_loop_proxy.h"
-// FIXME #include "ppapi/proxy/ppb_graphics_3d_proxy.h"
+#include "ppapi/proxy/ppb_graphics_3d_proxy.h"
 #include "ppapi/proxy/ppb_host_resolver_private_proxy.h"
 #include "ppapi/proxy/ppb_image_data_proxy.h"
 #include "ppapi/proxy/ppb_network_monitor_private_proxy.h"
@@ -210,7 +210,6 @@ PP_Resource ResourceCreationProxy::CreateGraphics2D(PP_Instance instance,
   return (new Graphics2DResource(GetConnection(), instance, size,
                                  is_always_opaque))->GetReference();
 }
-/* FIXME
 PP_Resource ResourceCreationProxy::CreateGraphics3D(
     PP_Instance instance,
     PP_Resource share_context,
@@ -227,7 +226,7 @@ PP_Resource ResourceCreationProxy::CreateGraphics3DRaw(
   // of the proxy on the host side.
   return 0;
 }
-*/
+
 PP_Resource ResourceCreationProxy::CreateHostResolverPrivate(
     PP_Instance instance) {
   return PPB_HostResolver_Private_Proxy::CreateProxyResource(instance);

@@ -4,8 +4,10 @@
 
 #include "ppapi/proxy/ppb_graphics_3d_proxy.h"
 
+/*FIXME
 #include "gpu/command_buffer/client/gles2_implementation.h"
 #include "gpu/command_buffer/common/command_buffer.h"
+*/
 #include "ppapi/c/pp_errors.h"
 #include "ppapi/proxy/enter_proxy.h"
 #include "ppapi/proxy/plugin_dispatcher.h"

@@ -246,6 +246,8 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/googleurl/src/url_canon_ip.cc
     ${CHROME_DEPS_DIR}/googleurl/src/url_canon_mailtourl.cc
 
+    ${CHROME_DEPS_DIR}/gpu/ipc/gpu_command_buffer_traits.cc
+
     ${CHROME_DEPS_DIR}/ipc/file_descriptor_set_posix.cc
     ${CHROME_DEPS_DIR}/ipc/ipc_channel.cc
 #    ${CHROME_DEPS_DIR}/ipc/ipc_channel_nacl.cc

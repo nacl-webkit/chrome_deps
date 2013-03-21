@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "base/shared_memory.h"
-#include "gpu/command_buffer/common/command_buffer.h"
+//FIXME #include "gpu/command_buffer/common/command_buffer.h"
 #include "ppapi/c/pp_graphics_3d.h"
 #include "ppapi/c/pp_instance.h"
 #include "ppapi/proxy/interface_proxy.h"
@@ -16,6 +16,8 @@
 #include "ppapi/shared_impl/ppb_graphics_3d_shared.h"
 #include "ppapi/shared_impl/resource.h"
 #include "ppapi/utility/completion_callback_factory.h"
+
+#include "gpu_shim.h"
 
 namespace ppapi {
 

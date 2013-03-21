@@ -5,10 +5,14 @@
 #include "ppapi/shared_impl/ppb_graphics_3d_shared.h"
 
 #include "base/logging.h"
+/* FIXME
 #include "gpu/command_buffer/client/gles2_cmd_helper.h"
 #include "gpu/command_buffer/client/gles2_implementation.h"
 #include "gpu/command_buffer/client/transfer_buffer.h"
+*/
 #include "ppapi/c/pp_errors.h"
+
+#include "gpu_shim.h"
 
 namespace ppapi {
 

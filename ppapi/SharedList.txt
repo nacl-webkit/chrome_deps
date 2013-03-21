@@ -17,14 +17,14 @@ LIST(APPEND WebKit2_SOURCES
     ${ppapi_DIR}/shared_impl/ppb_device_ref_shared.cc
     ${ppapi_DIR}/shared_impl/ppb_file_ref_shared.cc
 #    ${ppapi_DIR}/shared_impl/ppb_gamepad_shared.cc
-#    ${ppapi_DIR}/shared_impl/ppb_graphics_3d_shared.cc
+    ${ppapi_DIR}/shared_impl/ppb_graphics_3d_shared.cc
     ${ppapi_DIR}/shared_impl/ppb_image_data_shared.cc
     ${ppapi_DIR}/shared_impl/ppb_input_event_shared.cc
     ${ppapi_DIR}/shared_impl/ppb_instance_shared.cc
 #    ${ppapi_DIR}/shared_impl/ppb_memory_shared.cc
     ${ppapi_DIR}/shared_impl/ppb_message_loop_shared.cc
 #    ${ppapi_DIR}/shared_impl/ppb_network_list_private_shared.cc
-#    ${ppapi_DIR}/shared_impl/ppb_opengles2_shared.cc
+    ${ppapi_DIR}/shared_impl/ppb_opengles2_shared.cc
     ${ppapi_DIR}/shared_impl/ppb_resource_array_shared.cc
     ${ppapi_DIR}/shared_impl/ppb_url_util_shared.cc
     ${ppapi_DIR}/shared_impl/ppb_var_shared.cc

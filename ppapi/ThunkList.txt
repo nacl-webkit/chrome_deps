@@ -1,4 +1,4 @@
-LIST(APPEND WebKit2_SOURCES
+set(ppapi_thunk_SOURCES
     ${ppapi_DIR}/thunk/enter.cc
     ${ppapi_DIR}/thunk/ppb_audio_config_thunk.cc
     ${ppapi_DIR}/thunk/ppb_audio_input_thunk.cc

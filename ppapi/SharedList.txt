@@ -1,4 +1,4 @@
-LIST(APPEND WebKit2_SOURCES
+set(ppapi_shared_SOURCES
     ${ppapi_DIR}/shared_impl/array_writer.cc
     ${ppapi_DIR}/shared_impl/callback_tracker.cc
     ${ppapi_DIR}/shared_impl/file_path.cc

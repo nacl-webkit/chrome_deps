@@ -1,4 +1,4 @@
-LIST(APPEND WebKit2_SOURCES
+set(ppapi_proxy_SOURCES
 #    ${ppapi_DIR}/proxy/audio_input_resource.cc
 #    ${ppapi_DIR}/proxy/broker_dispatcher.cc
 #    ${ppapi_DIR}/proxy/broker_resource.cc

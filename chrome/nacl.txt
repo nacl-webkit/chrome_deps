@@ -45,6 +45,7 @@ include(../ppapi/ppapi_shared.txt)
 include(../ppapi/ppapi_proxy.txt)
 
 include_directories(${NACL_LIBRARY_INCLUDE_DIRECTORIES})
+include_directories("${ppapi_DIR}/lib/gl/include")
 add_library(${NACL_LIBRARY_NAME} STATIC ${NACL_LIBRARY_SOURCES})
 set_target_properties(${NACL_LIBRARY_NAME}
     PROPERTIES COMPILE_FLAGS "-DNACL_LINUX=1 -DNACL_OSX=0 -DNACL_WINDOWS=0 -D__STDC_LIMIT_MACROS=1 -fPIC"

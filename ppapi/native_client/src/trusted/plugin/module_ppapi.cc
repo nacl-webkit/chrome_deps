@@ -42,11 +42,11 @@ class ModulePpapi : public pp::Module {
                      "GetBrowserInterface returned NULL\n"));
       return false;
     }
-/*
-//FIXME:
     launch_nacl_process = reinterpret_cast<LaunchNaClProcessFunc>(
         private_interface_->LaunchSelLdr);
 
+/*
+//FIXME:
 #if NACL_LINUX || NACL_OSX
     // Note that currently we do not need random numbers inside the
     // NaCl trusted plugin on Unix, but NaClSecureRngModuleInit() is

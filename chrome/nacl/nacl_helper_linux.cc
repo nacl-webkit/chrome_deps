@@ -33,6 +33,8 @@
 #include "ipc/ipc_switches.h"
 #include "sandbox/linux/services/libc_urandom_override.h"
 
+#include "native_client/src/trusted/service_runtime/sel_main_chrome.h"
+
 namespace {
 
 // The child must mimic the behavior of zygote_main_linux.cc on the child
@@ -117,6 +119,39 @@ void HandleForkRequest(const std::vector<int>& child_fds,
       != sizeof(childpid)) {
     LOG(ERROR) << "*** send() to zygote failed";
   }
+}
+
+void HandleLoadRequest(const std::vector<int>& fds) {
+  // don't need zygote FD any more
+  printf("hdq - naclhelper - will close kNaClZygoteDescriptor.\n");
+  if (HANDLE_EINTR(close(kNaClZygoteDescriptor)) != 0)
+    printf("naclhelper - close kNaClZygoteDescriptor failed.\n");
+
+  printf("hdq - naclhelper - will load nacl on fd %d\n", fds[0]);
+
+  struct NaClChromeMainArgs *args = NaClChromeMainArgsCreate();
+  if (args == NULL) {
+    printf("naclhelper - NaClChromeMainArgsCreate() failed");
+    return;
+  }
+
+  args->initial_ipc_desc = NULL;
+#if NACL_LINUX || NACL_OSX
+  args->urandom_fd = dup(base::GetUrandomFD());
+  if (args->urandom_fd < 0) {
+    printf("Failed to dup() the urandom FD");
+    return;
+  }
+  args->debug_stub_server_bound_socket_fd = -1;
+  args->prereserved_sandbox_size = 0;
+#endif
+  args->create_memory_object_func = NULL;
+  args->irt_fd = -1;
+  args->enable_exception_handling = false;
+  args->enable_debug_stub = false;
+
+  args->imc_bootstrap_handle = fds[0];
+  NaClChromeMainStart(args);
 }
 
 }  // namespace
@@ -230,25 +265,34 @@ int main(int argc, char* argv[]) {
   CheckRDebug(argv[0]);
 
   // Send the zygote a message to let it know we are ready to help
+  printf("hdq - nacl_helper -->?UIProcess (ack) ...\n");
   if (!UnixDomainSocket::SendMsg(kNaClZygoteDescriptor,
                                  kNaClHelperStartupAck,
                                  sizeof(kNaClHelperStartupAck), empty)) {
     LOG(ERROR) << "*** send() to zygote failed";
   }
+  printf("hdq - nacl_helper --> UIProcess (ack) success\n");
 
   while (true) {
     int badpid = -1;
     std::vector<int> fds;
     static const unsigned kMaxMessageLength = 2048;
     char buf[kMaxMessageLength];
+    printf("hdq - nacl_helper: listening at kNaClZygoteDescriptor...\n");
     const ssize_t msglen = UnixDomainSocket::RecvMsg(kNaClZygoteDescriptor,
                                                      &buf, sizeof(buf), &fds);
+    printf("hdq - nacl_helper: listening at kNaClZygoteDescriptor... received msg\n");
     if (msglen == 0 || (msglen == -1 && errno == ECONNRESET)) {
       // EOF from the browser. Goodbye!
       _exit(0);
     } else if (msglen < 0) {
       LOG(ERROR) << "nacl_helper: receive from zygote failed, errno = "
                  << errno;
+      _exit(-1); // avoid infinite loop on error
+    } else if (msglen == sizeof(kNaClLoadRequest) - 1 &&
+               memcmp(buf, kNaClLoadRequest, msglen) == 0) {
+      HandleLoadRequest(fds);
+      _exit(0);
     } else if (msglen == sizeof(kNaClForkRequest) - 1 &&
                memcmp(buf, kNaClForkRequest, msglen) == 0) {
       if (kNaClParentFDIndex + 1 == fds.size()) {

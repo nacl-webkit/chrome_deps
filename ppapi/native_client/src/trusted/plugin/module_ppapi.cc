@@ -25,8 +25,8 @@ class ModulePpapi : public pp::Module {
 
   virtual ~ModulePpapi() {
     if (init_was_successful_) {
-//FIXME:      NaClSrpcModuleFini();
-//FIXME:      NaClNrdAllModulesFini();
+      NaClSrpcModuleFini();
+      NaClNrdAllModulesFini();
     }
     MODULE_PRINTF(("ModulePpapi::~ModulePpapi (this=%p)\n",
                    static_cast<void*>(this)));
@@ -45,8 +45,6 @@ class ModulePpapi : public pp::Module {
     launch_nacl_process = reinterpret_cast<LaunchNaClProcessFunc>(
         private_interface_->LaunchSelLdr);
 
-/*
-//FIXME:
 #if NACL_LINUX || NACL_OSX
     // Note that currently we do not need random numbers inside the
     // NaCl trusted plugin on Unix, but NaClSecureRngModuleInit() is
@@ -63,7 +61,6 @@ class ModulePpapi : public pp::Module {
 #if NACL_WINDOWS && !defined(NACL_STANDALONE)
     NaClSetBrokerDuplicateHandleFunc(private_interface_->BrokerDuplicateHandle);
 #endif
-*/
     init_was_successful_ = true;
     return true;
   }

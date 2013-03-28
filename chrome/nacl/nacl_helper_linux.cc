@@ -35,6 +35,12 @@
 
 #include "native_client/src/trusted/service_runtime/sel_main_chrome.h"
 
+//FIXME Add back if we need to ask sandbox to create memory for us
+//#if defined(OS_LINUX)
+//#include "content/public/common/child_process_sandbox_support_linux.h"
+//#endif
+#include "base/shared_memory.h"
+
 namespace {
 
 // The child must mimic the behavior of zygote_main_linux.cc on the child
@@ -121,13 +127,25 @@ void HandleForkRequest(const std::vector<int>& child_fds,
   }
 }
 
+#if defined(OS_LINUX)
+int CreateMemoryObject(size_t size, int executable) {
+  //FIXME Currently we won't ask sandbox process to create memory for us.
+  // return content::MakeSharedMemorySegmentViaIPC(size, executable);
+  base::SharedMemoryCreateOptions options;
+  options.size = size;
+  options.executable = executable;
+  base::SharedMemory shm;
+  if (!shm.Create(options))
+    return -1;
+  return dup(shm.handle().fd);
+}
+#endif
+
 void HandleLoadRequest(const std::vector<int>& fds) {
   // don't need zygote FD any more
-  printf("hdq - naclhelper - will close kNaClZygoteDescriptor.\n");
   if (HANDLE_EINTR(close(kNaClZygoteDescriptor)) != 0)
     printf("naclhelper - close kNaClZygoteDescriptor failed.\n");
-
-  printf("hdq - naclhelper - will load nacl on fd %d\n", fds[0]);
+  printf("hdq - naclhelper - closed kNaClZygoteDescriptor.\n");
 
   struct NaClChromeMainArgs *args = NaClChromeMainArgsCreate();
   if (args == NULL) {
@@ -135,7 +153,7 @@ void HandleLoadRequest(const std::vector<int>& fds) {
     return;
   }
 
-  args->initial_ipc_desc = NULL;
+  args->initial_ipc_desc = NULL; // Only when params.enable_ipc_proxy
 #if NACL_LINUX || NACL_OSX
   args->urandom_fd = dup(base::GetUrandomFD());
   if (args->urandom_fd < 0) {
@@ -145,12 +163,20 @@ void HandleLoadRequest(const std::vector<int>& fds) {
   args->debug_stub_server_bound_socket_fd = -1;
   args->prereserved_sandbox_size = 0;
 #endif
+#if defined(OS_LINUX)
+  args->create_memory_object_func = CreateMemoryObject;
+#else
   args->create_memory_object_func = NULL;
-  args->irt_fd = -1;
+#endif
+  args->irt_fd = fds[fds.size() - 1];
   args->enable_exception_handling = false;
   args->enable_debug_stub = false;
 
   args->imc_bootstrap_handle = fds[0];
+
+  printf("hdq - naclhelper - will call NaClChromeMainStart(imc_bootstrap_handle: %d, irt_fd: %d, ...)\n",
+          args->imc_bootstrap_handle, args->irt_fd);
+
   NaClChromeMainStart(args);
 }
 

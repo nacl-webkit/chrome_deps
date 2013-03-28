@@ -2,21 +2,28 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "content/renderer/pepper/pepper_platform_context_3d_impl.h"
 
 #include "base/bind.h"
+/* FIXME
 #include "content/common/gpu/client/gpu_channel_host.h"
 #include "content/common/gpu/client/webgraphicscontext3d_command_buffer_impl.h"
+*/
 #include "content/renderer/pepper/pepper_parent_context_provider.h"
 #include "content/renderer/render_thread_impl.h"
 #include "googleurl/src/gurl.h"
+/* FIXME
 #include "gpu/command_buffer/client/gles2_cmd_helper.h"
 #include "gpu/command_buffer/client/gles2_implementation.h"
 #include "gpu/ipc/command_buffer_proxy.h"
 #include "ppapi/c/pp_graphics_3d.h"
 #include "ui/gl/gpu_preference.h"
+*/
 
-#ifdef ENABLE_GPU
+#include "gpu_shim.h"
+
+#if defined(ENABLE_GPU) || defined(ENABLE_PEPPER_PLUGIN_API)
 
 namespace content {
 
@@ -40,12 +47,14 @@ PlatformContext3DImpl::~PlatformContext3DImpl() {
   }
 
   if (command_buffer_) {
+    /*FIXME:
     DCHECK(channel_.get());
     channel_->DestroyCommandBuffer(command_buffer_);
+    */
     command_buffer_ = NULL;
   }
 
-  channel_ = NULL;
+  //FIXME: channel_ = NULL;
 }
 
 bool PlatformContext3DImpl::Init(const int32* attrib_list,
@@ -57,6 +66,7 @@ bool PlatformContext3DImpl::Init(const int32* attrib_list,
   if (!parent_context_provider_)
     return false;
 
+  /*FIXME:
   RenderThreadImpl* render_thread = RenderThreadImpl::current();
   if (!render_thread)
     return false;
@@ -101,6 +111,9 @@ bool PlatformContext3DImpl::Init(const int32* attrib_list,
     }
     attribs.push_back(PP_GRAPHICS3DATTRIB_NONE);
   }
+  */
+
+  command_buffer_ = new CommandBufferProxyImpl;
 
   CommandBufferProxyImpl* share_buffer = NULL;
   if (share_context) {
@@ -109,6 +122,7 @@ bool PlatformContext3DImpl::Init(const int32* attrib_list,
     share_buffer = share_impl->command_buffer_;
   }
 
+  /*FIXME:
   command_buffer_ = channel_->CreateOffscreenCommandBuffer(
       surface_size,
       share_buffer,
@@ -118,6 +132,7 @@ bool PlatformContext3DImpl::Init(const int32* attrib_list,
       gpu_preference);
   if (!command_buffer_)
     return false;
+  */
 
   command_buffer_->SetChannelErrorCallback(
       base::Bind(&PlatformContext3DImpl::OnContextLost,
@@ -154,6 +169,7 @@ bool PlatformContext3DImpl::Init(const int32* attrib_list,
 
 void PlatformContext3DImpl::SetParentContext(
     PepperParentContextProvider* parent_context_provider) {
+  /*FIXME:
   if (parent_context_.get() && parent_texture_id_ != 0) {
     // Flush any remaining commands in the parent context to make sure the
     // texture id accounting stays consistent.
@@ -181,6 +197,7 @@ void PlatformContext3DImpl::SetParentContext(
   CommandBufferProxyImpl* parent_command_buffer =
       parent_context_->GetCommandBufferProxy();
   command_buffer_->SetParent(parent_command_buffer, parent_texture_id_);
+  */
 }
 
 unsigned PlatformContext3DImpl::GetBackingTextureId() {
@@ -188,7 +205,7 @@ unsigned PlatformContext3DImpl::GetBackingTextureId() {
   return parent_texture_id_;
 }
 
-WebKit::WebGraphicsContext3D* PlatformContext3DImpl::GetParentContext() {
+WebGraphicsContext3DCommandBufferImpl* PlatformContext3DImpl::GetParentContext() {
   return parent_context_.get();
 }
 

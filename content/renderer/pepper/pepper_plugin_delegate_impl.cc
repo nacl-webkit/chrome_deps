@@ -26,11 +26,9 @@
 #include "content/common/fileapi/file_system_dispatcher.h"
 #include "content/common/fileapi/file_system_messages.h"
 #include "content/common/quota_dispatcher.h"
-/* FIXME:
-#include "content/common/gpu/client/webgraphicscontext3d_command_buffer_impl.h"
+// FIXME: #include "content/common/gpu/client/webgraphicscontext3d_command_buffer_impl.h"
 #include "content/common/pepper_messages.h"
 #include "content/common/pepper_plugin_registry.h"
-*/
 #include "content/common/quota_dispatcher.h"
 #include "content/common/view_messages.h"
 #include "content/public/common/content_switches.h"
@@ -52,9 +50,9 @@
 #include "content/renderer/pepper/pepper_platform_audio_input_impl.h"
 */
 #include "content/renderer/pepper/pepper_platform_audio_output_impl.h"
-/*FIXME
 #include "content/renderer/pepper/pepper_platform_context_3d_impl.h"
 #include "content/renderer/pepper/pepper_platform_image_2d_impl.h"
+/*FIXME
 #include "content/renderer/pepper/pepper_platform_video_capture_impl.h"
 #include "content/renderer/pepper/pepper_proxy_channel_delegate_impl.h"
 #include "content/renderer/pepper/renderer_ppapi_host_impl.h"
@@ -112,7 +110,6 @@ FIXME
 #include "PepperPlugin.h"
 #include "PepperPluginImpl.h"
 #include "PepperPluginInfo.h"
-#include "content/common/pepper_plugin_registry.h"
 #include "WebCoreArgumentCoders.h"
 #include "WebFrame.h"
 #include "WebPage.h"
@@ -122,8 +119,8 @@ FIXME
 #include <WebCore/Frame.h>
 #include <WebCore/KURL.h>
 #include <WebCore/Page.h>
+#include <WebCore/Settings.h>
 #include "ppapi/shared_impl/ppapi_permissions.h"
-#include "pepper_platform_image_2d_impl.h"
 #include "WebCanvas.h"
 
 using namespace WTF;
@@ -986,6 +983,8 @@ webkit::ppapi::PluginDelegate::PlatformContext3D*
     return NULL;
   return new PlatformContext3DImpl(this);
 #else
+  if (render_view_->corePage()->settings()->acceleratedCompositingEnabled())
+    return new PlatformContext3DImpl(this);
   return NULL;
 #endif
 }
@@ -1903,10 +1902,9 @@ FIXME
 */
 }
 
-/*
-FIXME
 WebGraphicsContext3DCommandBufferImpl*
 PepperPluginDelegateImpl::GetParentContextForPlatformContext3D() {
+  /* FIXME
   WebGraphicsContext3DCommandBufferImpl* context =
       static_cast<WebGraphicsContext3DCommandBufferImpl*>(
           render_view_->webview()->sharedGraphicsContext3D());
@@ -1916,8 +1914,10 @@ PepperPluginDelegateImpl::GetParentContextForPlatformContext3D() {
     return NULL;
 
   return context;
+  */
 }
 
+/* FIXME
 MouseLockDispatcher::LockTarget*
     PepperPluginDelegateImpl::GetOrCreateLockTargetAdapter(
     webkit::ppapi::PluginInstance* instance) {

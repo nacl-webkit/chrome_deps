@@ -222,7 +222,9 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_graphics_2d_host.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_in_process_resource_creation.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_in_process_router.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_parent_context_provider.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_platform_audio_output_impl
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_platform_context_3d_impl.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_platform_image_2d_impl.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_plugin_delegate_impl.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_websocket_host.cc

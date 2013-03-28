@@ -28,9 +28,9 @@
 FIXME
 #include "content/public/renderer/render_view_observer.h"
 #include "content/renderer/mouse_lock_dispatcher.h"
-#include "content/renderer/pepper/pepper_parent_context_provider.h"
-#include "content/renderer/render_view_pepper_helper.h"
 */
+#include "content/renderer/pepper/pepper_parent_context_provider.h"
+//FIXME #include "content/renderer/render_view_pepper_helper.h"
 #include "ppapi/shared_impl/private/ppb_host_resolver_shared.h"
 #include "ppapi/shared_impl/private/ppb_tcp_server_socket_shared.h"
 #include "ppapi/shared_impl/private/tcp_socket_private_impl.h"
@@ -82,8 +82,8 @@ class RenderViewImpl;
 class PepperPluginDelegateImpl
     : public webkit::ppapi::PluginDelegate,
 //      public RenderViewPepperHelper,
-      public base::SupportsWeakPtr<PepperPluginDelegateImpl>
-//      public PepperParentContextProvider,
+      public base::SupportsWeakPtr<PepperPluginDelegateImpl>,
+      public PepperParentContextProvider
 //      public RenderViewObserver
  {
  public:
@@ -422,12 +422,11 @@ FIXME
       int plugin_child_id,
       bool is_external);
 
-/*
-FIXME
   // Implementation of PepperParentContextProvider.
   virtual WebGraphicsContext3DCommandBufferImpl*
       GetParentContextForPlatformContext3D() OVERRIDE;
 
+/* FIXME
   MouseLockDispatcher::LockTarget* GetOrCreateLockTargetAdapter(
       webkit::ppapi::PluginInstance* instance);
   void UnSetAndDeleteLockTargetAdapter(webkit::ppapi::PluginInstance* instance);

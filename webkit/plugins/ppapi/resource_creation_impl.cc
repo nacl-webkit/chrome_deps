@@ -19,9 +19,9 @@
 #include "webkit/plugins/ppapi/ppb_file_ref_impl.h"
 #include "webkit/plugins/ppapi/ppb_file_system_impl.h"
 #include "webkit/plugins/ppapi/ppb_flash_message_loop_impl.h"
-#include "webkit/plugins/ppapi/ppb_graphics_3d_impl.h"
-#include "webkit/plugins/ppapi/ppb_host_resolver_private_impl.h"
 */
+#include "webkit/plugins/ppapi/ppb_graphics_3d_impl.h"
+//FIXME #include "webkit/plugins/ppapi/ppb_host_resolver_private_impl.h"
 #include "webkit/plugins/ppapi/ppb_image_data_impl.h"
 /* FIXME
 #include "webkit/plugins/ppapi/ppb_network_monitor_private_impl.h"
@@ -130,14 +130,14 @@ PP_Resource ResourceCreationImpl::CreateGraphics3D(
     PP_Instance instance,
     PP_Resource share_context,
     const int32_t* attrib_list) {
-// FIXME  return PPB_Graphics3D_Impl::Create(instance, share_context, attrib_list);
+  return PPB_Graphics3D_Impl::Create(instance, share_context, attrib_list);
 }
 
 PP_Resource ResourceCreationImpl::CreateGraphics3DRaw(
     PP_Instance instance,
     PP_Resource share_context,
     const int32_t* attrib_list) {
-// FIXME  return PPB_Graphics3D_Impl::CreateRaw(instance, share_context, attrib_list);
+  return PPB_Graphics3D_Impl::CreateRaw(instance, share_context, attrib_list);
 }
 
 PP_Resource ResourceCreationImpl::CreateHostResolverPrivate(

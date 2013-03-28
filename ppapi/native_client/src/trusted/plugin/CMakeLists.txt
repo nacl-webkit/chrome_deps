@@ -28,7 +28,7 @@ SET(nacl_plugin_SOURCES
 
 SET(nacl_plugin_LIBRARIES
     ${nacl_plugin_LIBRARY_NAME}
-    ${nacl_LIBRARY_NAME}
+    ${NACL_ALL_LIBRARY_NAME}
     ${ppapi_LIBRARY_NAME}
 )
 
@@ -52,7 +52,7 @@ TARGET_LINK_LIBRARIES(${nacl_plugin_LIBRARY_NAME}
     ${nacl_plugin_LIBRARIES} 
     rt 
     ${jsoncpp_LIBRARY_NAME} 
-    ${nacl_LIBRARY_NAME}
+    ${NACL_ALL_LIBRARY_NAME}
 )
 SET_TARGET_PROPERTIES(${nacl_plugin_LIBRARY_NAME} PROPERTIES FOLDER "WebKit")
 SET_TARGET_PROPERTIES(${nacl_plugin_LIBRARY_NAME} PROPERTIES LINK_INTERFACE_LIBRARIES "")

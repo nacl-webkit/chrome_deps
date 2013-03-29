@@ -445,7 +445,10 @@ bool Plugin::LoadNaClModuleContinuationIntern(ErrorInfo* error_info) {
                           "could not initialize module.");
     return false;
   }
-  PP_NaClResult ipc_result = nacl_interface_->StartPpapiProxy(pp_instance());
+
+  //FIXME This proxy depends on RendererPpapiHost
+  //PP_NaClResult ipc_result = nacl_interface_->StartPpapiProxy(pp_instance());
+  PP_NaClResult ipc_result = PP_NACL_OK;
   if (ipc_result == PP_NACL_OK) {
     // Log the amound of time that has passed between the trusted plugin being
     // initialized and the untrusted plugin being initialized.  This is

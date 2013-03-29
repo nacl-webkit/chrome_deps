@@ -86,7 +86,6 @@ PP_NaClResult LaunchSelLdr(PP_Instance instance,
                            PP_Bool enable_ppapi_dev,
                            void* imc_handle) {
   nacl::FileDescriptor result_socket;
-  WebKit::WebProcess::shared().launchNaCl(result_socket.fd); // TODO should wait for its response
 //FIXME  IPC::Sender* sender = content::RenderThread::Get();
 //FIXME  if (sender == NULL)
 //FIXME    sender = g_background_thread_sender.Pointer()->get();
@@ -125,7 +124,11 @@ PP_NaClResult LaunchSelLdr(PP_Instance instance,
 //FIXME          &instance_info.plugin_child_id))) {
 //FIXME    return PP_NACL_FAILED;
 //FIXME  }
-//FIXME
+  if (!WebKit::WebProcess::shared().launchNaCl(result_socket.fd)) {
+    DLOG(ERROR) << "WebKit::WebProcess::shared().launchNaCl() failed";
+    return PP_NACL_FAILED;
+  }
+
 //FIXME  // Don't save instance_info if channel handle is invalid.
 //FIXME  bool invalid_handle = instance_info.channel_handle.name.empty();
 //FIXME#if defined(OS_POSIX)
@@ -309,23 +312,3 @@ const PPB_NaCl_Private* PPB_NaCl_Private_Impl::GetInterface() {
 
 #endif  // DISABLE_NACL
 
-//*/
-/*
-const PPB_NaCl_Private nacl_interface = {
-  0, // &LaunchSelLdr,
-  0, // &StartPpapiProxy,
-  0, // &UrandomFD,
-  0, // &Are3DInterfacesDisabled,
-  0, // &EnableBackgroundSelLdrLaunch,
-  0, // &BrokerDuplicateHandle,
-  0, // &GetReadonlyPnaclFD,
-  0, // &CreateTemporaryFile,
-  0, // &IsOffTheRecord,
-  0, // &IsPnaclEnabled,
-  0, // &ReportNaClError
-};
-
-const PPB_NaCl_Private* PPB_NaCl_Private_Impl::GetInterface() {
-  return &nacl_interface;
-}
-*/

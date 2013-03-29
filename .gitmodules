@@ -13,3 +13,6 @@
 [submodule "sandbox/linux/seccomp-legacy"]
 	path = sandbox/linux/seccomp-legacy
 	url = https://chromium.googlesource.com/external/seccompsandbox.git
+[submodule "tools/gyp"]
+	path = tools/gyp
+	url = https://chromium.googlesource.com/external/gyp.git

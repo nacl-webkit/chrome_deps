@@ -5,7 +5,6 @@ SET(ppapi_INCLUDE_DIRECTORIES
     "${CMAKE_SOURCE_DIR}/Source/chrome_deps"
 )
 
-
 SET(ppapi_SOURCES
     cpp/array_output.cc
     cpp/audio.cc
@@ -123,3 +122,4 @@ SET_TARGET_PROPERTIES(${ppapi_LIBRARY_NAME} PROPERTIES VERSION ${PROJECT_VERSION
 
 INSTALL(TARGETS ${ppapi_LIBRARY_NAME} DESTINATION "${LIB_INSTALL_DIR}")
 
+include(ppapi_proxy_untrusted.txt)

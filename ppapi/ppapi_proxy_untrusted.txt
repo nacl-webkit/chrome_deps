@@ -1,0 +1,67 @@
+include(NaclBuildNexe)
+
+set(ppapi_proxy_untrusted_sources
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/broker_resource.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/dispatcher.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/graphics_2d_resource.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/file_chooser_resource.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/file_io_resource.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/gamepad_resource.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/interface_list.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/interface_proxy.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/plugin_array_buffer_var.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/plugin_dispatcher.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/plugin_globals.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/plugin_main_nacl.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/plugin_message_filter.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/plugin_resource.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/plugin_resource_tracker.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/plugin_var_serialization_rules.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/plugin_var_tracker.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/ppapi_command_buffer_proxy.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_audio_proxy.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_core_proxy.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_file_ref_proxy.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_file_system_proxy.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_graphics_3d_proxy.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_host_resolver_private_proxy.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_image_data_proxy.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_instance_proxy.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_message_loop_proxy.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_network_monitor_private_proxy.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_pdf_proxy.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_tcp_server_socket_private_proxy.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_tcp_socket_private_proxy.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_testing_proxy.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_url_loader_proxy.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_var_deprecated_proxy.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_x509_certificate_private_proxy.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/ppp_class_proxy.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/ppp_graphics_3d_proxy.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/ppp_input_event_proxy.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/ppp_instance_proxy.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/ppp_messaging_proxy.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/ppp_mouse_lock_proxy.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/ppp_printing_proxy.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/ppp_text_input_proxy.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/printing_resource.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/proxy_array_output.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/proxy_channel.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/proxy_module.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/proxy_object_var.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/resource_creation_proxy.cc
+#    ${CHROME_DEPS_DIR}/ppapi/proxy/udp_socket_private_resource.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/url_request_info_resource.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/url_response_info_resource.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/websocket_resource.cc
+)
+  
+set(ppapi_proxy_untrusted_defines ENABLE_PEPPER_THREADING)
+set(ppapi_proxy_untrusted_include_dirs ${CHROME_DEPS_DIR} ${WEBKIT2_DIR}/Shared/Plugins/ppapi/gfx ${CHROME_DEPS_DIR}/third_party/khronos ${CHROME_DEPS_DIR}/gpu)
+
+nacl_build_nlib(libppapi_proxy_untrusted.a "" 64 "${ppapi_proxy_untrusted_defines}" "${ppapi_proxy_untrusted_include_dirs}" "libppapi_proxy_untrusted.a" "${ppapi_proxy_untrusted_sources}")
+add_custom_target(libppapi_proxy_untrusted.a_64 ALL DEPENDS build_libppapi_proxy_untrusted.a_64)
+nacl_build_nlib(libppapi_proxy_untrusted.a "" 32 "${ppapi_proxy_untrusted_defines}" "${ppapi_proxy_untrusted_include_dirs}" "libppapi_proxy_untrusted.a" "${ppapi_proxy_untrusted_sources}")
+add_custom_target(libppapi_proxy_untrusted.a_32 ALL DEPENDS build_libppapi_proxy_untrusted.a_32)
+
+add_custom_target(libppapi_proxy_untrusted.a ALL DEPENDS libppapi_proxy_untrusted.a_64 libppapi_proxy_untrusted.a_32)

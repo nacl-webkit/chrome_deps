@@ -1,0 +1,21 @@
+include(NaclBuildNexe)
+
+set(ppapi_ipc_untrusted_sources
+    ${CHROME_DEPS_DIR}/ppapi/proxy/handle_converter.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/ppapi_messages.cc
+   # ${CHROME_DEPS_DIR}/ppapi/proxy/ppapi_param_traits.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/resource_message_params.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/serialized_handle.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/serialized_structs.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/serialized_var.cc
+)
+  
+set(ppapi_ipc_untrusted_defines ENABLE_PEPPER_THREADING)
+set(ppapi_ipc_untrusted_include_dirs ${CHROME_DEPS_DIR} ${WEBKIT2_DIR}/Shared/Plugins/ppapi/gfx ${CHROME_DEPS_DIR}/third_party/khronos ${CHROME_DEPS_DIR}/gpu)
+
+nacl_build_nlib(libppapi_ipc_untrusted.a "" 64 "${ppapi_ipc_untrusted_defines}" "${ppapi_ipc_untrusted_include_dirs}" "libppapi_ipc_untrusted.a" "${ppapi_ipc_untrusted_sources}")
+add_custom_target(libppapi_ipc_untrusted.a_64 ALL DEPENDS build_libppapi_ipc_untrusted.a_64)
+nacl_build_nlib(libppapi_ipc_untrusted.a "" 32 "${ppapi_ipc_untrusted_defines}" "${ppapi_ipc_untrusted_include_dirs}" "libppapi_ipc_untrusted.a" "${ppapi_ipc_untrusted_sources}")
+add_custom_target(libppapi_ipc_untrusted.a_32 ALL DEPENDS build_libppapi_ipc_untrusted.a_32)
+
+add_custom_target(libppapi_ipc_untrusted.a ALL DEPENDS libppapi_ipc_untrusted.a_64 libppapi_ipc_untrusted.a_32)

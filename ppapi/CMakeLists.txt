@@ -124,3 +124,4 @@ INSTALL(TARGETS ${ppapi_LIBRARY_NAME} DESTINATION "${LIB_INSTALL_DIR}")
 
 include(ppapi_proxy_untrusted.txt)
 include(ppapi_ipc_untrusted.txt)
+include(ppapi_shared_untrusted.txt)

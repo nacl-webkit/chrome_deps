@@ -6,6 +6,9 @@
 // is functionally a wrapper around the LockImpl class, so the only
 // real intelligence in the class is in the debugging logic.
 
+//FIXME: (halton)
+#define DEBUG 1
+
 #if !defined(NDEBUG)
 
 #include "base/synchronization/lock.h"

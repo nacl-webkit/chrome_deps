@@ -34,6 +34,7 @@ set(nacl_irt_link_flags
 )
 
 set(nacl_irt_extra_deps
+    prep_toolchain
     irt_browser_lib
     ppapi_proxy_untrusted
     ppapi_ipc_untrusted

@@ -117,6 +117,7 @@ FIXME:
 #include "gfx/gfx_conversion.h"
 #include "webkit/plugins/ppapi/npapi_glue.h"
 #include "webkit/plugins/plugin_constants.h"
+#include "PpapiPlatformLayer.h"
 
 #if defined(OS_MACOSX)
 #include "printing/metafile_impl.h"
@@ -589,6 +590,7 @@ void PluginInstance::CommitBackingTexture() {
   else if (texture_layer_)
     texture_layer_->setNeedsDisplay();
 */
+  container_->setNeedsDisplay();
 }
 
 void PluginInstance::InstanceCrashed() {
@@ -1854,12 +1856,23 @@ void PluginInstance::UpdateLayer() {
   if (!container_)
     return;
 
-/* FIXME:
   // If we have a fullscreen_container_ (under PPB_FlashFullscreen) then the
   // plugin is fullscreen (for Flash) or transitioning to fullscreen. In either
   // case we do not want a layer.
   bool want_layer = GetBackingTextureId() && !fullscreen_container_;
 
+  if (want_layer == !!web_layer_.get())
+    return;
+
+  if (!want_layer) {
+    web_layer_.reset();
+  } else {
+    DCHECK(bound_graphics_3d_.get());
+    web_layer_.reset(new PpapiPlatformLayer(bound_graphics_3d_->gles2_impl()));
+    container_->setWebLayer(web_layer_.get());
+  }
+
+/* FIXME:
   if (want_layer == !!texture_layer_.get())
     return;
 

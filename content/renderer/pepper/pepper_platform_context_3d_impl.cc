@@ -51,6 +51,7 @@ PlatformContext3DImpl::~PlatformContext3DImpl() {
     DCHECK(channel_.get());
     channel_->DestroyCommandBuffer(command_buffer_);
     */
+    delete command_buffer_;
     command_buffer_ = NULL;
   }
 

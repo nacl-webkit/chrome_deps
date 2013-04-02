@@ -64,6 +64,7 @@ struct PP_Point;
 
 class SkBitmap;
 class TransportDIB;
+class  PpapiPlatformLayer;
 
 namespace WebKit {
 class WebInputEvent;
@@ -605,6 +606,7 @@ class WEBKIT_PLUGINS_EXPORT PluginInstance :
   scoped_refptr<cc::TextureLayer> texture_layer_;
   scoped_ptr<WebKit::WebLayer> web_layer_;
   */
+  scoped_ptr<PpapiPlatformLayer> web_layer_;
 
   // Plugin URL.
   WebCore::KURL plugin_url_;

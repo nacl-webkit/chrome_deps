@@ -9,7 +9,7 @@
 #include "base/command_line.h"
 #include "base/message_loop.h"
 #include "base/utf_string_conversions.h"
-#include "gpu/command_buffer/client/gles2_implementation.h"
+//FIXME #include "gpu/command_buffer/client/gles2_implementation.h"
 #include "ppapi/c/ppp_graphics_3d.h"
 #include "ppapi/thunk/enter.h"
 /*FIXME
@@ -30,6 +30,8 @@
 #include <WebCore/Document.h>
 #include <WebCore/Element.h>
 #include <WebCore/Frame.h>
+#include <WebCore/FrameView.h>
+#include "gpu_shim.h"
 
 using ppapi::thunk::EnterResourceNoLock;
 using ppapi::thunk::PPB_Graphics3D_API;
@@ -242,6 +244,8 @@ int32 PPB_Graphics3D_Impl::DoSwapBuffers() {
                                        weak_ptr_factory_.GetWeakPtr()));
   }
 
+  MessageLoop::current()->PostDelayedTask(FROM_HERE, base::Bind(
+      &PPB_Graphics3D_Impl::OnSwapBuffers, weak_ptr_factory_.GetWeakPtr()), base::TimeDelta::FromMilliseconds(1000/30)); // 30 FPS
 
   return PP_OK_COMPLETIONPENDING;
 }
@@ -261,8 +265,16 @@ bool PPB_Graphics3D_Impl::Init(PPB_Graphics3D_API* share_context,
         static_cast<PPB_Graphics3D_Shared*>(share_context)->gles2_impl();
   }
 
-  return CreateGLES2Impl(kCommandBufferSize, kTransferBufferSize,
-                         share_gles2);
+  if (!CreateGLES2Impl(kCommandBufferSize, kTransferBufferSize,
+                         share_gles2))
+    return false;
+
+  WebKit::PepperPluginContainer* container =
+      ResourceHelper::GetPluginInstance(this)->container();
+  if (!container)
+    return false;
+  gles2_impl()->CreateContext(attrib_list, container->element()->document()->view()->root()->hostWindow());
+  return true;
 }
 
 bool PPB_Graphics3D_Impl::InitRaw(PPB_Graphics3D_API* share_context,

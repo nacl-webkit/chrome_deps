@@ -1915,6 +1915,8 @@ PepperPluginDelegateImpl::GetParentContextForPlatformContext3D() {
 
   return context;
   */
+  static WebGraphicsContext3DCommandBufferImpl* g_dummy_shared_context = new WebGraphicsContext3DCommandBufferImpl;
+  return g_dummy_shared_context;
 }
 
 /* FIXME

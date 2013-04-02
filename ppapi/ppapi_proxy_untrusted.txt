@@ -12,7 +12,7 @@ set(ppapi_proxy_untrusted_sources
     ${CHROME_DEPS_DIR}/ppapi/proxy/plugin_array_buffer_var.cc
     ${CHROME_DEPS_DIR}/ppapi/proxy/plugin_dispatcher.cc
     ${CHROME_DEPS_DIR}/ppapi/proxy/plugin_globals.cc
-#    ${CHROME_DEPS_DIR}/ppapi/proxy/plugin_main_nacl.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/plugin_main_nacl.cc
     ${CHROME_DEPS_DIR}/ppapi/proxy/plugin_message_filter.cc
     ${CHROME_DEPS_DIR}/ppapi/proxy/plugin_resource.cc
     ${CHROME_DEPS_DIR}/ppapi/proxy/plugin_resource_tracker.cc
@@ -59,9 +59,10 @@ set(ppapi_proxy_untrusted_sources
 set(ppapi_proxy_untrusted_defines ENABLE_PEPPER_THREADING)
 set(ppapi_proxy_untrusted_include_dirs
     ${CHROME_DEPS_DIR}
-    ${WEBKIT2_DIR}/Shared/Plugins/ppapi/gfx
+    ${CHROME_DEPS_DIR}/ppapi
     ${CHROME_DEPS_DIR}/third_party/khronos
     ${CHROME_DEPS_DIR}/gpu
+    ${WEBKIT2_DIR}/Shared/Plugins/ppapi/gfx
 )
 
 nacl_build_nlib(libppapi_proxy_untrusted_64.a "" 64 "${ppapi_proxy_untrusted_defines}" "${ppapi_proxy_untrusted_include_dirs}" "" "" "libppapi_proxy_untrusted.a" "${ppapi_proxy_untrusted_sources}")

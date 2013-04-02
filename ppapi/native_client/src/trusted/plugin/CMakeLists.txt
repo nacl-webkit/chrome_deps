@@ -49,7 +49,7 @@ ADD_LIBRARY(
 TARGET_LINK_LIBRARIES(${nacl_plugin_LIBRARY_NAME} 
     ${nacl_plugin_LIBRARIES} 
     rt 
-    ${jsoncpp_LIBRARY_NAME} 
+    jsoncpp
     ${NACL_ALL_LIBRARY_NAME}
 )
 SET_TARGET_PROPERTIES(${nacl_plugin_LIBRARY_NAME} PROPERTIES FOLDER "WebKit")

@@ -1,18 +1,18 @@
 set(CHROME_IPC_LIBRARY_SOURCES
-    ${CHROME_DEPS_DIR}/ipc/file_descriptor_set_posix.cc
-    ${CHROME_DEPS_DIR}/ipc/ipc_channel.cc
-    ${CHROME_DEPS_DIR}/ipc/ipc_channel_posix.cc
-    ${CHROME_DEPS_DIR}/ipc/ipc_channel_proxy.cc
-    ${CHROME_DEPS_DIR}/ipc/ipc_channel_reader.cc
-    ${CHROME_DEPS_DIR}/ipc/ipc_forwarding_message_filter.cc
-    ${CHROME_DEPS_DIR}/ipc/ipc_logging.cc
-    ${CHROME_DEPS_DIR}/ipc/ipc_message.cc
-    ${CHROME_DEPS_DIR}/ipc/ipc_message_utils.cc
-    ${CHROME_DEPS_DIR}/ipc/ipc_platform_file.cc
-    ${CHROME_DEPS_DIR}/ipc/ipc_switches.cc
-    ${CHROME_DEPS_DIR}/ipc/ipc_sync_channel.cc
-    ${CHROME_DEPS_DIR}/ipc/ipc_sync_message.cc
-    ${CHROME_DEPS_DIR}/ipc/ipc_sync_message_filter.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/file_descriptor_set_posix.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipc_channel.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipc_channel_posix.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipc_channel_proxy.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipc_channel_reader.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipc_forwarding_message_filter.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipc_logging.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipc_message.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipc_message_utils.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipc_platform_file.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipc_switches.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipc_sync_channel.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipc_sync_message.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/ipc_sync_message_filter.cc
 )
 
 set(CHROME_IPC_LIBRARY_LIBRARIES
@@ -27,6 +27,7 @@ target_link_libraries(${CHROME_IPC_LIBRARY_NAME} ${CHROME_IPC_LIBRARY_LIBRARIES}
 include(NaclBuildNexe)
 
 set(libipc_untrusted_sources
+    ${CMAKE_CURRENT_SOURCE_DIR}/file_descriptor_set_posix.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/ipc_channel_nacl.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/ipc_channel_proxy.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/ipc_channel_reader.cc

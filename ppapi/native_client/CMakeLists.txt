@@ -15,13 +15,13 @@ set(nacl_irt_link_flags
     -lppapi_proxy_untrusted
     -lppapi_ipc_untrusted
     -lppapi_shared_untrusted
-#    -lgles2_implementation_untrusted
-#    -lgles2_cmd_helper_untrusted
-#    -lgles2_utils_untrusted
-#    -lcommand_buffer_client_untrusted
-#    -lcommand_buffer_common_untrusted
+    -lgles2_implementation_untrusted
+    -lgles2_cmd_helper_untrusted
+    -lgles2_utils_untrusted
+    -lcommand_buffer_client_untrusted
+    -lcommand_buffer_common_untrusted
     -ltracing_untrusted
-#    -lgpu_ipc_untrusted
+    -lgpu_ipc_untrusted
     -lipc_untrusted
     -lbase_untrusted
     -lshared_memory_support_untrusted
@@ -39,13 +39,13 @@ set(nacl_irt_extra_deps
     ppapi_proxy_untrusted
     ppapi_ipc_untrusted
     ppapi_shared_untrusted
-#   gles2_implementation_untrusted
-#   gles2_cmd_helper_untrusted
-#   gles2_utils_untrusted
-#   command_buffer_client_untrusted
-#   command_buffer_common_untrusted
+    gles2_implementation_untrusted
+    gles2_cmd_helper_untrusted
+    gles2_utils_untrusted
+    command_buffer_client_untrusted
+    command_buffer_common_untrusted
     tracing_untrusted
-#   gpu_ipc_untrusted
+    gpu_ipc_untrusted
     ipc_untrusted
     base_untrusted
     shared_memory_support_untrusted

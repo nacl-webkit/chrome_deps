@@ -3,7 +3,7 @@ include(NaclBuildNexe)
 set(ppapi_ipc_untrusted_sources
     ${CHROME_DEPS_DIR}/ppapi/proxy/handle_converter.cc
     ${CHROME_DEPS_DIR}/ppapi/proxy/ppapi_messages.cc
-   # ${CHROME_DEPS_DIR}/ppapi/proxy/ppapi_param_traits.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/ppapi_param_traits.cc
     ${CHROME_DEPS_DIR}/ppapi/proxy/resource_message_params.cc
     ${CHROME_DEPS_DIR}/ppapi/proxy/serialized_handle.cc
     ${CHROME_DEPS_DIR}/ppapi/proxy/serialized_structs.cc

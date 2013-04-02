@@ -166,7 +166,7 @@ struct PPAPI_PROXY_EXPORT ParamTraits<ppapi::PpapiPermissions> {
   static void Log(const param_type& p, std::string* l);
 };
 
-#if !defined(OS_NACL) && !defined(NACL_WIN64)
+//FIXME #if !defined(OS_NACL) && !defined(NACL_WIN64)
 template <>
 struct ParamTraits<ppapi::PepperFilePath> {
   typedef ppapi::PepperFilePath param_type;
@@ -182,7 +182,7 @@ struct PPAPI_PROXY_EXPORT ParamTraits<ppapi::proxy::SerializedFlashMenu> {
   static bool Read(const Message* m, PickleIterator* iter, param_type* r);
   static void Log(const param_type& p, std::string* l);
 };
-#endif  // !defined(OS_NACL) && !defined(NACL_WIN64)
+//FIXME #endif  // !defined(OS_NACL) && !defined(NACL_WIN64)
 
 template<>
 struct PPAPI_PROXY_EXPORT ParamTraits<ppapi::PPB_X509Certificate_Fields> {

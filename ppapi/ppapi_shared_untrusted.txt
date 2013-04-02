@@ -92,11 +92,16 @@ set(ppapi_shared_untrusted_sources
 )
   
 set(ppapi_shared_untrusted_defines ENABLE_PEPPER_THREADING)
-set(ppapi_shared_untrusted_include_dirs ${CHROME_DEPS_DIR} ${WEBKIT2_DIR}/Shared/Plugins/ppapi/gfx ${CHROME_DEPS_DIR}/third_party/khronos ${CHROME_DEPS_DIR}/gpu)
+set(ppapi_shared_untrusted_include_dirs
+    ${CHROME_DEPS_DIR}
+    ${WEBKIT2_DIR}/Shared/Plugins/ppapi/gfx
+    ${CHROME_DEPS_DIR}/third_party/khronos
+    ${CHROME_DEPS_DIR}/gpu
+)
 
-nacl_build_nlib(libppapi_shared_untrusted.a "" 64 "${ppapi_shared_untrusted_defines}" "${ppapi_shared_untrusted_include_dirs}" "libppapi_shared_untrusted.a" "${ppapi_shared_untrusted_sources}")
-add_custom_target(libppapi_shared_untrusted.a_64 ALL DEPENDS build_libppapi_shared_untrusted.a_64)
-nacl_build_nlib(libppapi_shared_untrusted.a "" 32 "${ppapi_shared_untrusted_defines}" "${ppapi_shared_untrusted_include_dirs}" "libppapi_shared_untrusted.a" "${ppapi_shared_untrusted_sources}")
-add_custom_target(libppapi_shared_untrusted.a_32 ALL DEPENDS build_libppapi_shared_untrusted.a_32)
+nacl_build_nlib(libppapi_shared_untrusted_64.a "" 64 "${ppapi_shared_untrusted_defines}" "${ppapi_shared_untrusted_include_dirs}" "" "" "libppapi_shared_untrusted.a" "${ppapi_shared_untrusted_sources}")
+nacl_build_nlib(libppapi_shared_untrusted_32.a "" 32 "${ppapi_shared_untrusted_defines}" "${ppapi_shared_untrusted_include_dirs}" "" "" "libppapi_shared_untrusted.a" "${ppapi_shared_untrusted_sources}")
 
-add_custom_target(libppapi_shared_untrusted.a ALL DEPENDS libppapi_shared_untrusted.a_64 libppapi_shared_untrusted.a_32)
+add_custom_target(ppapi_shared_untrusted ALL
+    DEPENDS build_libppapi_shared_untrusted_64.a build_libppapi_shared_untrusted_32.a
+)

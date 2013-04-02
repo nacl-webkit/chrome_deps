@@ -207,3 +207,24 @@ set_target_properties(${XDG_MIME_LIBRARY_NAME} PROPERTIES COMPILE_FLAGS -fPIC)
 
 add_library(${CHROME_BASE_LIBRARY_NAME} SHARED ${CHROME_BASE_LIBRARY_SOURCES})
 target_link_libraries(${CHROME_BASE_LIBRARY_NAME} ${CHROME_BASE_LIBRARY_LIBRARIES})
+
+# untrusted part
+include(NaclBuildNexe)
+
+set(libbase_untrusted_sources
+    ${CMAKE_CURRENT_SOURCE_DIR}/string16.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/sync_socket_nacl.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/time_posix.cc
+)
+
+set(libbase_untrusted_include_dirs
+    ${CHROME_DEPS_DIR}
+    ${CHROME_DEPS_DIR}/ppapi
+)
+
+nacl_build_nlib(libbase_untrusted_64.a "" 64 "" "${libbase_untrusted_include_dirs}" "" "" "libbase_untrusted.a" "${libbase_untrusted_sources}")
+nacl_build_nlib(libbase_untrusted_32.a "" 32 "" "${libbase_untrusted_include_dirs}" "" "" "libbase_untrusted.a" "${libbase_untrusted_sources}")
+
+add_custom_target(base_untrusted ALL
+    DEPENDS build_libbase_untrusted_64.a build_libbase_untrusted_32.a
+)

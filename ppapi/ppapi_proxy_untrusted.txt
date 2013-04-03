@@ -65,9 +65,9 @@ set(ppapi_proxy_untrusted_include_dirs
     ${WEBKIT2_DIR}/Shared/Plugins/ppapi/gfx
 )
 
-nacl_build_nlib(libppapi_proxy_untrusted_64.a "" 64 "${ppapi_proxy_untrusted_defines}" "${ppapi_proxy_untrusted_include_dirs}" "" "" "libppapi_proxy_untrusted.a" "${ppapi_proxy_untrusted_sources}")
-nacl_build_nlib(libppapi_proxy_untrusted_32.a "" 32 "${ppapi_proxy_untrusted_defines}" "${ppapi_proxy_untrusted_include_dirs}" "" "" "libppapi_proxy_untrusted.a" "${ppapi_proxy_untrusted_sources}")
+nacl_build_nlib(libppapi_proxy_untrusted_64.a "" 64 "${ppapi_proxy_untrusted_defines}" "${ppapi_proxy_untrusted_include_dirs}" "" "libppapi_proxy_untrusted.a" "${ppapi_proxy_untrusted_sources}")
+nacl_build_nlib(libppapi_proxy_untrusted_32.a "" 32 "${ppapi_proxy_untrusted_defines}" "${ppapi_proxy_untrusted_include_dirs}" "" "libppapi_proxy_untrusted.a" "${ppapi_proxy_untrusted_sources}")
 
 add_custom_target(ppapi_proxy_untrusted ALL
-    DEPENDS build_libppapi_proxy_untrusted_64.a build_libppapi_proxy_untrusted_32.a
+    DEPENDS ${NACL_TC_NEWLIB64_DIR}/libppapi_proxy_untrusted.a ${NACL_TC_NEWLIB32_DIR}/libppapi_proxy_untrusted.a
 )

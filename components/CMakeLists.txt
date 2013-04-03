@@ -11,9 +11,9 @@ set(libtracing_untrusted_include_dirs
     ${NATIVE_CLIENT_DIR}/src/third_party
 )
 
-nacl_build_nlib(libtracing_untrusted_64.a "" 64 "" "${libtracing_untrusted_include_dirs}" "" "build_nacl_lib_newlib_64.a" "libtracing_untrusted.a" "${libtracing_untrusted_sources}")
-nacl_build_nlib(libtracing_untrusted_32.a "" 32 "" "${libtracing_untrusted_include_dirs}" "" "build_nacl_lib_newlib_32.a" "libtracing_untrusted.a" "${libtracing_untrusted_sources}")
+nacl_build_nlib(libtracing_untrusted_64.a "" 64 "" "${libtracing_untrusted_include_dirs}" "" "libtracing_untrusted.a" "${libtracing_untrusted_sources}")
+nacl_build_nlib(libtracing_untrusted_32.a "" 32 "" "${libtracing_untrusted_include_dirs}" "" "libtracing_untrusted.a" "${libtracing_untrusted_sources}")
 
 add_custom_target(tracing_untrusted ALL
-    DEPENDS build_libtracing_untrusted_64.a build_libtracing_untrusted_32.a
+    DEPENDS ${NACL_TC_NEWLIB64_DIR}/libtracing_untrusted.a ${NACL_TC_NEWLIB32_DIR}/libtracing_untrusted.a
 )

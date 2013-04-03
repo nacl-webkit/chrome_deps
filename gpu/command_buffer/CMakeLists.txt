@@ -12,9 +12,9 @@ set(libgles2_utils_untrusted_include_dirs
     ${CHROME_DEPS_DIR}/gpu
 )
 
-nacl_build_nlib(libgles2_utils_untrusted_64.a "" 64 "" "${libgles2_utils_untrusted_include_dirs}" "" "" "libgles2_utils_untrusted.a" "${libgles2_utils_untrusted_sources}")
-nacl_build_nlib(libgles2_utils_untrusted_32.a "" 32 "" "${libgles2_utils_untrusted_include_dirs}" "" "" "libgles2_utils_untrusted.a" "${libgles2_utils_untrusted_sources}")
+nacl_build_nlib(libgles2_utils_untrusted_64.a "" 64 "" "${libgles2_utils_untrusted_include_dirs}" "" "libgles2_utils_untrusted.a" "${libgles2_utils_untrusted_sources}")
+nacl_build_nlib(libgles2_utils_untrusted_32.a "" 32 "" "${libgles2_utils_untrusted_include_dirs}" "" "libgles2_utils_untrusted.a" "${libgles2_utils_untrusted_sources}")
 
 add_custom_target(gles2_utils_untrusted ALL
-    DEPENDS build_libgles2_utils_untrusted_64.a build_libgles2_utils_untrusted_32.a
+    DEPENDS ${NACL_TC_NEWLIB64_DIR}/libgles2_utils_untrusted.a ${NACL_TC_NEWLIB32_DIR}/libgles2_utils_untrusted.a
 )

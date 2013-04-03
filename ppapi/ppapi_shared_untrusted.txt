@@ -99,9 +99,9 @@ set(ppapi_shared_untrusted_include_dirs
     ${CHROME_DEPS_DIR}/gpu
 )
 
-nacl_build_nlib(libppapi_shared_untrusted_64.a "" 64 "${ppapi_shared_untrusted_defines}" "${ppapi_shared_untrusted_include_dirs}" "" "" "libppapi_shared_untrusted.a" "${ppapi_shared_untrusted_sources}")
-nacl_build_nlib(libppapi_shared_untrusted_32.a "" 32 "${ppapi_shared_untrusted_defines}" "${ppapi_shared_untrusted_include_dirs}" "" "" "libppapi_shared_untrusted.a" "${ppapi_shared_untrusted_sources}")
+nacl_build_nlib(libppapi_shared_untrusted_64.a "" 64 "${ppapi_shared_untrusted_defines}" "${ppapi_shared_untrusted_include_dirs}" "" "libppapi_shared_untrusted.a" "${ppapi_shared_untrusted_sources}")
+nacl_build_nlib(libppapi_shared_untrusted_32.a "" 32 "${ppapi_shared_untrusted_defines}" "${ppapi_shared_untrusted_include_dirs}" "" "libppapi_shared_untrusted.a" "${ppapi_shared_untrusted_sources}")
 
 add_custom_target(ppapi_shared_untrusted ALL
-    DEPENDS build_libppapi_shared_untrusted_64.a build_libppapi_shared_untrusted_32.a
+    DEPENDS ${NACL_TC_NEWLIB64_DIR}/libppapi_shared_untrusted.a ${NACL_TC_NEWLIB32_DIR}/libppapi_shared_untrusted.a
 )

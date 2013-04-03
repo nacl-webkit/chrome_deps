@@ -47,9 +47,9 @@ set(libipc_untrusted_include_dirs
     ${CHROME_DEPS_DIR}/ppapi
 )
 
-nacl_build_nlib(libipc_untrusted_64.a "" 64 "" "${libipc_untrusted_include_dirs}" "" "" "libipc_untrusted.a" "${libipc_untrusted_sources}")
-nacl_build_nlib(libipc_untrusted_32.a "" 32 "" "${libipc_untrusted_include_dirs}" "" "" "libipc_untrusted.a" "${libipc_untrusted_sources}")
+nacl_build_nlib(libipc_untrusted_64.a "" 64 "" "${libipc_untrusted_include_dirs}" "" "libipc_untrusted.a" "${libipc_untrusted_sources}")
+nacl_build_nlib(libipc_untrusted_32.a "" 32 "" "${libipc_untrusted_include_dirs}" "" "libipc_untrusted.a" "${libipc_untrusted_sources}")
 
 add_custom_target(ipc_untrusted ALL
-    DEPENDS build_libipc_untrusted_64.a build_libipc_untrusted_32.a
+    DEPENDS ${NACL_TC_NEWLIB64_DIR}/libipc_untrusted.a ${NACL_TC_NEWLIB32_DIR}/libipc_untrusted.a
 )

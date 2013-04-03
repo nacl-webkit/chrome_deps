@@ -59,5 +59,5 @@ nacl_build_nexe(nacl_irt_x86_64.nexe "${nacl_irt_extra_args}" 64 "${nacl_irt_inc
 nacl_build_nexe(nacl_irt_x86_32.nexe "${nacl_irt_extra_args}" 32 "${nacl_irt_include_dirs}" "${nacl_irt_link_flags}" "${nacl_irt_extra_deps}" "")
 
 add_custom_target(nacl_irt ALL
-    DEPENDS build_nacl_irt_x86_64.nexe build_nacl_irt_x86_32.nexe
+    DEPENDS  ${CMAKE_BINARY_DIR}/bin/nacl_irt_x86_64.nexe  ${CMAKE_BINARY_DIR}/bin/nacl_irt_x86_32.nexe
 )

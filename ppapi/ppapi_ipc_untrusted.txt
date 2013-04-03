@@ -18,9 +18,9 @@ set(ppapi_ipc_untrusted_include_dirs
     ${CHROME_DEPS_DIR}/gpu
 )
 
-nacl_build_nlib(libppapi_ipc_untrusted_64.a "" 64 "${ppapi_ipc_untrusted_defines}" "${ppapi_ipc_untrusted_include_dirs}" "" "" "libppapi_ipc_untrusted.a" "${ppapi_ipc_untrusted_sources}")
-nacl_build_nlib(libppapi_ipc_untrusted_32.a "" 32 "${ppapi_ipc_untrusted_defines}" "${ppapi_ipc_untrusted_include_dirs}" "" "" "libppapi_ipc_untrusted.a" "${ppapi_ipc_untrusted_sources}")
+nacl_build_nlib(libppapi_ipc_untrusted_64.a "" 64 "${ppapi_ipc_untrusted_defines}" "${ppapi_ipc_untrusted_include_dirs}" "" "libppapi_ipc_untrusted.a" "${ppapi_ipc_untrusted_sources}")
+nacl_build_nlib(libppapi_ipc_untrusted_32.a "" 32 "${ppapi_ipc_untrusted_defines}" "${ppapi_ipc_untrusted_include_dirs}" "" "libppapi_ipc_untrusted.a" "${ppapi_ipc_untrusted_sources}")
 
 add_custom_target(ppapi_ipc_untrusted ALL
-    DEPENDS build_libppapi_ipc_untrusted_64.a build_libppapi_ipc_untrusted_32.a
+    DEPENDS ${NACL_TC_NEWLIB64_DIR}/libppapi_ipc_untrusted.a ${NACL_TC_NEWLIB32_DIR}/libppapi_ipc_untrusted.a
 )

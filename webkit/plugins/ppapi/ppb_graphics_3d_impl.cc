@@ -245,7 +245,7 @@ int32 PPB_Graphics3D_Impl::DoSwapBuffers() {
   }
 
   MessageLoop::current()->PostDelayedTask(FROM_HERE, base::Bind(
-      &PPB_Graphics3D_Impl::OnSwapBuffers, weak_ptr_factory_.GetWeakPtr()), base::TimeDelta::FromMilliseconds(1000/30)); // 30 FPS
+      &PPB_Graphics3D_Impl::OnSwapBuffers, weak_ptr_factory_.GetWeakPtr()), base::TimeDelta::FromMilliseconds(1000/60)); // 60 FPS
 
   return PP_OK_COMPLETIONPENDING;
 }

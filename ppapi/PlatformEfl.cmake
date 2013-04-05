@@ -11,12 +11,10 @@ LIST(APPEND WebKit2_LIBRARIES
     ${GLIB_GOBJECT_LIBRARIES}
 )
 
-#CONFIGURE_FILE(efl/ppapi.pc.in ${CMAKE_BINARY_DIR}/ppapi/efl/ppapi.pc @ONLY)
 SET (ppapi_HEADERS
     "${CMAKE_CURRENT_SOURCE_DIR}/base/basictypes.h"
 )
 
-INSTALL(FILES ${CMAKE_BINARY_DIR}/ppapi/efl/ppapi.pc DESTINATION lib/pkgconfig)
 INSTALL(FILES ${Eppapi_HEADERS} DESTINATION include/${ppapi_LIBRARY_NAME}-${PROJECT_VERSION_MAJOR})
 
 

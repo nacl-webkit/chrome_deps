@@ -2,7 +2,9 @@ include(NaclBuildNexe)
 
 set(libtracing_untrusted_sources
     ${CMAKE_CURRENT_SOURCE_DIR}/tracing/child_trace_message_filter.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/tracing/child_trace_message_filter.h
     ${CMAKE_CURRENT_SOURCE_DIR}/tracing/tracing_messages.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/tracing/tracing_messages.h
 )
 
 set(libtracing_untrusted_include_dirs

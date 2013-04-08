@@ -2,12 +2,21 @@ include(NaclBuildNexe)
 
 set(ppapi_ipc_untrusted_sources
     ${CHROME_DEPS_DIR}/ppapi/proxy/handle_converter.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/handle_converter.h
     ${CHROME_DEPS_DIR}/ppapi/proxy/ppapi_messages.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/ppapi_messages.h
     ${CHROME_DEPS_DIR}/ppapi/proxy/ppapi_param_traits.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/ppapi_param_traits.h
     ${CHROME_DEPS_DIR}/ppapi/proxy/resource_message_params.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/resource_message_params.h
+    ${CHROME_DEPS_DIR}/ppapi/proxy/serialized_flash_menu.h
     ${CHROME_DEPS_DIR}/ppapi/proxy/serialized_handle.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/serialized_handle.h
     ${CHROME_DEPS_DIR}/ppapi/proxy/serialized_structs.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/serialized_structs.h
     ${CHROME_DEPS_DIR}/ppapi/proxy/serialized_var.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/serialized_var.h
+    ${CHROME_DEPS_DIR}/ppapi/proxy/var_serialization_rules.h
 )
   
 set(ppapi_ipc_untrusted_defines ENABLE_PEPPER_THREADING)

@@ -2,12 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "content/renderer/media/pepper_platform_video_decoder_impl.h"
 
 #include "base/bind.h"
 #include "base/logging.h"
 #include "content/common/child_process.h"
-#include "content/common/gpu/client/gpu_channel_host.h"
+//FIXME: #include "content/common/gpu/client/gpu_channel_host.h"
 #include "content/renderer/render_thread_impl.h"
 
 using media::BitstreamBuffer;
@@ -30,7 +31,7 @@ bool PlatformVideoDecoderImpl::Initialize(media::VideoCodecProfile profile) {
     return true;
 
   RenderThreadImpl* render_thread = RenderThreadImpl::current();
-
+/* FIXME
   // This is not synchronous, but subsequent IPC messages will be buffered, so
   // it is okay to immediately send IPC messages through the returned channel.
   GpuChannelHost* channel =
@@ -45,6 +46,7 @@ bool PlatformVideoDecoderImpl::Initialize(media::VideoCodecProfile profile) {
   // Send IPC message to initialize decoder in GPU process.
   decoder_.reset(channel->CreateVideoDecoder(
       command_buffer_route_id_, profile, this));
+  */
   return decoder_.get() != NULL;
 }
 

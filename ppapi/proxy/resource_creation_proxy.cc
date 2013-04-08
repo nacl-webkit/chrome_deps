@@ -288,9 +288,9 @@ PP_Resource ResourceCreationProxy::CreateX509CertificatePrivate(
     PP_Instance instance) {
   return PPB_X509Certificate_Private_Proxy::CreateProxyResource(instance);
 }
+*/
 
 #if !defined(OS_NACL)
-*/
 PP_Resource ResourceCreationProxy::CreateAudioInput(
     PP_Instance instance) {
 //FIXME  return (new AudioInputResource(GetConnection(), instance))->GetReference();
@@ -311,12 +311,12 @@ PP_Resource ResourceCreationProxy::CreateBrowserFont(
   return (new BrowserFontResource_Trusted(GetConnection(), instance,
       *description, dispatcher->preferences()))->GetReference();
 }
-
+*/
 PP_Resource ResourceCreationProxy::CreateBuffer(PP_Instance instance,
                                                 uint32_t size) {
   return PPB_Buffer_Proxy::CreateProxyResource(instance, size);
 }
-
+/* FIXME
 PP_Resource ResourceCreationProxy::CreateDirectoryReader(
     PP_Resource directory_ref) {
   NOTIMPLEMENTED();  // Not proxied yet.
@@ -367,7 +367,7 @@ PP_Resource ResourceCreationProxy::CreateVideoCapture(PP_Instance instance) {
   return (new VideoCaptureResource(GetConnection(), instance, dispatcher))
       ->GetReference();
 }
-
+*/
 PP_Resource ResourceCreationProxy::CreateVideoDecoder(
     PP_Instance instance,
     PP_Resource context3d_id,
@@ -377,7 +377,7 @@ PP_Resource ResourceCreationProxy::CreateVideoDecoder(
 }
 
 #endif  // !defined(OS_NACL)
-*/
+
 bool ResourceCreationProxy::Send(IPC::Message* msg) {
   return dispatcher()->Send(msg);
 }

@@ -143,15 +143,17 @@ class ResourceCreationAPI {
   virtual PP_Resource CreateWebSocket(PP_Instance instance) = 0;
 /* FIXME
   virtual PP_Resource CreateX509CertificatePrivate(PP_Instance instance) = 0;
+*/
 #if !defined(OS_NACL)
-  */
   virtual PP_Resource CreateAudioInput(PP_Instance instance) = 0;
   virtual PP_Resource CreateBroker(PP_Instance instance) = 0;
 /* FIXME
   virtual PP_Resource CreateBrowserFont(
       PP_Instance instance,
       const PP_BrowserFont_Trusted_Description* description) = 0;
+*/
   virtual PP_Resource CreateBuffer(PP_Instance instance, uint32_t size) = 0;
+/* FIXME
   virtual PP_Resource CreateDirectoryReader(PP_Resource directory_ref) = 0;
   virtual PP_Resource CreateFlashDeviceID(PP_Instance instance) = 0;
   virtual PP_Resource CreateFlashFontFile(
@@ -165,12 +167,13 @@ class ResourceCreationAPI {
                                       PP_Bool vertical) = 0;
   virtual PP_Resource CreateTalk(PP_Instance instance) = 0;
   virtual PP_Resource CreateVideoCapture(PP_Instance instance) = 0;
+*/
   virtual PP_Resource CreateVideoDecoder(
       PP_Instance instance,
       PP_Resource context3d_id,
       PP_VideoDecoder_Profile profile) = 0;
 #endif  // !defined(OS_NACL)
-*/
+
   static const ApiID kApiID = API_ID_RESOURCE_CREATION;
 };
 

@@ -23,8 +23,8 @@
 FIXME:
 #include "googleurl/src/gurl.h"
 #include "media/video/capture/video_capture.h"
-#include "media/video/video_decode_accelerator.h"
 */
+#include "media/video/video_decode_accelerator.h"
 #include "ppapi/c/dev/pp_video_dev.h"
 #include "ppapi/c/dev/ppb_device_ref_dev.h"
 #include "ppapi/c/pp_completion_callback.h"
@@ -98,10 +98,6 @@ class NetworkListObserver;
 }  // namespace webkit_glue
 //FIXME: temporary classes so that we can compile
 namespace media {
-class VideoDecodeAccelerator {
-public:
-    class Client {};
-};
 class VideoCapture {
 public:
     class EventHandler {

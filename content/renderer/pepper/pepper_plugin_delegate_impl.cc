@@ -49,6 +49,7 @@
 #include "content/renderer/pepper/pepper_in_process_resource_creation.h"
 #include "content/renderer/pepper/pepper_platform_audio_input_impl.h"
 */
+#include "content/renderer/media/pepper_platform_video_decoder_impl.h"
 #include "content/renderer/pepper/pepper_platform_audio_output_impl.h"
 #include "content/renderer/pepper/pepper_platform_context_3d_impl.h"
 #include "content/renderer/pepper/pepper_platform_image_2d_impl.h"
@@ -1011,10 +1012,7 @@ webkit::ppapi::PluginDelegate::PlatformVideoDecoder*
 PepperPluginDelegateImpl::CreateVideoDecoder(
     media::VideoDecodeAccelerator::Client* client,
     int32 command_buffer_route_id) {
-/*
-FIXME
   return new PlatformVideoDecoderImpl(client, command_buffer_route_id);
-*/
 }
 
 void PepperPluginDelegateImpl::NumberOfFindResultsChanged(int identifier,

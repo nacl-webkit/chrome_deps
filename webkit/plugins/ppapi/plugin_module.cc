@@ -134,7 +134,7 @@
 #include "webkit/plugins/ppapi/ppb_uma_private_impl.h"
 */
 #include "webkit/plugins/ppapi/ppb_var_deprecated_impl.h"
-//FIXME #include "webkit/plugins/ppapi/ppb_video_decoder_impl.h"
+#include "webkit/plugins/ppapi/ppb_video_decoder_impl.h"
 
 using ppapi::InputEventData;
 using ppapi::PpapiGlobals;

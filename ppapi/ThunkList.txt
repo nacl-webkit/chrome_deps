@@ -6,7 +6,7 @@ set(ppapi_thunk_SOURCES
     ${ppapi_DIR}/thunk/ppb_audio_trusted_thunk.cc
     ${ppapi_DIR}/thunk/ppb_broker_thunk.cc
 #    ${ppapi_DIR}/thunk/ppb_browser_font_trusted_thunk.cc
-#    ${ppapi_DIR}/thunk/ppb_buffer_thunk.cc
+    ${ppapi_DIR}/thunk/ppb_buffer_thunk.cc
 #    ${ppapi_DIR}/thunk/ppb_buffer_trusted_thunk.cc
 #    ${ppapi_DIR}/thunk/ppb_char_set_thunk.cc
     ${ppapi_DIR}/thunk/ppb_console_thunk.cc
@@ -60,7 +60,7 @@ set(ppapi_thunk_SOURCES
     ${ppapi_DIR}/thunk/ppb_url_response_info_thunk.cc
 #    ${ppapi_DIR}/thunk/ppb_url_util_thunk.cc
 #    ${ppapi_DIR}/thunk/ppb_video_capture_thunk.cc
-#    ${ppapi_DIR}/thunk/ppb_video_decoder_thunk.cc
+    ${ppapi_DIR}/thunk/ppb_video_decoder_thunk.cc
     ${ppapi_DIR}/thunk/ppb_view_thunk.cc
     ${ppapi_DIR}/thunk/ppb_websocket_thunk.cc
 #    ${ppapi_DIR}/thunk/ppb_widget_thunk.cc

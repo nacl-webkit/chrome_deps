@@ -34,7 +34,7 @@ set(ppapi_proxy_SOURCES
     ${ppapi_DIR}/proxy/ppapi_param_traits.cc
     ${ppapi_DIR}/proxy/ppb_audio_proxy.cc
     ${ppapi_DIR}/proxy/ppb_broker_proxy.cc
-#    ${ppapi_DIR}/proxy/ppb_buffer_proxy.cc
+    ${ppapi_DIR}/proxy/ppb_buffer_proxy.cc
 #    ${ppapi_DIR}/proxy/ppb_core_proxy.cc
     ${ppapi_DIR}/proxy/ppb_file_ref_proxy.cc
     ${ppapi_DIR}/proxy/ppb_file_system_proxy.cc
@@ -51,7 +51,7 @@ set(ppapi_proxy_SOURCES
 #    ${ppapi_DIR}/proxy/ppb_udp_socket_private_proxy.cc
     ${ppapi_DIR}/proxy/ppb_url_loader_proxy.cc
     ${ppapi_DIR}/proxy/ppb_var_deprecated_proxy.cc
-#    ${ppapi_DIR}/proxy/ppb_video_decoder_proxy.cc
+    ${ppapi_DIR}/proxy/ppb_video_decoder_proxy.cc
 #    ${ppapi_DIR}/proxy/ppb_x509_certificate_private_proxy.cc
     ${ppapi_DIR}/proxy/ppp_class_proxy.cc
 #    ${ppapi_DIR}/proxy/ppp_content_decryptor_private_proxy.cc

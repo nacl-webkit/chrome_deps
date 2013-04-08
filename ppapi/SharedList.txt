@@ -28,7 +28,7 @@ set(ppapi_shared_SOURCES
     ${ppapi_DIR}/shared_impl/ppb_resource_array_shared.cc
     ${ppapi_DIR}/shared_impl/ppb_url_util_shared.cc
     ${ppapi_DIR}/shared_impl/ppb_var_shared.cc
-#    ${ppapi_DIR}/shared_impl/ppb_video_decoder_shared.cc
+    ${ppapi_DIR}/shared_impl/ppb_video_decoder_shared.cc
     ${ppapi_DIR}/shared_impl/ppb_view_shared.cc
     ${ppapi_DIR}/shared_impl/ppp_instance_combined.cc
     ${ppapi_DIR}/shared_impl/proxy_lock.cc

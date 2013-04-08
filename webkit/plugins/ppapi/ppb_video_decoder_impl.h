@@ -16,6 +16,9 @@
 #include "ppapi/thunk/ppb_video_decoder_api.h"
 #include "webkit/plugins/ppapi/plugin_delegate.h"
 
+#include "media/video/video_decode_accelerator.h"
+#include "ui/gfx/size.h"
+
 struct PP_PictureBuffer_Dev;
 struct PP_VideoBitstreamBuffer_Dev;
 
@@ -25,6 +28,9 @@ class GLES2Implementation;
 }  // namespace gles2
 }  // namespace gpu
 
+namespace media {
+class Picture;
+}
 namespace webkit {
 namespace ppapi {
 

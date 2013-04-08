@@ -40,6 +40,7 @@ using ppapi::StringVar;
 */
 
 #include "webkit/plugins/ppapi/ppb_url_loader_impl.h"
+#include "webkit/plugins/ppapi/ppb_video_decoder_impl.h"
 #include "webkit/plugins/ppapi/resource_helper.h"
 
 namespace webkit {
@@ -267,7 +268,7 @@ PP_Resource ResourceCreationImpl::CreateVideoDecoder(
     PP_Instance instance,
     PP_Resource graphics3d_id,
     PP_VideoDecoder_Profile profile) {
-// FIXME  return PPB_VideoDecoder_Impl::Create(instance, graphics3d_id, profile);
+  return PPB_VideoDecoder_Impl::Create(instance, graphics3d_id, profile);
 }
 
 PP_Resource ResourceCreationImpl::CreateWheelInputEvent(

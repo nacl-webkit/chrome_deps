@@ -5,7 +5,8 @@
 #include "ppapi/proxy/ppb_video_decoder_proxy.h"
 
 #include "base/logging.h"
-#include "gpu/command_buffer/client/gles2_implementation.h"
+//FIXME #include "gpu/command_buffer/client/gles2_implementation.h"
+#include "gpu_shim.h"
 #include "ppapi/proxy/enter_proxy.h"
 #include "ppapi/proxy/plugin_dispatcher.h"
 #include "ppapi/proxy/ppapi_messages.h"

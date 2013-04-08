@@ -136,16 +136,18 @@ class ResourceCreationProxy : public InterfaceProxy,
   /* FIXME
   virtual PP_Resource CreateX509CertificatePrivate(
       PP_Instance instance) OVERRIDE;
-#if !defined(OS_NACL)
 */
+#if !defined(OS_NACL)
   virtual PP_Resource CreateAudioInput(PP_Instance instance) OVERRIDE;
   virtual PP_Resource CreateBroker(PP_Instance instance) OVERRIDE;
 /* FIXME
   virtual PP_Resource CreateBrowserFont(
       PP_Instance instance,
       const PP_BrowserFont_Trusted_Description* description) OVERRIDE;
+*/
   virtual PP_Resource CreateBuffer(PP_Instance instance,
                                    uint32_t size) OVERRIDE;
+/* FIXME
   virtual PP_Resource CreateDirectoryReader(PP_Resource directory_ref) OVERRIDE;
   virtual PP_Resource CreateFlashDeviceID(PP_Instance instance) OVERRIDE;
   virtual PP_Resource CreateFlashFontFile(
@@ -159,12 +161,13 @@ class ResourceCreationProxy : public InterfaceProxy,
                                       PP_Bool vertical) OVERRIDE;
   virtual PP_Resource CreateTalk(PP_Instance instance) OVERRIDE;
   virtual PP_Resource CreateVideoCapture(PP_Instance instance) OVERRIDE;
+*/
   virtual PP_Resource CreateVideoDecoder(
       PP_Instance instance,
       PP_Resource context3d_id,
       PP_VideoDecoder_Profile profile) OVERRIDE;
 #endif  // !defined(OS_NACL)
-*/
+
   virtual bool Send(IPC::Message* msg) OVERRIDE;
   virtual bool OnMessageReceived(const IPC::Message& msg) OVERRIDE;
 

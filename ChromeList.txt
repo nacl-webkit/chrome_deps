@@ -214,6 +214,7 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/content/renderer/render_thread_impl.cc
 
     ${CHROME_DEPS_DIR}/content/renderer/media/audio_message_filter.cc
+    ${CHROME_DEPS_DIR}/content/renderer/media/pepper_platform_video_decoder_impl.cc
     ${CHROME_DEPS_DIR}/content/renderer/media/renderer_audio_output_device.cc
 
     ${CHROME_DEPS_DIR}/content/renderer/pepper/content_renderer_pepper_host_factory.cc
@@ -298,6 +299,9 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/media/base/channel_layout.cc
     ${CHROME_DEPS_DIR}/media/base/media_switches.cc
 
+    ${CHROME_DEPS_DIR}/media/video/picture.cc
+    ${CHROME_DEPS_DIR}/media/video/video_decode_accelerator.cc
+
     ${CHROME_DEPS_DIR}/third_party/libevent/buffer.c
     ${CHROME_DEPS_DIR}/third_party/libevent/epoll.c
     ${CHROME_DEPS_DIR}/third_party/libevent/evbuffer.c
@@ -312,6 +316,8 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/third_party/libevent/select.c
     ${CHROME_DEPS_DIR}/third_party/libevent/signal.c
     ${CHROME_DEPS_DIR}/third_party/libevent/strlcpy.c
+
+    ${CHROME_DEPS_DIR}/ui/gfx/size.cc
     
     ${CHROME_DEPS_DIR}/webkit/fileapi/file_system_callback_dispatcher.cc
 
@@ -339,6 +345,7 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_image_data_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_url_loader_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_var_deprecated_impl.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_video_decoder_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/quota_file_io.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/resource_creation_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/resource_helper.cc

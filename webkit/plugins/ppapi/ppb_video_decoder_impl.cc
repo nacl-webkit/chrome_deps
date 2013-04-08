@@ -2,13 +2,16 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include "config.h"
 #include "webkit/plugins/ppapi/ppb_video_decoder_impl.h"
 
 #include <string>
 
 #include "base/logging.h"
 #include "base/message_loop.h"
-#include "gpu/command_buffer/client/gles2_implementation.h"
+//FIXME #include "gpu/command_buffer/client/gles2_implementation.h"
+#include "gpu_shim.h"
+
 #include "media/video/picture.h"
 #include "ppapi/c/dev/pp_video_dev.h"
 #include "ppapi/c/dev/ppb_video_decoder_dev.h"

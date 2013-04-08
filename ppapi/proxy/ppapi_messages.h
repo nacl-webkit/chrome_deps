@@ -88,10 +88,8 @@ IPC_ENUM_TRAITS(PP_PrintScalingOption_Dev)
 IPC_ENUM_TRAITS(PP_PrivateFontCharset)
 */
 IPC_ENUM_TRAITS(PP_TextInput_Type)
-/* FIXME
 IPC_ENUM_TRAITS(PP_VideoDecodeError_Dev)
 IPC_ENUM_TRAITS(PP_VideoDecoder_Profile)
-*/
 
 IPC_STRUCT_TRAITS_BEGIN(PP_Point)
   IPC_STRUCT_TRAITS_MEMBER(x)
@@ -113,8 +111,6 @@ IPC_STRUCT_TRAITS_BEGIN(PP_Rect)
   IPC_STRUCT_TRAITS_MEMBER(size)
 IPC_STRUCT_TRAITS_END()
 
-/*
-FIXME:
 IPC_STRUCT_TRAITS_BEGIN(PP_PictureBuffer_Dev)
   IPC_STRUCT_TRAITS_MEMBER(id)
   IPC_STRUCT_TRAITS_MEMBER(size)
@@ -126,6 +122,8 @@ IPC_STRUCT_TRAITS_BEGIN(PP_Picture_Dev)
   IPC_STRUCT_TRAITS_MEMBER(bitstream_buffer_id)
 IPC_STRUCT_TRAITS_END()
 
+/*
+FIXME:
 IPC_STRUCT_TRAITS_BEGIN(PP_PrintPageNumberRange_Dev)
   IPC_STRUCT_TRAITS_MEMBER(first_page_number)
   IPC_STRUCT_TRAITS_MEMBER(last_page_number)
@@ -749,8 +747,6 @@ IPC_SYNC_MESSAGE_ROUTED1_1(PpapiMsg_PPPInstancePrivate_GetInstanceObject,
                            PP_Instance /* instance */,
                            ppapi::proxy::SerializedVar /* result */)
 
-#if 0
-// FIXME:
 // PPB_VideoDecoder_Dev.
 // (Messages from renderer to plugin to notify it to run callbacks.)
 IPC_MESSAGE_ROUTED3(PpapiMsg_PPBVideoDecoder_EndOfBitstreamACK,
@@ -780,7 +776,6 @@ IPC_MESSAGE_ROUTED2(PpapiMsg_PPPVideoDecoder_NotifyError,
                     ppapi::HostResource /* video_decoder */,
                     PP_VideoDecodeError_Dev /* error */)
 #endif  // !defined(OS_NACL) && !defined(NACL_WIN64)
-#endif // 0
 
 // -----------------------------------------------------------------------------
 // These are from the plugin to the renderer.
@@ -1091,8 +1086,6 @@ IPC_SYNC_MESSAGE_ROUTED1_1(PpapiHostMsg_PPBBroker_Create,
                            ppapi::HostResource /* result_resource */)
 IPC_MESSAGE_ROUTED1(PpapiHostMsg_PPBBroker_Connect,
                     ppapi::HostResource /* broker */)
-#if 0
-FIXME
 
 // PPB_Buffer.
 IPC_SYNC_MESSAGE_ROUTED2_2(
@@ -1102,6 +1095,8 @@ IPC_SYNC_MESSAGE_ROUTED2_2(
     ppapi::HostResource /* result_resource */,
     ppapi::proxy::SerializedHandle /* result_shm_handle */)
 
+#if 0
+FIXME
 // PPB_ContentDecryptor_Dev messages handled in PPB_Instance_Proxy.
 IPC_MESSAGE_ROUTED4(PpapiHostMsg_PPBInstance_NeedKey,
                     PP_Instance /* instance */,
@@ -1195,7 +1190,7 @@ IPC_SYNC_MESSAGE_ROUTED1_1(PpapiHostMsg_PPBTesting_GetLiveObjectsForInstance,
 IPC_MESSAGE_ROUTED2(PpapiHostMsg_PPBTesting_SimulateInputEvent,
                     PP_Instance /* instance */,
                     ppapi::InputEventData /* input_event */)
-
+#endif
 #if !defined(OS_NACL) && !defined(NACL_WIN64)
 
 // PPB_VideoDecoder.
@@ -1222,6 +1217,9 @@ IPC_MESSAGE_ROUTED1(PpapiHostMsg_PPBVideoDecoder_Reset,
 IPC_SYNC_MESSAGE_ROUTED1_0(PpapiHostMsg_PPBVideoDecoder_Destroy,
                            ppapi::HostResource /* video_decoder */)
 
+#endif  // !defined(OS_NACL) && !defined(NACL_WIN64)
+#if 0
+FIXME
 // PPB_Flash_MessageLoop.
 IPC_SYNC_MESSAGE_ROUTED1_1(PpapiHostMsg_PPBFlashMessageLoop_Create,
                            PP_Instance /* instance */,
@@ -1231,7 +1229,7 @@ IPC_SYNC_MESSAGE_ROUTED1_1(PpapiHostMsg_PPBFlashMessageLoop_Run,
                            int32_t /* result */)
 IPC_SYNC_MESSAGE_ROUTED1_0(PpapiHostMsg_PPBFlashMessageLoop_Quit,
                            ppapi::HostResource /* flash_message_loop */)
-#endif  // !defined(OS_NACL) && !defined(NACL_WIN64)
+//#endif  // !defined(OS_NACL) && !defined(NACL_WIN64)
 
 // PPB_TCPSocket_Private.
 IPC_SYNC_MESSAGE_CONTROL2_1(PpapiHostMsg_PPBTCPSocket_Create,

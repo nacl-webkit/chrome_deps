@@ -2,93 +2,193 @@ include(NaclBuildNexe)
 
 set(ppapi_shared_untrusted_sources
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/array_writer.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/array_writer.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/callback_tracker.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/callback_tracker.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/file_io_state_manager.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/file_io_state_manager.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/file_path.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/file_path.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/file_type_conversion.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/file_type_conversion.h
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/flash_clipboard_format_registry.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/host_resource.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/host_resource.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/id_assignment.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/id_assignment.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/platform_file.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/platform_file.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppapi_globals.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppapi_globals.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppapi_permissions.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppapi_permissions.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppapi_preferences.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppapi_preferences.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppapi_switches.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppapi_switches.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_audio_config_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_audio_config_shared.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_audio_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_audio_shared.h
 #    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_crypto_shared.cc
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_device_ref_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_device_ref_shared.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_file_ref_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_file_ref_shared.h
 #    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_gamepad_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_gamepad_shared.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_graphics_3d_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_graphics_3d_shared.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_image_data_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_image_data_shared.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_input_event_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_input_event_shared.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_instance_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_instance_shared.h
 #    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_memory_shared.cc
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_message_loop_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_message_loop_shared.h
 #    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_network_list_private_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_network_list_private_shared.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_opengles2_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_opengles2_shared.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_resource_array_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_resource_array_shared.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_trace_event_impl.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_trace_event_impl.h
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_url_util_shared.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_var_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_var_shared.h
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_video_decoder_shared.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_view_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppb_view_shared.h
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppp_flash_browser_operations_shared.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppp_instance_combined.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/ppp_instance_combined.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/proxy_lock.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/proxy_lock.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/resource.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/resource.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/resource_tracker.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/resource_tracker.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/scoped_pp_resource.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/scoped_pp_resource.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/scoped_pp_var.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/scoped_pp_var.h
 #    ${CHROME_DEPS_DIR}/ppapi/shared_impl/thread_aware_callback.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/thread_aware_callback.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/time_conversion.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/time_conversion.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/tracked_callback.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/tracked_callback.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/url_request_info_data.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/url_request_info_data.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/url_response_info_data.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/url_response_info_data.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/var.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/var.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/var_tracker.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/var_tracker.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/private/net_address_private_impl.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/private/net_address_private_impl.h
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/private/ppb_char_set_shared.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/private/ppb_host_resolver_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/private/ppb_host_resolver_shared.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/private/ppb_tcp_server_socket_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/private/ppb_tcp_server_socket_shared.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/private/ppb_x509_certificate_private_shared.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/private/ppb_x509_certificate_private_shared.h
     ${CHROME_DEPS_DIR}/ppapi/shared_impl/private/tcp_socket_private_impl.cc
+    ${CHROME_DEPS_DIR}/ppapi/shared_impl/private/tcp_socket_private_impl.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/enter.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/enter.h
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_audio_api.h
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_audio_config_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_audio_config_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_audio_input_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_audio_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_broker_api.h
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_browser_font_trusted_api.h
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_buffer_api.h
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_buffer_trusted_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_console_thunk.cc
 #    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_cursor_control_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_device_ref_api.h
 #    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_device_ref_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_directory_reader_api.h
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_file_chooser_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_file_chooser_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_file_io_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_file_io_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_file_ref_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_file_ref_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_file_system_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_file_system_thunk.cc
 #    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_find_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_flash_clipboard_api.h
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_flash_device_id_api.h
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_flash_font_file_api.h
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_flash_fullscreen_api.h
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_flash_functions_api.h
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_flash_menu_api.h
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_flash_message_loop_api.h
 #    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_flash_print_thunk.cc
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_fullscreen_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_gamepad_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_gamepad_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_graphics_2d_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_graphics_2d_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_graphics_3d_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_graphics_3d_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_host_resolver_private_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_host_resolver_private_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_image_data_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_image_data_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_input_event_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_input_event_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_instance_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_instance_private_thunk.cc
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_instance_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_message_loop_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_messaging_thunk.cc
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_mouse_cursor_thunk.cc
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_mouse_lock_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_network_list_private_api.h
 #    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_network_list_private_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_network_monitor_private_api.h
 #    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_network_monitor_private_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_pdf_api.h
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_printing_api.h
 #    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_printing_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_resource_array_api.h
 #    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_resource_array_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_scrollbar_api.h
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_talk_private_api.h
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_tcp_server_socket_private_api.h
 #    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_tcp_server_socket_private_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_tcp_socket_private_api.h
 #    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_tcp_socket_private_thunk.cc
 #    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_text_input_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_udp_socket_private_api.h
 #    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_udp_socket_private_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_url_loader_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_url_loader_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_url_request_info_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_url_request_info_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_url_response_info_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_url_response_info_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_video_capture_api.h
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_video_decoder_api.h
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_view_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_view_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_websocket_api.h
     ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_websocket_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_widget_api.h
 #    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_widget_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_x509_certificate_private_api.h
 #    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_x509_certificate_private_thunk.cc
 #    ${CHROME_DEPS_DIR}/ppapi/thunk/ppb_zoom_thunk.cc
+    ${CHROME_DEPS_DIR}/ppapi/thunk/thunk.h
 )
   
 set(ppapi_shared_untrusted_defines ENABLE_PEPPER_THREADING)

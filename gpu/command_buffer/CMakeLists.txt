@@ -1,8 +1,12 @@
 include(NaclBuildNexe)
 
 set(libgles2_utils_untrusted_sources
+    ${CMAKE_CURRENT_SOURCE_DIR}/common/gles2_cmd_format.h
     ${CMAKE_CURRENT_SOURCE_DIR}/common/gles2_cmd_utils.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/common/gles2_cmd_utils.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/common/gles2_utils_export.h
     ${CMAKE_CURRENT_SOURCE_DIR}/common/logging.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/common/logging.h
 )
 
 set(libgles2_utils_untrusted_include_dirs

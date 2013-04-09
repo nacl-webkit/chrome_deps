@@ -26,10 +26,13 @@
 #include "base/posix/unix_domain_socket_linux.h"
 #include "base/rand_util.h"
 #include "chrome/nacl/nacl_listener.h"
+#include "chrome/nacl/nacl_ipc_adapter.h"
 #if defined(USE_NSS)
 #include "crypto/nss_util.h"
 #endif
 #include "ipc/ipc_descriptors.h"
+#include "ipc/ipc_channel.h"
+#include "ipc/ipc_channel_handle.h"
 #include "ipc/ipc_switches.h"
 #include "sandbox/linux/services/libc_urandom_override.h"
 
@@ -153,7 +156,17 @@ void HandleLoadRequest(const std::vector<int>& fds) {
     return;
   }
 
-  args->initial_ipc_desc = NULL; // Only when params.enable_ipc_proxy
+  do {
+    base::Thread io_thread("NaCl_IOThread");
+    io_thread.StartWithOptions(base::Thread::Options(MessageLoop::TYPE_IO, 0));
+    IPC::ChannelHandle handle =
+        IPC::Channel::GenerateVerifiedChannelID("nacl");
+    scoped_refptr<NaClIPCAdapter> ipc_adapter(
+        new NaClIPCAdapter(handle, io_thread.message_loop_proxy()));
+    ipc_adapter->ConnectChannel();
+    args->initial_ipc_desc = ipc_adapter->MakeNaClDesc(); // Chrome has this when params.enable_ipc_proxy is true
+  } while (0);
+
 #if NACL_LINUX || NACL_OSX
   args->urandom_fd = dup(base::GetUrandomFD());
   if (args->urandom_fd < 0) {

@@ -13,7 +13,7 @@
 #include "base/string_piece.h"
 #include "build/build_config.h"
 #include "content/common/content_export.h"
-#include "ui/base/layout.h"
+//FIXME #include "ui/base/layout.h"
 
 class CommandLine;
 class GURL;
@@ -119,16 +119,16 @@ class CONTENT_EXPORT ContentClient {
   virtual string16 GetLocalizedString(int message_id) const;
 
   // Return the contents of a resource in a StringPiece given the resource id.
-  virtual base::StringPiece GetDataResource(
-      int resource_id,
-      ui::ScaleFactor scale_factor) const;
+//FIXME  virtual base::StringPiece GetDataResource(
+//FIXME      int resource_id,
+//FIXME      ui::ScaleFactor scale_factor) const;
 
   // Returns the raw bytes of a scale independent data resource.
   virtual base::RefCountedStaticMemory* GetDataResourceBytes(
       int resource_id) const;
 
   // Returns a native image given its id.
-  virtual gfx::Image& GetNativeImageNamed(int resource_id) const;
+//FIXME  virtual gfx::Image& GetNativeImageNamed(int resource_id) const;
 
 #if defined(OS_MACOSX) && !defined(OS_IOS)
   // Allows the embedder to define a new |sandbox_type| by mapping it to the

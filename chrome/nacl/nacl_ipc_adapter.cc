@@ -6,6 +6,7 @@
 
 #include <limits.h>
 #include <string.h>
+#include <fcntl.h>
 
 #include "base/basictypes.h"
 #include "base/bind.h"
@@ -189,7 +190,8 @@ NaClIPCAdapter::NaClIPCAdapter(const IPC::ChannelHandle& handle,
     : lock_(),
       cond_var_(&lock_),
       task_runner_(runner),
-      locked_data_() {
+      locked_data_(),
+      create_from_outside_fd_(-1) {
   io_thread_data_.channel_.reset(
       new IPC::Channel(handle, IPC::Channel::MODE_SERVER, this));
   // Note, we can not PostTask for ConnectChannelOnIOThread here. If we did,
@@ -204,7 +206,8 @@ NaClIPCAdapter::NaClIPCAdapter(scoped_ptr<IPC::Channel> channel,
     : lock_(),
       cond_var_(&lock_),
       task_runner_(runner),
-      locked_data_() {
+      locked_data_(),
+      create_from_outside_fd_(-1) {
   io_thread_data_.channel_ = channel.Pass();
 }
 
@@ -373,22 +376,34 @@ bool NaClIPCAdapter::OnMessageReceived(const IPC::Message& msg) {
           // Check that this came from a PpapiMsg_CreateNaClChannel message.
           // This code here is only appropriate for that message.
           DCHECK(msg.type() == PpapiMsg_CreateNaClChannel::ID);
-          IPC::ChannelHandle channel_handle =
-              IPC::Channel::GenerateVerifiedChannelID("nacl");
-          scoped_refptr<NaClIPCAdapter> ipc_adapter(
-              new NaClIPCAdapter(channel_handle, task_runner_));
-          ipc_adapter->ConnectChannel();
+          if (create_from_outside_fd_ == -1) {
+            IPC::ChannelHandle channel_handle =
+                IPC::Channel::GenerateVerifiedChannelID("nacl");
+            scoped_refptr<NaClIPCAdapter> ipc_adapter(
+                new NaClIPCAdapter(channel_handle, task_runner_));
+            ipc_adapter->ConnectChannel();
 #if defined(OS_POSIX)
-          channel_handle.socket = base::FileDescriptor(
-              ipc_adapter->TakeClientFileDescriptor(), true);
+            channel_handle.socket = base::FileDescriptor(
+                ipc_adapter->TakeClientFileDescriptor(), true);
 #endif
-          nacl_desc.reset(factory.MakeGeneric(ipc_adapter->MakeNaClDesc()));
-          // Send back a message that the channel was created.
-          scoped_ptr<IPC::Message> response(
-              new PpapiHostMsg_ChannelCreated(channel_handle));
-          task_runner_->PostTask(FROM_HERE,
-              base::Bind(&NaClIPCAdapter::SendMessageOnIOThread, this,
-                         base::Passed(&response)));
+            nacl_desc.reset(factory.MakeGeneric(ipc_adapter->MakeNaClDesc()));
+            // Send back a message that the channel was created.
+            scoped_ptr<IPC::Message> response(
+                new PpapiHostMsg_ChannelCreated(channel_handle));
+            task_runner_->PostTask(FROM_HERE,
+                base::Bind(&NaClIPCAdapter::SendMessageOnIOThread, this,
+                           base::Passed(&response)));
+          } else { // Use existing fd to create IPCAdapter
+            CHECK(fcntl(create_from_outside_fd_, F_SETFL, O_NONBLOCK) != -1);
+            base::FileDescriptor fd(create_from_outside_fd_, false);
+            IPC::ChannelHandle channel_handle("nacl", fd);
+            scoped_refptr<NaClIPCAdapter> ipc_adapter(
+                new NaClIPCAdapter(channel_handle, task_runner_));
+            ipc_adapter->ConnectChannel();
+            channel_handle.socket = base::FileDescriptor(
+                ipc_adapter->TakeClientFileDescriptor(), true);
+            nacl_desc.reset(factory.MakeGeneric(ipc_adapter->MakeNaClDesc())); // this makes dispatcher receive PpapiMsg_CreateNaClChannel
+          }
           break;
         }
         case ppapi::proxy::SerializedHandle::FILE:
@@ -532,3 +547,15 @@ void NaClIPCAdapter::SaveMessage(const IPC::Message& msg,
   locked_data_.to_be_received_.push(rewritten_msg);
 }
 
+void NaClIPCAdapter::CreateAdapterForRenderer(int fd)
+{
+  create_from_outside_fd_ = fd; 
+  IPC::Message msg = PpapiMsg_CreateNaClChannel(
+        2, // render process id
+        ppapi::PpapiPermissions::AllPermissions(),
+        false, // off_the_record()
+        ppapi::proxy::SerializedHandle(
+                ppapi::proxy::SerializedHandle::CHANNEL_HANDLE,
+                IPC::InvalidPlatformFileForTransit()));
+  OnMessageReceived(msg); // send msg to self for setup nacldesc of adapter
+}

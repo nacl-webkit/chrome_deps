@@ -96,7 +96,8 @@ bool HostDispatcher::InitHostWithChannel(
     return false;
   AddIOThreadMessageFilter(sync_status_.get());
 
-  Send(new PpapiMsg_SetPreferences(preferences));
+  //FIXME This preference is not ready yet
+  //FIXME Send(new PpapiMsg_SetPreferences(preferences));
   return true;
 }
 
@@ -219,25 +220,26 @@ const void* HostDispatcher::GetProxiedInterface(const std::string& iface_name) {
       InterfaceList::GetInstance()->GetInterfaceForPPP(iface_name);
   if (!proxied_interface)
     return NULL;  // Don't have a proxy for this interface, don't query further.
+  else
+    return proxied_interface; //FIXME: We assume it is supported so that no query message will be send to browser
+  //FIXME PluginSupportedMap::iterator iter(plugin_supported_.find(iface_name));
+  //FIXME if (iter == plugin_supported_.end()) {
+  //FIXME   // Need to query. Cache the result so we only do this once.
+  //FIXME   bool supported = false;
 
-  PluginSupportedMap::iterator iter(plugin_supported_.find(iface_name));
-  if (iter == plugin_supported_.end()) {
-    // Need to query. Cache the result so we only do this once.
-    bool supported = false;
+  //FIXME   bool previous_reentrancy_value = allow_plugin_reentrancy_;
+  //FIXME   allow_plugin_reentrancy_ = true;
+  //FIXME   Send(new PpapiMsg_SupportsInterface(iface_name, &supported));
+  //FIXME   allow_plugin_reentrancy_ = previous_reentrancy_value;
 
-    bool previous_reentrancy_value = allow_plugin_reentrancy_;
-    allow_plugin_reentrancy_ = true;
-    Send(new PpapiMsg_SupportsInterface(iface_name, &supported));
-    allow_plugin_reentrancy_ = previous_reentrancy_value;
-
-    std::pair<PluginSupportedMap::iterator, bool> iter_success_pair;
-    iter_success_pair = plugin_supported_.insert(
-        PluginSupportedMap::value_type(iface_name, supported));
-    iter = iter_success_pair.first;
-  }
-  if (iter->second)
-    return proxied_interface;
-  return NULL;
+  //FIXME   std::pair<PluginSupportedMap::iterator, bool> iter_success_pair;
+  //FIXME   iter_success_pair = plugin_supported_.insert(
+  //FIXME       PluginSupportedMap::value_type(iface_name, supported));
+  //FIXME   iter = iter_success_pair.first;
+  //FIXME }
+  //FIXME if (iter->second)
+  //FIXME   return proxied_interface;
+  //FIXME return NULL;
 }
 
 void HostDispatcher::OnInvalidMessageReceived() {

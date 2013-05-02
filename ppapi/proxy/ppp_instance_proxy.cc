@@ -179,6 +179,7 @@ void PPP_Instance_Proxy::OnPluginMsgDidCreate(
     const std::vector<std::string>& argn,
     const std::vector<std::string>& argv,
     PP_Bool* result) {
+  //fprintf(stderr, "hdq - inner nacl - received PpapiMsg_PPPInstance_DidCreate\n");
   *result = PP_FALSE;
   if (argn.size() != argv.size())
     return;

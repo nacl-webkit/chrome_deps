@@ -6,12 +6,13 @@
 
 #include "base/logging.h"
 #include "base/string_piece.h"
-#include "ui/gfx/image/image.h"
+//FIXME #include "ui/gfx/image/image.h"
+#include <assert.h>
 #include "webkit/user_agent/user_agent.h"
 
-#if defined(ENABLE_PLUGINS)
+//FIXME #if defined(ENABLE_PLUGINS)
 #include "webkit/plugins/ppapi/host_globals.h"
-#endif
+//FIXME #endif
 
 namespace content {
 
@@ -24,7 +25,8 @@ void SetContentClient(ContentClient* client) {
   // sure this is done before webkit_glue::GetUserAgent() is called (so that
   // the UA doesn't change).
   if (client) {
-    webkit_glue::SetUserAgent(client->GetUserAgent(), false);
+    assert(0);
+//FIXME    webkit_glue::SetUserAgent(client->GetUserAgent(), false);
   }
 }
 
@@ -33,16 +35,17 @@ ContentClient* GetContentClient() {
 }
 
 const std::string& GetUserAgent(const GURL& url) {
+  assert(0);
   DCHECK(g_client);
-  return webkit_glue::GetUserAgent(url);
+//FIXME  return webkit_glue::GetUserAgent(url);
 }
 
 webkit::ppapi::HostGlobals* GetHostGlobals() {
-#if defined(ENABLE_PLUGINS)
+//FIXME #if defined(ENABLE_PLUGINS)
   return webkit::ppapi::HostGlobals::Get();
-#else
-  return NULL;
-#endif
+//FIXME #else
+//FIXME   return NULL;
+//FIXME #endif
 }
 
 ContentClient::ContentClient()
@@ -68,21 +71,21 @@ string16 ContentClient::GetLocalizedString(int message_id) const {
   return string16();
 }
 
-base::StringPiece ContentClient::GetDataResource(
-    int resource_id,
-    ui::ScaleFactor scale_factor) const {
-  return base::StringPiece();
-}
+//FIXME base::StringPiece ContentClient::GetDataResource(
+//FIXME     int resource_id,
+//FIXME     ui::ScaleFactor scale_factor) const {
+//FIXME   return base::StringPiece();
+//FIXME }
 
 base::RefCountedStaticMemory* ContentClient::GetDataResourceBytes(
     int resource_id) const {
   return NULL;
 }
 
-gfx::Image& ContentClient::GetNativeImageNamed(int resource_id) const {
-  CR_DEFINE_STATIC_LOCAL(gfx::Image, kEmptyImage, ());
-  return kEmptyImage;
-}
+//FIXME gfx::Image& ContentClient::GetNativeImageNamed(int resource_id) const {
+//FIXME   CR_DEFINE_STATIC_LOCAL(gfx::Image, kEmptyImage, ());
+//FIXME   return kEmptyImage;
+//FIXME }
 
 #if defined(OS_MACOSX) && !defined(OS_IOS)
 bool ContentClient::GetSandboxProfileForSandboxType(

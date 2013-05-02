@@ -101,7 +101,7 @@ set(ppapi_proxy_untrusted_sources
 #    ${CHROME_DEPS_DIR}/ppapi/proxy/ppp_input_event_proxy.cc
 #    ${CHROME_DEPS_DIR}/ppapi/proxy/ppp_input_event_proxy.h
 #    ${CHROME_DEPS_DIR}/ppapi/proxy/ppp_instance_private_proxy.h
-#    ${CHROME_DEPS_DIR}/ppapi/proxy/ppp_instance_proxy.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/ppp_instance_proxy.cc
 #    ${CHROME_DEPS_DIR}/ppapi/proxy/ppp_instance_proxy.h
 #    ${CHROME_DEPS_DIR}/ppapi/proxy/ppp_messaging_proxy.cc
 #    ${CHROME_DEPS_DIR}/ppapi/proxy/ppp_messaging_proxy.h

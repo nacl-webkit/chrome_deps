@@ -57,8 +57,6 @@ class RenderView;
 // There will be one of these objects in the renderer per plugin module.
 class RendererPpapiHost {
  public:
-/*
-FIXME:
   // Creates a host and sets up an out-of-process proxy for an external plugin
   // module. |file_path| should identify the module. It is only used to report
   // failures to the renderer.
@@ -72,7 +70,7 @@ FIXME:
       const IPC::ChannelHandle& channel_handle,
       base::ProcessId plugin_pid,
       int plugin_child_id);
-*/
+
   // Returns the RendererPpapiHost associated with the given PP_Instance,
   // or NULL if the instance is invalid.
   CONTENT_EXPORT static RendererPpapiHost* GetForPPInstance(

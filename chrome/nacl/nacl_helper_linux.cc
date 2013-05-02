@@ -145,27 +145,22 @@ int CreateMemoryObject(size_t size, int executable) {
 #endif
 
 void HandleLoadRequest(const std::vector<int>& fds) {
-  // don't need zygote FD any more
-  if (HANDLE_EINTR(close(kNaClZygoteDescriptor)) != 0)
-    printf("naclhelper - close kNaClZygoteDescriptor failed.\n");
-  printf("hdq - naclhelper - closed kNaClZygoteDescriptor.\n");
-
   struct NaClChromeMainArgs *args = NaClChromeMainArgsCreate();
   if (args == NULL) {
     printf("naclhelper - NaClChromeMainArgsCreate() failed");
     return;
   }
 
-  do {
-    base::Thread io_thread("NaCl_IOThread");
-    io_thread.StartWithOptions(base::Thread::Options(MessageLoop::TYPE_IO, 0));
-    IPC::ChannelHandle handle =
-        IPC::Channel::GenerateVerifiedChannelID("nacl");
-    scoped_refptr<NaClIPCAdapter> ipc_adapter(
-        new NaClIPCAdapter(handle, io_thread.message_loop_proxy()));
-    ipc_adapter->ConnectChannel();
-    args->initial_ipc_desc = ipc_adapter->MakeNaClDesc(); // Chrome has this when params.enable_ipc_proxy is true
-  } while (0);
+  base::Thread io_thread("NaCl_IOThread");
+  io_thread.StartWithOptions(base::Thread::Options(MessageLoop::TYPE_IO, 0));
+  IPC::ChannelHandle handle =
+      IPC::Channel::GenerateVerifiedChannelID("nacl");
+  scoped_refptr<NaClIPCAdapter> ipc_adapter(
+      new NaClIPCAdapter(handle, io_thread.message_loop_proxy()));
+  ipc_adapter->ConnectChannel();
+  args->initial_ipc_desc = ipc_adapter->MakeNaClDesc(); // Chrome has this when params.enable_ipc_proxy is true
+  //handle.socket.fd = fds[1]; // useless here as we won't send handle to browser->renderer
+  ipc_adapter->CreateAdapterForRenderer(fds[1]); // We use this to replace function of PpapiMsg_CreateNaClChannel
 
 #if NACL_LINUX || NACL_OSX
   args->urandom_fd = dup(base::GetUrandomFD());
@@ -187,7 +182,7 @@ void HandleLoadRequest(const std::vector<int>& fds) {
 
   args->imc_bootstrap_handle = fds[0];
 
-  printf("hdq - naclhelper - will call NaClChromeMainStart(imc_bootstrap_handle: %d, irt_fd: %d, ...)\n",
+  printf("hdq - nacl_helper: will call NaClChromeMainStart(imc_bootstrap_handle: imc %d, irt_fd: %d, ...)\n",
           args->imc_bootstrap_handle, args->irt_fd);
 
   NaClChromeMainStart(args);

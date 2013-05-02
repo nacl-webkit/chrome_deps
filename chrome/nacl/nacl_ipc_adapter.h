@@ -114,6 +114,10 @@ class NaClIPCAdapter : public base::RefCountedThreadSafe<NaClIPCAdapter>,
   virtual void OnChannelConnected(int32 peer_pid) OVERRIDE;
   virtual void OnChannelError() OVERRIDE;
 
+  // Explicitly call this just like we received PpapiMsg_CreateNaClChannel
+  // As we don't have NaCl-Browser IPC yet.
+  void CreateAdapterForRenderer(int fd);
+
  private:
   friend class base::RefCountedThreadSafe<NaClIPCAdapter>;
 
@@ -184,6 +188,9 @@ class NaClIPCAdapter : public base::RefCountedThreadSafe<NaClIPCAdapter>,
 
   // To be accessed on the I/O thread (via task runner) only.
   IOThreadData io_thread_data_;
+
+  // If this doesn't equal to -1, then the IPC channel is created outside
+  int create_from_outside_fd_;
 
   DISALLOW_COPY_AND_ASSIGN(NaClIPCAdapter);
 };

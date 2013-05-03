@@ -182,9 +182,6 @@ void HandleLoadRequest(const std::vector<int>& fds) {
 
   args->imc_bootstrap_handle = fds[0];
 
-  printf("hdq - nacl_helper: will call NaClChromeMainStart(imc_bootstrap_handle: imc %d, irt_fd: %d, ...)\n",
-          args->imc_bootstrap_handle, args->irt_fd);
-
   NaClChromeMainStart(args);
 }
 
@@ -299,23 +296,19 @@ int main(int argc, char* argv[]) {
   CheckRDebug(argv[0]);
 
   // Send the zygote a message to let it know we are ready to help
-  printf("hdq - nacl_helper -->?UIProcess (ack) ...\n");
   if (!UnixDomainSocket::SendMsg(kNaClZygoteDescriptor,
                                  kNaClHelperStartupAck,
                                  sizeof(kNaClHelperStartupAck), empty)) {
     LOG(ERROR) << "*** send() to zygote failed";
   }
-  printf("hdq - nacl_helper --> UIProcess (ack) success\n");
 
   while (true) {
     int badpid = -1;
     std::vector<int> fds;
     static const unsigned kMaxMessageLength = 2048;
     char buf[kMaxMessageLength];
-    printf("hdq - nacl_helper: listening at kNaClZygoteDescriptor...\n");
     const ssize_t msglen = UnixDomainSocket::RecvMsg(kNaClZygoteDescriptor,
                                                      &buf, sizeof(buf), &fds);
-    printf("hdq - nacl_helper: listening at kNaClZygoteDescriptor... received msg\n");
     if (msglen == 0 || (msglen == -1 && errno == ECONNRESET)) {
       // EOF from the browser. Goodbye!
       _exit(0);

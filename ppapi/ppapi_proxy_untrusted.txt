@@ -72,7 +72,7 @@ set(ppapi_proxy_untrusted_sources
     ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_host_resolver_private_proxy.h
     ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_image_data_proxy.cc
     ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_image_data_proxy.h
-#    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_instance_proxy.cc
+    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_instance_proxy.cc
 #    ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_instance_proxy.h
     ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_message_loop_proxy.cc
     ${CHROME_DEPS_DIR}/ppapi/proxy/ppb_message_loop_proxy.h

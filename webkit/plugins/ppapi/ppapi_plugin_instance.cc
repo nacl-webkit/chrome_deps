@@ -2646,6 +2646,7 @@ PP_NaClResult PluginInstance::ResetAsProxied(
     // While this could be a failure to implement the interface in the NaCl
     // module, it is more likely that the NaCl process has crashed. Either
     // way, report that module initialization failed.
+    DLOG(ERROR) << "ppp_instance_combined failed";
     return PP_NACL_ERROR_MODULE;
   }
 
@@ -2686,8 +2687,8 @@ PP_NaClResult PluginInstance::ResetAsProxied(
   // If we received HandleDocumentLoad, re-send it now via the proxy.
   if (document_loader_)
     HandleDocumentLoad(document_loader_.get());
-  return PP_NACL_OK;
 */
+  return PP_NACL_OK;
 }
 
 bool PluginInstance::IsValidInstanceOf(PluginModule* module) {

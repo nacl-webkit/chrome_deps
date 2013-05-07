@@ -17,18 +17,18 @@
 // For PROXIED_APIs, these also correspond to *_Proxy objects. The proxied ones
 // define factory functions for each of these classes. UNPROXIED_APIs are ones
 // that exist in the webkit/plugins/ppapi/*_impl.h, but not in the proxy.
-PROXIED_API(PPB_Audio)
-PROXIED_API(PPB_Core)
+//FIXME PROXIED_API(PPB_Audio)
+//FIXME PROXIED_API(PPB_Core)
 PROXIED_API(PPB_FileRef)
 PROXIED_API(PPB_FileSystem)
-PROXIED_API(PPB_Graphics3D)
-PROXIED_API(PPB_ImageData)
+//FIXME PROXIED_API(PPB_Graphics3D)
+//FIXME PROXIED_API(PPB_ImageData)
 PROXIED_API(PPB_Instance)
 PROXIED_API(PPB_URLLoader)
 
 // AudioConfig isn't proxied in the normal way, we have only local classes and
 // serialize it to a struct when we need it on the host side.
-UNPROXIED_API(PPB_AudioConfig)
+//FIXME UNPROXIED_API(PPB_AudioConfig)
 
 // Interfaces
 // ----------
@@ -46,17 +46,17 @@ UNPROXIED_API(PPB_AudioConfig)
 // The interface_struct is the typename of the struct corresponding to the
 // interface string.
 // Note: Core is special and is registered manually.
-PROXIED_IFACE(PPB_Audio, PPB_AUDIO_INTERFACE_1_0, PPB_Audio_1_0)
+//FIXME PROXIED_IFACE(PPB_Audio, PPB_AUDIO_INTERFACE_1_0, PPB_Audio_1_0)
 PROXIED_IFACE(PPB_FileRef, PPB_FILEREF_INTERFACE_1_0, PPB_FileRef_1_0)
 PROXIED_IFACE(PPB_FileSystem, PPB_FILESYSTEM_INTERFACE_1_0, PPB_FileSystem_1_0)
-PROXIED_IFACE(PPB_Graphics3D, PPB_GRAPHICS_3D_INTERFACE_1_0, PPB_Graphics3D_1_0)
-PROXIED_IFACE(PPB_ImageData, PPB_IMAGEDATA_INTERFACE_1_0, PPB_ImageData_1_0)
+//FIXME PROXIED_IFACE(PPB_Graphics3D, PPB_GRAPHICS_3D_INTERFACE_1_0, PPB_Graphics3D_1_0)
+//FIXME PROXIED_IFACE(PPB_ImageData, PPB_IMAGEDATA_INTERFACE_1_0, PPB_ImageData_1_0)
 PROXIED_IFACE(PPB_Instance, PPB_CONSOLE_INTERFACE_1_0, PPB_Console_1_0)
-PROXIED_IFACE(PPB_Instance, PPB_GAMEPAD_INTERFACE_1_0, PPB_Gamepad_1_0)
-PROXIED_IFACE(PPB_Instance, PPB_INSTANCE_INTERFACE_1_0, PPB_Instance_1_0)
+//FIXME PROXIED_IFACE(PPB_Instance, PPB_GAMEPAD_INTERFACE_1_0, PPB_Gamepad_1_0)
+//FIXME PROXIED_IFACE(PPB_Instance, PPB_INSTANCE_INTERFACE_1_0, PPB_Instance_1_0)
 PROXIED_IFACE(NoAPIName, PPB_FILEIO_INTERFACE_1_0, PPB_FileIO_1_0)
 PROXIED_IFACE(NoAPIName, PPB_FILEIO_INTERFACE_1_1, PPB_FileIO_1_1)
-PROXIED_IFACE(NoAPIName, PPB_GRAPHICS_2D_INTERFACE_1_0, PPB_Graphics2D_1_0)
+//FIXME PROXIED_IFACE(NoAPIName, PPB_GRAPHICS_2D_INTERFACE_1_0, PPB_Graphics2D_1_0)
 PROXIED_IFACE(NoAPIName, PPB_INPUT_EVENT_INTERFACE_1_0, PPB_InputEvent_1_0)
 PROXIED_IFACE(NoAPIName, PPB_KEYBOARD_INPUT_EVENT_INTERFACE_1_0,
               PPB_KeyboardInputEvent_1_0)
@@ -83,7 +83,7 @@ PROXIED_IFACE(NoAPIName, PPB_WEBSOCKET_INTERFACE_1_0, PPB_WebSocket_1_0)
 PROXIED_IFACE(NoAPIName, PPB_VIEW_INTERFACE_1_0, PPB_View_1_0)
 
 // This has no corresponding _Proxy object since it does no IPC.
-PROXIED_IFACE(NoAPIName, PPB_AUDIO_CONFIG_INTERFACE_1_0, PPB_AudioConfig_1_0)
-PROXIED_IFACE(NoAPIName, PPB_AUDIO_CONFIG_INTERFACE_1_1, PPB_AudioConfig_1_1)
+//FIXME PROXIED_IFACE(NoAPIName, PPB_AUDIO_CONFIG_INTERFACE_1_0, PPB_AudioConfig_1_0)
+//FIXME PROXIED_IFACE(NoAPIName, PPB_AUDIO_CONFIG_INTERFACE_1_1, PPB_AudioConfig_1_1)
 
 #include "ppapi/thunk/interfaces_postamble.h"

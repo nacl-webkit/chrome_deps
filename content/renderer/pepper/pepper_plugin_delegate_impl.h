@@ -98,7 +98,6 @@ class PepperPluginDelegateImpl
 
   // Sets up the renderer host and out-of-process proxy for an external plugin
   // module. Returns the renderer host, or NULL if it couldn't be created.
-  /* FIXME
   RendererPpapiHost* CreateExternalPluginModule(
       scoped_refptr<webkit::ppapi::PluginModule> module,
       const base::FilePath& path,
@@ -107,7 +106,6 @@ class PepperPluginDelegateImpl
       base::ProcessId plugin_pid,
       int plugin_child_id);
 
-  */
   // Removes broker from pending_connect_broker_ if present. Returns true if so.
   bool StopWaitingForBrokerConnection(PepperBrokerImpl* broker);
 

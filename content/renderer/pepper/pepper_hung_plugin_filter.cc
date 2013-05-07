@@ -149,8 +149,10 @@ void PepperHungPluginFilter::OnHangTimer() {
 }
 
 void PepperHungPluginFilter::SendHungMessage(bool is_hung) {
-  filter_->Send(new ViewHostMsg_PepperPluginHung(
-      view_routing_id_, plugin_child_id_, plugin_path_, is_hung));
+  //FIXME Just let browser to know a ppapi plugin waits too long.
+  //FIXME filter_->Send(new ViewHostMsg_PepperPluginHung(
+  //FIXME     view_routing_id_, plugin_child_id_, plugin_path_, is_hung));
+  printf("WebProcess - PepperHungPluginFilter::SendHungMessage(%d) called\n", is_hung);
 }
 
 }  // namespace content

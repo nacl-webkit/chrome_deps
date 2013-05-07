@@ -42,7 +42,7 @@ set(ppapi_proxy_SOURCES
     ${ppapi_DIR}/proxy/ppb_graphics_3d_proxy.cc
     ${ppapi_DIR}/proxy/ppb_host_resolver_private_proxy.cc
     ${ppapi_DIR}/proxy/ppb_image_data_proxy.cc
-#    ${ppapi_DIR}/proxy/ppb_instance_proxy.cc
+    ${ppapi_DIR}/proxy/ppb_instance_proxy.cc
     ${ppapi_DIR}/proxy/ppb_message_loop_proxy.cc
 #    ${ppapi_DIR}/proxy/ppb_network_monitor_private_proxy.cc
 #    ${ppapi_DIR}/proxy/ppb_pdf_proxy.cc
@@ -58,7 +58,7 @@ set(ppapi_proxy_SOURCES
 #    ${ppapi_DIR}/proxy/ppp_graphics_3d_proxy.cc
 #    ${ppapi_DIR}/proxy/ppp_input_event_proxy.cc
 #    ${ppapi_DIR}/proxy/ppp_instance_private_proxy.cc
-#    ${ppapi_DIR}/proxy/ppp_instance_proxy.cc
+    ${ppapi_DIR}/proxy/ppp_instance_proxy.cc
 #    ${ppapi_DIR}/proxy/ppp_messaging_proxy.cc
 #    ${ppapi_DIR}/proxy/ppp_mouse_lock_proxy.cc
 #    ${ppapi_DIR}/proxy/ppp_printing_proxy.cc

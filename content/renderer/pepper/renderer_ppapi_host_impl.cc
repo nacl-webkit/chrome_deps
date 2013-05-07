@@ -30,14 +30,12 @@ using WebKit::WebPage;
 using content::PepperPluginDelegateImpl;
 
 namespace content {
-/*
-FIXME:
 // static
 CONTENT_EXPORT RendererPpapiHost*
 RendererPpapiHost::CreateExternalPluginModule(
     scoped_refptr<PluginModule> plugin_module,
     PluginInstance* plugin_instance,
-    const WTF::String& file_path,
+    const FilePath& file_path, //const WTF::String& file_path,
     ppapi::PpapiPermissions permissions,
     const IPC::ChannelHandle& channel_handle,
     base::ProcessId plugin_pid,
@@ -58,7 +56,7 @@ RendererPpapiHost::CreateExternalPluginModule(
   }
   return renderer_ppapi_host;
 }
-*/
+
 // static
 CONTENT_EXPORT RendererPpapiHost*
 RendererPpapiHost::GetForPPInstance(PP_Instance instance) {

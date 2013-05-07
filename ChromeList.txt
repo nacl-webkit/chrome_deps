@@ -207,6 +207,7 @@ LIST(APPEND WebKit2_SOURCES
 
     ${CHROME_DEPS_DIR}/content/public/common/common_param_traits.cc
     ${CHROME_DEPS_DIR}/content/public/common/content_constants.cc
+    ${CHROME_DEPS_DIR}/content/public/common/content_client.cc
     ${CHROME_DEPS_DIR}/content/public/common/content_switches.cc
 
     ${CHROME_DEPS_DIR}/content/public/renderer/render_thread.cc
@@ -228,6 +229,8 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_platform_context_3d_impl.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_platform_image_2d_impl.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_plugin_delegate_impl.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_proxy_channel_delegate_impl.cc
+    ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_hung_plugin_filter.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/pepper_websocket_host.cc
     ${CHROME_DEPS_DIR}/content/renderer/pepper/renderer_ppapi_host_impl.cc
 
@@ -343,6 +346,7 @@ LIST(APPEND WebKit2_SOURCES
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_graphics_2d_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_graphics_3d_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_image_data_impl.cc
+    ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_proxy_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_url_loader_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_var_deprecated_impl.cc
     ${CHROME_DEPS_DIR}/webkit/plugins/ppapi/ppb_video_decoder_impl.cc

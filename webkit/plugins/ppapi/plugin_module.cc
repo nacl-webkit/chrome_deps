@@ -129,7 +129,9 @@
 #include "webkit/plugins/ppapi/ppb_gpu_blacklist_private_impl.h"
 #include "webkit/plugins/ppapi/ppb_graphics_2d_impl.h"
 #include "webkit/plugins/ppapi/ppb_image_data_impl.h"
+*/
 #include "webkit/plugins/ppapi/ppb_proxy_impl.h"
+/* FIXME:
 #include "webkit/plugins/ppapi/ppb_scrollbar_impl.h"
 #include "webkit/plugins/ppapi/ppb_uma_private_impl.h"
 */
@@ -352,9 +354,9 @@ const void* InternalGetInterface(const char* name) {
     return ::ppapi::PPB_OpenGLES2_Shared::GetChromiumMapSubInterface();
   if (strcmp(name, PPB_OPENGLES2_QUERY_INTERFACE) == 0)
     return ::ppapi::PPB_OpenGLES2_Shared::GetQueryInterface();
-  /* FIXME
   if (strcmp(name, PPB_PROXY_PRIVATE_INTERFACE) == 0)
     return PPB_Proxy_Impl::GetInterface();
+  /* FIXME
   if (strcmp(name, PPB_UMA_PRIVATE_INTERFACE) == 0)
     return PPB_UMA_Private_Impl::GetInterface();
     */
@@ -544,7 +546,6 @@ scoped_refptr<PluginModule> PluginModule::CreateModuleForNaClInstance() {
 }
 
 PP_NaClResult PluginModule::InitAsProxiedNaCl(PluginInstance* instance) {
-/* FIXME
   DCHECK(out_of_process_proxy_.get());
   // InitAsProxied (for the trusted/out-of-process case) initializes only the
   // module, and one or more instances are added later. In this case, the
@@ -555,7 +556,6 @@ PP_NaClResult PluginModule::InitAsProxiedNaCl(PluginInstance* instance) {
   // clear cached interface pointers and send DidCreate (etc) to the plugin
   // side of the proxy.
   return instance->ResetAsProxied(this);
-*/
 }
 
 bool PluginModule::IsProxied() const {
@@ -606,10 +606,8 @@ PluginInstance* PluginModule::GetSomeInstance() const {
 }
 
 const void* PluginModule::GetPluginInterface(const char* name) const {
-/* FIXME:
   if (out_of_process_proxy_.get())
     return out_of_process_proxy_->GetProxiedInterface(name);
-*/
   // In-process plugins.
   if (!entry_points_.get_interface)
     return NULL;

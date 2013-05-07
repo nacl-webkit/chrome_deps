@@ -1000,7 +1000,8 @@ bool Channel::ChannelImpl::WillDispatchInputMessage(Message* msg) {
     LOG(WARNING) << error
                  << " channel:" << this
                  << " message-type:" << msg->type()
-                 << " header()->num_fds:" << header_fds;
+                 << " header()->num_fds:" << header_fds
+                 << " input_fds_:" << input_fds_.size();
 #if defined(CHROMIUM_SELINUX)
     LOG(WARNING) << "In the case of SELinux this can be caused when "
                     "using a --user-data-dir to which the default "

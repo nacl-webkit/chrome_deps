@@ -37,7 +37,9 @@
 #include "content/public/common/media_stream_request.h"
 #include "content/public/common/referrer.h"
 #include "content/public/renderer/content_renderer_client.h"
+*/
 #include "content/public/renderer/renderer_restrict_dispatch_group.h"
+/* FIXME
 #include "content/renderer/gamepad_shared_memory_reader.h"
 #include "content/renderer/media/media_stream_dispatcher.h"
 #include "content/renderer/media/pepper_platform_video_decoder_impl.h"
@@ -45,17 +47,17 @@
 #include "content/renderer/pepper/content_renderer_pepper_host_factory.h"
 #include "content/renderer/pepper/pepper_broker_impl.h"
 #include "content/renderer/pepper/pepper_device_enumeration_event_handler.h"
-#include "content/renderer/pepper/pepper_hung_plugin_filter.h"
 #include "content/renderer/pepper/pepper_in_process_resource_creation.h"
 #include "content/renderer/pepper/pepper_platform_audio_input_impl.h"
 */
 #include "content/renderer/media/pepper_platform_video_decoder_impl.h"
+#include "content/renderer/pepper/pepper_hung_plugin_filter.h"
 #include "content/renderer/pepper/pepper_platform_audio_output_impl.h"
 #include "content/renderer/pepper/pepper_platform_context_3d_impl.h"
 #include "content/renderer/pepper/pepper_platform_image_2d_impl.h"
+#include "content/renderer/pepper/pepper_proxy_channel_delegate_impl.h"
 /*FIXME
 #include "content/renderer/pepper/pepper_platform_video_capture_impl.h"
-#include "content/renderer/pepper/pepper_proxy_channel_delegate_impl.h"
 #include "content/renderer/pepper/renderer_ppapi_host_impl.h"
 #include "content/renderer/render_thread_impl.h"
 #include "content/renderer/render_view_impl.h"
@@ -134,9 +136,6 @@ namespace {
 
 static int g_routing_id = 0;
 
-/*
-FIXME
-
 // This class wraps a dispatcher and has the same lifetime. A dispatcher has
 // the same lifetime as a plugin module, which is longer than any particular
 // RenderView or plugin instance.
@@ -201,18 +200,18 @@ class HostDispatcherWrapper
     // always give us an instance we can find in the map otherwise, but that
     // isn't true for browser tag support.
     if (host) {
-      RenderView* render_view = host->GetRenderViewForInstance(instance);
-      webkit::ppapi::PluginInstance* plugin_instance =
-          host->GetPluginInstance(instance);
-      render_view->Send(new ViewHostMsg_DidCreateOutOfProcessPepperInstance(
-          plugin_child_id_,
-          instance,
-          PepperRendererInstanceData(
-              0,  // The render process id will be supplied in the browser.
-              render_view->GetRoutingID(),
-              plugin_instance->container()->element().document().url(),
-              plugin_instance->plugin_url()),
-          is_external_));
+//FIXME      RenderView* render_view = host->GetRenderViewForInstance(instance);
+//FIXME      webkit::ppapi::PluginInstance* plugin_instance =
+//FIXME          host->GetPluginInstance(instance);
+//FIXME      render_view->Send(new ViewHostMsg_DidCreateOutOfProcessPepperInstance(
+//FIXME          plugin_child_id_,
+//FIXME          instance,
+//FIXME          PepperRendererInstanceData(
+//FIXME              0,  // The render process id will be supplied in the browser.
+//FIXME              render_view->GetRoutingID(),
+//FIXME              plugin_instance->container()->element().document().url(),
+//FIXME              plugin_instance->plugin_url()),
+//FIXME          is_external_));
     }
   }
   virtual void RemoveInstance(PP_Instance instance) OVERRIDE {
@@ -222,11 +221,11 @@ class HostDispatcherWrapper
         RendererPpapiHostImpl::GetForPPInstance(instance);
     // TODO(brettw) remove null check as described in AddInstance.
     if (host) {
-      RenderView* render_view = host->GetRenderViewForInstance(instance);
-      render_view->Send(new ViewHostMsg_DidDeleteOutOfProcessPepperInstance(
-          plugin_child_id_,
-          instance,
-          is_external_));
+//FIXME      RenderView* render_view = host->GetRenderViewForInstance(instance);
+//FIXME      render_view->Send(new ViewHostMsg_DidDeleteOutOfProcessPepperInstance(
+//FIXME          plugin_child_id_,
+//FIXME          instance,
+//FIXME          is_external_));
     }
   }
   virtual base::ProcessId GetPeerProcessId() OVERRIDE {
@@ -251,7 +250,7 @@ class HostDispatcherWrapper
   scoped_ptr<ppapi::proxy::HostDispatcher> dispatcher_;
   scoped_ptr<ppapi::proxy::ProxyChannel::Delegate> dispatcher_delegate_;
 };
-* /
+
 class QuotaCallbackTranslator : public QuotaDispatcher::Callback {
  public:
   typedef webkit::ppapi::PluginDelegate::AvailableSpaceCallback PluginCallback;
@@ -542,7 +541,6 @@ PepperPluginDelegateImpl::CreatePepperPluginModule(
   return module;
 }
 
-/* FIXME
 RendererPpapiHost* PepperPluginDelegateImpl::CreateExternalPluginModule(
     scoped_refptr<webkit::ppapi::PluginModule> module,
     const FilePath& path,
@@ -561,6 +559,7 @@ RendererPpapiHost* PepperPluginDelegateImpl::CreateExternalPluginModule(
                                   true);  // is_external = true
 }
 
+/* FIXME
 scoped_refptr<PepperBrokerImpl> PepperPluginDelegateImpl::CreateBroker(
     webkit::ppapi::PluginModule* plugin_module) {
   DCHECK(plugin_module);
@@ -597,11 +596,9 @@ RendererPpapiHost* PepperPluginDelegateImpl::CreateOutOfProcessModule(
     base::ProcessId peer_pid,
     int plugin_child_id,
     bool is_external) {
-/*
-FIXME
   scoped_refptr<PepperHungPluginFilter> hung_filter(
       new PepperHungPluginFilter(path,
-                                 render_view_->routing_id(),
+                                 -1, //FIXME render_view_->routing_id(),
                                  plugin_child_id));
   scoped_ptr<HostDispatcherWrapper> dispatcher(
       new HostDispatcherWrapper(module,
@@ -619,11 +616,10 @@ FIXME
   RendererPpapiHostImpl* host_impl =
       RendererPpapiHostImpl::CreateOnModuleForOutOfProcess(
           module, dispatcher->dispatcher(), permissions);
-  render_view_->PpapiPluginCreated(host_impl);
+//FIXME  render_view_->PpapiPluginCreated(host_impl);
 
   module->InitAsProxied(dispatcher.release());
   return host_impl;
-*/
 }
 
 void PepperPluginDelegateImpl::OnPpapiBrokerChannelCreated(
@@ -1579,6 +1575,7 @@ base::SharedMemory* PepperPluginDelegateImpl::CreateAnonymousSharedMemory(
 
 ppapi::Preferences PepperPluginDelegateImpl::GetPreferences() {
 // FIXME  return ppapi::Preferences(render_view_->webkit_preferences());
+  return ppapi::Preferences();
 }
 
 bool PepperPluginDelegateImpl::LockMouse(

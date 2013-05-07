@@ -7,6 +7,8 @@
 #include "content/common/child_process.h"
 #include "content/public/common/sandbox_init.h"
 
+#include <assert.h>
+
 namespace content {
 
 PepperProxyChannelDelegateImpl::~PepperProxyChannelDelegateImpl() {
@@ -28,8 +30,9 @@ PepperProxyChannelDelegateImpl::ShareHandleWithRemote(
     base::PlatformFile handle,
     base::ProcessId remote_pid,
     bool should_close_source) {
-  return BrokerGetFileHandleForProcess(handle, remote_pid,
-                                       should_close_source);
+  assert(0);
+  //FIXME return BrokerGetFileHandleForProcess(handle, remote_pid,
+  //FIXME                                      should_close_source);
 }
 
 }  // namespace content

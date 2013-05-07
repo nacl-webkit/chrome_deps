@@ -114,7 +114,6 @@ v8.log
 /media/test/data/security
 /media/yuv_convert_simd_x86.xml
 /metro_driver
-/native_client
 /net/Debug
 /net/Release
 /net/testserver.log
@@ -259,7 +258,6 @@ v8.log
 /tools/deps2git/
 /tools/distcc
 /tools/grit
-/tools/gyp
 /tools/histograms
 /tools/json_schema_compiler/test/json_schema_compiler_tests.xml
 /tools/page_cycler/acid3

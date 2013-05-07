@@ -26,12 +26,23 @@
 #include "base/posix/unix_domain_socket_linux.h"
 #include "base/rand_util.h"
 #include "chrome/nacl/nacl_listener.h"
+#include "chrome/nacl/nacl_ipc_adapter.h"
 #if defined(USE_NSS)
 #include "crypto/nss_util.h"
 #endif
 #include "ipc/ipc_descriptors.h"
+#include "ipc/ipc_channel.h"
+#include "ipc/ipc_channel_handle.h"
 #include "ipc/ipc_switches.h"
 #include "sandbox/linux/services/libc_urandom_override.h"
+
+#include "native_client/src/trusted/service_runtime/sel_main_chrome.h"
+
+//FIXME Add back if we need to ask sandbox to create memory for us
+//#if defined(OS_LINUX)
+//#include "content/public/common/child_process_sandbox_support_linux.h"
+//#endif
+#include "base/shared_memory.h"
 
 namespace {
 
@@ -117,6 +128,61 @@ void HandleForkRequest(const std::vector<int>& child_fds,
       != sizeof(childpid)) {
     LOG(ERROR) << "*** send() to zygote failed";
   }
+}
+
+#if defined(OS_LINUX)
+int CreateMemoryObject(size_t size, int executable) {
+  //FIXME Currently we won't ask sandbox process to create memory for us.
+  // return content::MakeSharedMemorySegmentViaIPC(size, executable);
+  base::SharedMemoryCreateOptions options;
+  options.size = size;
+  options.executable = executable;
+  base::SharedMemory shm;
+  if (!shm.Create(options))
+    return -1;
+  return dup(shm.handle().fd);
+}
+#endif
+
+void HandleLoadRequest(const std::vector<int>& fds) {
+  struct NaClChromeMainArgs *args = NaClChromeMainArgsCreate();
+  if (args == NULL) {
+    printf("naclhelper - NaClChromeMainArgsCreate() failed");
+    return;
+  }
+
+  base::Thread io_thread("NaCl_IOThread");
+  io_thread.StartWithOptions(base::Thread::Options(MessageLoop::TYPE_IO, 0));
+  IPC::ChannelHandle handle =
+      IPC::Channel::GenerateVerifiedChannelID("nacl");
+  scoped_refptr<NaClIPCAdapter> ipc_adapter(
+      new NaClIPCAdapter(handle, io_thread.message_loop_proxy()));
+  ipc_adapter->ConnectChannel();
+  args->initial_ipc_desc = ipc_adapter->MakeNaClDesc(); // Chrome has this when params.enable_ipc_proxy is true
+  //handle.socket.fd = fds[1]; // useless here as we won't send handle to browser->renderer
+  ipc_adapter->CreateAdapterForRenderer(fds[1]); // We use this to replace function of PpapiMsg_CreateNaClChannel
+
+#if NACL_LINUX || NACL_OSX
+  args->urandom_fd = dup(base::GetUrandomFD());
+  if (args->urandom_fd < 0) {
+    printf("Failed to dup() the urandom FD");
+    return;
+  }
+  args->debug_stub_server_bound_socket_fd = -1;
+  args->prereserved_sandbox_size = 0;
+#endif
+#if defined(OS_LINUX)
+  args->create_memory_object_func = CreateMemoryObject;
+#else
+  args->create_memory_object_func = NULL;
+#endif
+  args->irt_fd = fds[fds.size() - 1];
+  args->enable_exception_handling = false;
+  args->enable_debug_stub = false;
+
+  args->imc_bootstrap_handle = fds[0];
+
+  NaClChromeMainStart(args);
 }
 
 }  // namespace
@@ -249,6 +315,11 @@ int main(int argc, char* argv[]) {
     } else if (msglen < 0) {
       LOG(ERROR) << "nacl_helper: receive from zygote failed, errno = "
                  << errno;
+      _exit(-1); // avoid infinite loop on error
+    } else if (msglen == sizeof(kNaClLoadRequest) - 1 &&
+               memcmp(buf, kNaClLoadRequest, msglen) == 0) {
+      HandleLoadRequest(fds);
+      _exit(0);
     } else if (msglen == sizeof(kNaClForkRequest) - 1 &&
                memcmp(buf, kNaClForkRequest, msglen) == 0) {
       if (kNaClParentFDIndex + 1 == fds.size()) {

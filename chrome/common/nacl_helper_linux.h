@@ -13,6 +13,8 @@
 #define kNaClHelperStartupAck "NACLHELPER_OK"
 // Used by Zygote to ask Helper to fork a new NaCl loader.
 #define kNaClForkRequest "NACLFORK"
+// Used by WebProcess to tell Helper to become a NaCl loader.
+#define kNaClLoadRequest "NACLLOAD"
 
 // The next set of constants define global Linux file descriptors.
 // For communications between NaCl loader and browser.

@@ -160,8 +160,6 @@ base::LazyInstance<PpapiPermissions> g_process_global_permissions;
 InterfaceList::InterfaceList() {
   memset(id_to_factory_, 0, sizeof(id_to_factory_));
 
-  /*
-  FIXME:
   // Register the API factories for each of the API types. This calls AddProxy
   // for each InterfaceProxy type we support.
   #define PROXIED_API(api_name) \
@@ -177,10 +175,12 @@ InterfaceList::InterfaceList() {
 
   {
     Permission current_required_permission = PERMISSION_NONE;
-    #include "ppapi/thunk/interfaces_ppb_private_no_permissions.h"
+//FIXME    #include "ppapi/thunk/interfaces_ppb_private_no_permissions.h"
     #include "ppapi/thunk/interfaces_ppb_public_stable.h"
   }
 
+  /*
+  FIXME:
   {
     Permission current_required_permission = PERMISSION_DEV;
     #include "ppapi/thunk/interfaces_ppb_public_dev.h"
@@ -195,10 +195,13 @@ InterfaceList::InterfaceList() {
     #include "ppapi/thunk/interfaces_ppb_private_flash.h"
 #endif  // !defined(OS_NACL)
   }
+  */
 
   #undef PROXIED_API
   #undef PROXIED_IFACE
 
+  /*
+  FIXME:
   // Manually add some special proxies. Some of these don't have interfaces
   // that they support, so aren't covered by the macros above, but have proxies
   // for message routing. Others have different implementations between the
@@ -227,11 +230,13 @@ InterfaceList::InterfaceList() {
          PPB_OpenGLES2_Shared::GetChromiumMapSubInterface(), PERMISSION_NONE);
   AddPPB(PPB_OPENGLES2_QUERY_INTERFACE_1_0, API_ID_NONE,
          PPB_OpenGLES2_Shared::GetQueryInterface(), PERMISSION_NONE);
+*/
   AddPPB(PPB_VAR_ARRAY_BUFFER_INTERFACE_1_0, API_ID_NONE,
          PPB_Var_Shared::GetVarArrayBufferInterface1_0(),
          PERMISSION_NONE);
   AddPPB(PPB_VAR_INTERFACE_1_1, API_ID_NONE,
          PPB_Var_Shared::GetVarInterface1_1(), PERMISSION_NONE);
+  /* FIXME:
   AddPPB(PPB_VAR_INTERFACE_1_0, API_ID_NONE,
          PPB_Var_Shared::GetVarInterface1_0(), PERMISSION_NONE);
 
@@ -254,6 +259,7 @@ InterfaceList::InterfaceList() {
 #endif
   AddPPB(PPB_Testing_Proxy::GetInfo(), PERMISSION_TESTING);
 
+*/
   // PPP (plugin) interfaces.
   // TODO(brettw) move these to interface_list*.h
   AddProxy(API_ID_PPP_INSTANCE, &ProxyFactory<PPP_Instance_Proxy>);
@@ -261,6 +267,7 @@ InterfaceList::InterfaceList() {
   AddPPP(PPP_INSTANCE_INTERFACE_1_1, API_ID_PPP_INSTANCE,
          PPP_Instance_Proxy::GetInstanceInterface());
   #endif
+/*FIXME
   AddProxy(API_ID_PPP_PRINTING, &ProxyFactory<PPP_Printing_Proxy>);
   AddPPP(PPP_PRINTING_DEV_INTERFACE, API_ID_PPP_PRINTING,
          PPP_Printing_Proxy::GetProxyInterface());

@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#include <assert.h>
 #include "ppapi/proxy/ppb_instance_proxy.h"
 
 #include "base/memory/ref_counted.h"
@@ -144,18 +145,18 @@ bool PPB_Instance_Proxy::OnMessageReceived(const IPC::Message& msg) {
                         OnHostMsgLockMouse)
     IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_UnlockMouse,
                         OnHostMsgUnlockMouse)
-    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_SetCursor,
-                        OnHostMsgSetCursor)
-    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_SetTextInputType,
-                        OnHostMsgSetTextInputType)
-    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_UpdateCaretPosition,
-                        OnHostMsgUpdateCaretPosition)
-    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_CancelCompositionText,
-                        OnHostMsgCancelCompositionText)
-    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_UpdateSurroundingText,
-                        OnHostMsgUpdateSurroundingText)
-    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_GetDocumentURL,
-                        OnHostMsgGetDocumentURL)
+//FIXME    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_SetCursor,
+//FIXME                        OnHostMsgSetCursor)
+//FIXME    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_SetTextInputType,
+//FIXME                        OnHostMsgSetTextInputType)
+//FIXME    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_UpdateCaretPosition,
+//FIXME                        OnHostMsgUpdateCaretPosition)
+//FIXME    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_CancelCompositionText,
+//FIXME                        OnHostMsgCancelCompositionText)
+//FIXME    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_UpdateSurroundingText,
+//FIXME                        OnHostMsgUpdateSurroundingText)
+//FIXME    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_GetDocumentURL,
+//FIXME                        OnHostMsgGetDocumentURL)
     IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_ResolveRelativeToDocument,
                         OnHostMsgResolveRelativeToDocument)
     IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_DocumentCanRequest,
@@ -164,26 +165,26 @@ bool PPB_Instance_Proxy::OnMessageReceived(const IPC::Message& msg) {
                         OnHostMsgDocumentCanAccessDocument)
     IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_GetPluginInstanceURL,
                         OnHostMsgGetPluginInstanceURL)
-    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_NeedKey,
-                        OnHostMsgNeedKey)
-    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_KeyAdded,
-                        OnHostMsgKeyAdded)
-    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_KeyMessage,
-                        OnHostMsgKeyMessage)
-    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_KeyError,
-                        OnHostMsgKeyError)
-    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_DeliverBlock,
-                        OnHostMsgDeliverBlock)
-    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_DecoderInitializeDone,
-                        OnHostMsgDecoderInitializeDone)
-    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_DecoderDeinitializeDone,
-                        OnHostMsgDecoderDeinitializeDone)
-    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_DecoderResetDone,
-                        OnHostMsgDecoderResetDone)
-    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_DeliverFrame,
-                        OnHostMsgDeliverFrame)
-    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_DeliverSamples,
-                        OnHostMsgDeliverSamples)
+//FIXME    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_NeedKey,
+//FIXME                        OnHostMsgNeedKey)
+//FIXME    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_KeyAdded,
+//FIXME                        OnHostMsgKeyAdded)
+//FIXME    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_KeyMessage,
+//FIXME                        OnHostMsgKeyMessage)
+//FIXME    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_KeyError,
+//FIXME                        OnHostMsgKeyError)
+//FIXME    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_DeliverBlock,
+//FIXME                        OnHostMsgDeliverBlock)
+//FIXME    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_DecoderInitializeDone,
+//FIXME                        OnHostMsgDecoderInitializeDone)
+//FIXME    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_DecoderDeinitializeDone,
+//FIXME                        OnHostMsgDecoderDeinitializeDone)
+//FIXME    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_DecoderResetDone,
+//FIXME                        OnHostMsgDecoderResetDone)
+//FIXME    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_DeliverFrame,
+//FIXME                        OnHostMsgDeliverFrame)
+//FIXME    IPC_MESSAGE_HANDLER(PpapiHostMsg_PPBInstance_DeliverSamples,
+//FIXME                        OnHostMsgDeliverSamples)
 #endif  // !defined(OS_NACL)
 
     // Host -> Plugin messages.
@@ -351,31 +352,31 @@ Resource* PPB_Instance_Proxy::GetSingletonResource(PP_Instance instance,
   Connection connection(PluginGlobals::Get()->GetBrowserSender(), dispatcher());
 
   switch (id) {
-    case BROKER_SINGLETON_ID:
-      new_singleton = new BrokerResource(connection, instance);
-      break;
-    case GAMEPAD_SINGLETON_ID:
-      new_singleton = new GamepadResource(connection, instance);
-      break;
-// Flash/trusted resources aren't needed for NaCl.
-#if !defined(OS_NACL) && !defined(NACL_WIN64)
-    case BROWSER_FONT_SINGLETON_ID:
-      new_singleton = new BrowserFontSingletonResource(connection, instance);
-      break;
-    case FLASH_CLIPBOARD_SINGLETON_ID:
-      new_singleton = new FlashClipboardResource(connection, instance);
-      break;
-    case FLASH_FILE_SINGLETON_ID:
-      new_singleton = new FlashFileResource(connection, instance);
-      break;
-    case FLASH_FULLSCREEN_SINGLETON_ID:
-      new_singleton = new FlashFullscreenResource(connection, instance);
-      break;
-    case FLASH_SINGLETON_ID:
-      new_singleton = new FlashResource(connection, instance,
-          static_cast<PluginDispatcher*>(dispatcher()));
-      break;
-#else
+//FIXME    case BROKER_SINGLETON_ID:
+//FIXME      new_singleton = new BrokerResource(connection, instance);
+//FIXME      break;
+//FIXME    case GAMEPAD_SINGLETON_ID:
+//FIXME      new_singleton = new GamepadResource(connection, instance);
+//FIXME      break;
+//FIXME// Flash/trusted resources aren't needed for NaCl.
+//FIXME#if !defined(OS_NACL) && !defined(NACL_WIN64)
+//FIXME    case BROWSER_FONT_SINGLETON_ID:
+//FIXME      new_singleton = new BrowserFontSingletonResource(connection, instance);
+//FIXME      break;
+//FIXME    case FLASH_CLIPBOARD_SINGLETON_ID:
+//FIXME      new_singleton = new FlashClipboardResource(connection, instance);
+//FIXME      break;
+//FIXME    case FLASH_FILE_SINGLETON_ID:
+//FIXME      new_singleton = new FlashFileResource(connection, instance);
+//FIXME      break;
+//FIXME    case FLASH_FULLSCREEN_SINGLETON_ID:
+//FIXME      new_singleton = new FlashFullscreenResource(connection, instance);
+//FIXME      break;
+//FIXME    case FLASH_SINGLETON_ID:
+//FIXME      new_singleton = new FlashResource(connection, instance,
+//FIXME          static_cast<PluginDispatcher*>(dispatcher()));
+//FIXME      break;
+//FIXME#else
     case BROWSER_FONT_SINGLETON_ID:
     case FLASH_CLIPBOARD_SINGLETON_ID:
     case FLASH_FILE_SINGLETON_ID:
@@ -383,7 +384,7 @@ Resource* PPB_Instance_Proxy::GetSingletonResource(PP_Instance instance,
     case FLASH_SINGLETON_ID:
       NOTREACHED();
       break;
-#endif  // !defined(OS_NACL) && !defined(NACL_WIN64)
+//FIXME#endif  // !defined(OS_NACL) && !defined(NACL_WIN64)
   }
 
   if (!new_singleton) {
@@ -442,8 +443,9 @@ PP_Var PPB_Instance_Proxy::GetDocumentURL(PP_Instance instance,
                                           PP_URLComponents_Dev* components) {
   ReceiveSerializedVarReturnValue result;
   PP_URLComponents_Dev url_components;
-  dispatcher()->Send(new PpapiHostMsg_PPBInstance_GetDocumentURL(
-      API_ID_PPB_INSTANCE, instance, &url_components, &result));
+  assert(0);
+//FIXME  dispatcher()->Send(new PpapiHostMsg_PPBInstance_GetDocumentURL(
+//FIXME      API_ID_PPB_INSTANCE, instance, &url_components, &result));
   if (components)
     *components = url_components;
   return result.Return(dispatcher());
@@ -497,24 +499,26 @@ void PPB_Instance_Proxy::NeedKey(PP_Instance instance,
                                  PP_Var key_system,
                                  PP_Var session_id,
                                  PP_Var init_data) {
-  dispatcher()->Send(
-      new PpapiHostMsg_PPBInstance_NeedKey(
-          API_ID_PPB_INSTANCE,
-          instance,
-          SerializedVarSendInput(dispatcher(), key_system),
-          SerializedVarSendInput(dispatcher(), session_id),
-          SerializedVarSendInput(dispatcher(), init_data)));
+  assert(0);
+//FIXME  dispatcher()->Send(
+//FIXME      new PpapiHostMsg_PPBInstance_NeedKey(
+//FIXME          API_ID_PPB_INSTANCE,
+//FIXME          instance,
+//FIXME          SerializedVarSendInput(dispatcher(), key_system),
+//FIXME          SerializedVarSendInput(dispatcher(), session_id),
+//FIXME          SerializedVarSendInput(dispatcher(), init_data)));
 }
 
 void PPB_Instance_Proxy::KeyAdded(PP_Instance instance,
                                   PP_Var key_system,
                                   PP_Var session_id) {
-  dispatcher()->Send(
-      new PpapiHostMsg_PPBInstance_KeyAdded(
-          API_ID_PPB_INSTANCE,
-          instance,
-          SerializedVarSendInput(dispatcher(), key_system),
-          SerializedVarSendInput(dispatcher(), session_id)));
+  assert(0);
+//FIXME  dispatcher()->Send(
+//FIXME      new PpapiHostMsg_PPBInstance_KeyAdded(
+//FIXME          API_ID_PPB_INSTANCE,
+//FIXME          instance,
+//FIXME          SerializedVarSendInput(dispatcher(), key_system),
+//FIXME          SerializedVarSendInput(dispatcher(), session_id)));
 }
 
 void PPB_Instance_Proxy::KeyMessage(PP_Instance instance,
@@ -522,14 +526,15 @@ void PPB_Instance_Proxy::KeyMessage(PP_Instance instance,
                                     PP_Var session_id,
                                     PP_Var message,
                                     PP_Var default_url) {
-  dispatcher()->Send(
-      new PpapiHostMsg_PPBInstance_KeyMessage(
-          API_ID_PPB_INSTANCE,
-          instance,
-          SerializedVarSendInput(dispatcher(), key_system),
-          SerializedVarSendInput(dispatcher(), session_id),
-          SerializedVarSendInput(dispatcher(), message),
-          SerializedVarSendInput(dispatcher(), default_url)));
+  assert(0);
+//FIXME  dispatcher()->Send(
+//FIXME      new PpapiHostMsg_PPBInstance_KeyMessage(
+//FIXME          API_ID_PPB_INSTANCE,
+//FIXME          instance,
+//FIXME          SerializedVarSendInput(dispatcher(), key_system),
+//FIXME          SerializedVarSendInput(dispatcher(), session_id),
+//FIXME          SerializedVarSendInput(dispatcher(), message),
+//FIXME          SerializedVarSendInput(dispatcher(), default_url)));
 }
 
 void PPB_Instance_Proxy::KeyError(PP_Instance instance,
@@ -537,14 +542,15 @@ void PPB_Instance_Proxy::KeyError(PP_Instance instance,
                                   PP_Var session_id,
                                   int32_t media_error,
                                   int32_t system_code) {
-  dispatcher()->Send(
-      new PpapiHostMsg_PPBInstance_KeyError(
-          API_ID_PPB_INSTANCE,
-          instance,
-          SerializedVarSendInput(dispatcher(), key_system),
-          SerializedVarSendInput(dispatcher(), session_id),
-          media_error,
-          system_code));
+  assert(0);
+//FIXME  dispatcher()->Send(
+//FIXME      new PpapiHostMsg_PPBInstance_KeyError(
+//FIXME          API_ID_PPB_INSTANCE,
+//FIXME          instance,
+//FIXME          SerializedVarSendInput(dispatcher(), key_system),
+//FIXME          SerializedVarSendInput(dispatcher(), session_id),
+//FIXME          media_error,
+//FIXME          system_code));
 }
 
 void PPB_Instance_Proxy::DeliverBlock(PP_Instance instance,
@@ -568,11 +574,12 @@ void PPB_Instance_Proxy::DeliverBlock(PP_Instance instance,
     return;
   }
 
-  dispatcher()->Send(
-      new PpapiHostMsg_PPBInstance_DeliverBlock(API_ID_PPB_INSTANCE,
-          instance,
-          decrypted_block_host_resource,
-          serialized_block_info));
+  assert(0);
+//FIXME  dispatcher()->Send(
+//FIXME      new PpapiHostMsg_PPBInstance_DeliverBlock(API_ID_PPB_INSTANCE,
+//FIXME          instance,
+//FIXME          decrypted_block_host_resource,
+//FIXME          serialized_block_info));
 }
 
 void PPB_Instance_Proxy::DecoderInitializeDone(
@@ -580,36 +587,39 @@ void PPB_Instance_Proxy::DecoderInitializeDone(
     PP_DecryptorStreamType decoder_type,
     uint32_t request_id,
     PP_Bool success) {
-  dispatcher()->Send(
-      new PpapiHostMsg_PPBInstance_DecoderInitializeDone(
-          API_ID_PPB_INSTANCE,
-          instance,
-          decoder_type,
-          request_id,
-          success));
+  assert(0);
+//FIXME  dispatcher()->Send(
+//FIXME      new PpapiHostMsg_PPBInstance_DecoderInitializeDone(
+//FIXME          API_ID_PPB_INSTANCE,
+//FIXME          instance,
+//FIXME          decoder_type,
+//FIXME          request_id,
+//FIXME          success));
 }
 
 void PPB_Instance_Proxy::DecoderDeinitializeDone(
     PP_Instance instance,
     PP_DecryptorStreamType decoder_type,
     uint32_t request_id) {
-  dispatcher()->Send(
-      new PpapiHostMsg_PPBInstance_DecoderDeinitializeDone(
-          API_ID_PPB_INSTANCE,
-          instance,
-          decoder_type,
-          request_id));
+  assert(0);
+//FIXME  dispatcher()->Send(
+//FIXME      new PpapiHostMsg_PPBInstance_DecoderDeinitializeDone(
+//FIXME          API_ID_PPB_INSTANCE,
+//FIXME          instance,
+//FIXME          decoder_type,
+//FIXME          request_id));
 }
 
 void PPB_Instance_Proxy::DecoderResetDone(PP_Instance instance,
                                           PP_DecryptorStreamType decoder_type,
                                           uint32_t request_id) {
-  dispatcher()->Send(
-      new PpapiHostMsg_PPBInstance_DecoderResetDone(
-          API_ID_PPB_INSTANCE,
-          instance,
-          decoder_type,
-          request_id));
+  assert(0);
+//FIXME  dispatcher()->Send(
+//FIXME      new PpapiHostMsg_PPBInstance_DecoderResetDone(
+//FIXME          API_ID_PPB_INSTANCE,
+//FIXME          instance,
+//FIXME          decoder_type,
+//FIXME          request_id));
 }
 
 void PPB_Instance_Proxy::DeliverFrame(PP_Instance instance,
@@ -634,11 +644,12 @@ void PPB_Instance_Proxy::DeliverFrame(PP_Instance instance,
     return;
   }
 
-  dispatcher()->Send(
-      new PpapiHostMsg_PPBInstance_DeliverFrame(API_ID_PPB_INSTANCE,
-                                                instance,
-                                                host_resource,
-                                                serialized_frame_info));
+  assert(0);
+//FIXME  dispatcher()->Send(
+//FIXME      new PpapiHostMsg_PPBInstance_DeliverFrame(API_ID_PPB_INSTANCE,
+//FIXME                                                instance,
+//FIXME                                                host_resource,
+//FIXME                                                serialized_frame_info));
 }
 
 void PPB_Instance_Proxy::DeliverSamples(
@@ -664,11 +675,12 @@ void PPB_Instance_Proxy::DeliverSamples(
     return;
   }
 
-  dispatcher()->Send(
-      new PpapiHostMsg_PPBInstance_DeliverSamples(API_ID_PPB_INSTANCE,
-                                                  instance,
-                                                  host_resource,
-                                                  serialized_block_info));
+  assert(0);
+//FIXME  dispatcher()->Send(
+//FIXME      new PpapiHostMsg_PPBInstance_DeliverSamples(API_ID_PPB_INSTANCE,
+//FIXME                                                  instance,
+//FIXME                                                  host_resource,
+//FIXME                                                  serialized_block_info));
 }
 #endif  // !defined(OS_NACL)
 
@@ -699,9 +711,10 @@ PP_Bool PPB_Instance_Proxy::SetCursor(PP_Instance instance,
     image_host_resource = cursor_image->host_resource();
   }
 
-  dispatcher()->Send(new PpapiHostMsg_PPBInstance_SetCursor(
-      API_ID_PPB_INSTANCE, instance, static_cast<int32_t>(type),
-      image_host_resource, hot_spot ? *hot_spot : PP_MakePoint(0, 0)));
+  assert(0);
+//FIXME  dispatcher()->Send(new PpapiHostMsg_PPBInstance_SetCursor(
+//FIXME      API_ID_PPB_INSTANCE, instance, static_cast<int32_t>(type),
+//FIXME      image_host_resource, hot_spot ? *hot_spot : PP_MakePoint(0, 0)));
   return PP_TRUE;
 }
 
@@ -729,21 +742,24 @@ void PPB_Instance_Proxy::UnlockMouse(PP_Instance instance) {
 void PPB_Instance_Proxy::SetTextInputType(PP_Instance instance,
                                           PP_TextInput_Type type) {
   CancelAnyPendingRequestSurroundingText(instance);
-  dispatcher()->Send(new PpapiHostMsg_PPBInstance_SetTextInputType(
-      API_ID_PPB_INSTANCE, instance, type));
+  assert(0);
+  //FIXME dispatcher()->Send(new PpapiHostMsg_PPBInstance_SetTextInputType(
+  //FIXME     API_ID_PPB_INSTANCE, instance, type));
 }
 
 void PPB_Instance_Proxy::UpdateCaretPosition(PP_Instance instance,
                                              const PP_Rect& caret,
                                              const PP_Rect& bounding_box) {
-  dispatcher()->Send(new PpapiHostMsg_PPBInstance_UpdateCaretPosition(
-      API_ID_PPB_INSTANCE, instance, caret, bounding_box));
+  assert(0);
+  //FIXME dispatcher()->Send(new PpapiHostMsg_PPBInstance_UpdateCaretPosition(
+  //FIXME     API_ID_PPB_INSTANCE, instance, caret, bounding_box));
 }
 
 void PPB_Instance_Proxy::CancelCompositionText(PP_Instance instance) {
   CancelAnyPendingRequestSurroundingText(instance);
-  dispatcher()->Send(new PpapiHostMsg_PPBInstance_CancelCompositionText(
-      API_ID_PPB_INSTANCE, instance));
+  assert(0);
+  //FIXME dispatcher()->Send(new PpapiHostMsg_PPBInstance_CancelCompositionText(
+  //FIXME     API_ID_PPB_INSTANCE, instance));
 }
 
 void PPB_Instance_Proxy::SelectionChanged(PP_Instance instance) {
@@ -776,8 +792,9 @@ void PPB_Instance_Proxy::UpdateSurroundingText(PP_Instance instance,
                                                const char* text,
                                                uint32_t caret,
                                                uint32_t anchor) {
-  dispatcher()->Send(new PpapiHostMsg_PPBInstance_UpdateSurroundingText(
-      API_ID_PPB_INSTANCE, instance, text, caret, anchor));
+  assert(0);
+  //FIXME dispatcher()->Send(new PpapiHostMsg_PPBInstance_UpdateSurroundingText(
+  //FIXME     API_ID_PPB_INSTANCE, instance, text, caret, anchor));
 }
 
 #if !defined(OS_NACL)

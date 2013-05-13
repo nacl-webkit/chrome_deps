@@ -132,6 +132,7 @@ PP_NaClResult LaunchSelLdr(PP_Instance instance,
     DLOG(ERROR) << "WebKit::WebProcess::shared().launchNaCl() failed";
     return PP_NACL_FAILED;
   }
+  ASSERT(fcntl(result_socket.fd, F_SETFL, O_NONBLOCK) != -1);
   ASSERT(fcntl(instance_info.channel_handle.socket.fd, F_SETFL, O_NONBLOCK) != -1);
 
   // Don't save instance_info if channel handle is invalid.

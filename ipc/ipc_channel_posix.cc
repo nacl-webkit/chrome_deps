@@ -381,8 +381,10 @@ bool Channel::ChannelImpl::CreatePipe(
       return false;
     }
     if (!(value & O_NONBLOCK)) {
-      LOG(ERROR) << "Socket " << pipe_name_ << " must be O_NONBLOCK";
-      return false;
+      DCHECK(fcntl(local_pipe, F_SETFL, O_NONBLOCK) != -1);
+      LOG(INFO) << "Socket " << pipe_name_ << " must be O_NONBLOCK"<<" ... so we set it to non-blocking now";
+      //LOG(ERROR) << "Socket " << pipe_name_ << " must be O_NONBLOCK";
+      //return false;
     }
 #endif   // IPC_USES_READWRITE
   } else if (mode_ & MODE_NAMED_FLAG) {

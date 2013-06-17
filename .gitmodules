@@ -1,9 +1,9 @@
 [submodule "third_party/jsoncpp/source/include"]
 	path = third_party/jsoncpp/source/include
-	url = git@github.com:otcshare/jsoncpp_include.git
+	url = https://chromium.googlesource.com/external/jsoncpp/jsoncpp/include.git
 [submodule "third_party/jsoncpp/source/src/lib_json"]
 	path = third_party/jsoncpp/source/src/lib_json
-	url = git@github.com:otcshare/lib_json.git
+	url = https://chromium.googlesource.com/external/jsoncpp/jsoncpp/src/lib_json.git
 [submodule "googleurl"]
     path = googleurl
     url = https://chromium.googlesource.com/external/google-url.git
@@ -18,4 +18,4 @@
 	url = https://chromium.googlesource.com/external/gyp.git
 [submodule "native_client"]
 	path = native_client
-	url = git@github.com:otcshare/native_client.git
+	url = git@github.com:nacl-webkit/native_client.git
